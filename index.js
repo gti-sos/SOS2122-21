@@ -66,6 +66,13 @@ app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
             veh_use_comm: 5281807,
             veh_use_pass: 44999681,
             veh_use_per_1000: 759.39,
+        },
+        {
+            country: "spain", 
+            year: 2019, 
+            veh_use_comm : 4444698, 
+            veh_use_pass: 25008222, 
+            veh_use_per_1000: 622.25
         }
     ];
     iniData.forEach( (e) => {
