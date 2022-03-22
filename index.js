@@ -28,7 +28,7 @@ var inUseVehicles = [];
 app.get(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     res.send(JSON.stringify(inUseVehicles,null,2));
 })
-
+/*
 app.get(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
     var iuvCountry = req.params.name;
     filteredIuv = inUseVehicles.filter( (e) => {
@@ -55,12 +55,7 @@ app.get(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
         res.send(JSON.stringify(filteredIuv,null,2));
     }
 })
-
-app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
-    inUseVehicles.push(req.body);
-    res.sendStatus(201,"CREATED")
-});
-
+*/
 app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
     var iniData = [
         {
@@ -105,3 +100,7 @@ app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
     res.send(JSON.stringify(inUseVehicles,null,2));
 })
 
+app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
+    inUseVehicles.push(req.body);
+    res.sendStatus(201,"CREATED")
+});
