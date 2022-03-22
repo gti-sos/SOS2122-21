@@ -90,7 +90,7 @@ app.get(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
         res.sendStatus(404,"NOT FOUND");
     }
     else{
-        res.send(JSON.stringify(filteredIuv[0],null,2));
+        res.send(JSON.stringify(filteredIuv,null,2));
     }
 })
 
