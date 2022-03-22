@@ -28,34 +28,8 @@ var inUseVehicles = [];
 app.get(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     res.send(JSON.stringify(inUseVehicles,null,2));
 })
-/*
-app.get(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
-    var iuvCountry = req.params.name;
-    filteredIuv = inUseVehicles.filter( (e) => {
-        return (inUseVehicles.country == iuvCountry);
-    });
-    if(filteredIuv == 0){
-        res.sendStatus(404,"NOT FOUND");
-    }
-    else{
-        res.send(JSON.stringify(filteredIuv[0],null,2));
-    }
-})
 
-app.get(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
-    var iuvCountry = req.params.name;
-    var iuvYear = req.params.year;
-    filteredIuv = inUseVehicles.filter( (e) => {
-        return ((inUseVehicles.country == iuvCountry) && (inUseVehicles.year == iuvYear));
-    });
-    if(filteredIuv == 0){
-        res.sendStatus(404,"NOT FOUND");
-    }
-    else{
-        res.send(JSON.stringify(filteredIuv,null,2));
-    }
-})
-*/
+
 app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
     var iniData = [
         {
@@ -99,6 +73,34 @@ app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
     });
     res.send(JSON.stringify(inUseVehicles,null,2));
 })
+
+app.get(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
+    var iuvCountry = req.params.name;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return (inUseVehicles.country == iuvCountry);
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv[0],null,2));
+    }
+})
+/*
+app.get(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
+    var iuvCountry = req.params.name;
+    var iuvYear = req.params.year;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return ((inUseVehicles.country == iuvCountry) && (inUseVehicles.year == iuvYear));
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv,null,2));
+    }
+})
+*/
 
 app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     inUseVehicles.push(req.body);
