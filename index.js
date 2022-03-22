@@ -72,7 +72,9 @@ app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
             veh_use_per_1000: 759.39,
         }
     ];
-    inUseVehicles.push(iniData);
+    iniData.forEach( (e) => {
+        inUseVehicles.push(e);
+    });
     res.send(JSON.stringify(inUseVehicles,null,2));
 })
 
