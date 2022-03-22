@@ -108,6 +108,48 @@ app.get(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
     }
 })
 
+app.get(BASE_API_URL+"/in-use-vehicles?:year", (req,res) => {
+    var iuvYear = req.params.year;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return (e.year == iuvYear);
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv,null,2));
+    }
+})
+
+app.get(BASE_API_URL+"/in-use-vehicles?from=:from&to=:to", (req,res) => {
+    var fromY = req.params.from;
+    var toY = req.params.to;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return ((e.year >= fromY) && (e.year <= toY));
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv,null,2));
+    }
+})
+
+app.get(BASE_API_URL+"/in-use-vehicles/:country?from=:from&to=:to", (req,res) => {
+    var fromY = req.params.from;
+    var toY = req.params.to;
+    var iuvCountry = req.params.country;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return ((e.year >= fromY) && (e.year <= toY) && e.country == iuvCountry);
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv,null,2));
+    }
+})
+
 
 app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     inUseVehicles.push(req.body);
