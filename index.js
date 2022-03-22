@@ -75,7 +75,7 @@ app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req,res) => {
 })
 
 app.get(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
-    var iuvCountry = req.params.name;
+    var iuvCountry = req.params.country;
     filteredIuv = inUseVehicles.filter( (e) => {
         return (inUseVehicles.country == iuvCountry);
     });
