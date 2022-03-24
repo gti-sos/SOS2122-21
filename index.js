@@ -114,3 +114,95 @@ app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     inUseVehicles.push(req.body);
     res.sendStatus(201,"CREATED")
 });
+
+//---------------------------------------------------------------
+//Javi
+var registrationsVehicles = []; 
+
+app.get(BASE_API_URL+"/registrations-vehicles", (req,res) => {
+    res.send(JSON.stringify(registrationsVehicles,null,2));
+})
+
+
+app.get(BASE_API_URL+"/registrations-vehicles/loadInitialData", (req,res) => {
+    var iniData = [
+        {
+            country:  "spain",
+            year: 2022,
+            veh_sale: 1030173,
+            veh_per_1000: 21.77,
+            variation: -0.18,
+        },
+        {
+            country:  "germany",
+            year: 2022,
+            veh_sale: 2986933,
+            veh_per_1000: 35.92,
+            variation: 0.45,
+        },
+        {
+            country:  "united kingdom",
+            year: 2022,
+            veh_sale: 2065898,
+            veh_per_1000: 30.82,
+            variation: 0.93,
+        },
+        {
+            country:  "france",
+            year: 2022,
+            veh_sale: 2112136,
+            veh_per_1000: 31.32,
+            variation: -1.42,
+        },
+        {
+            country:  "italy",
+            year: 2022,
+            veh_sale: 1637736,
+            veh_per_1000: 27.64,
+            variation: -1.58,
+        },
+        {
+            country: "spain", 
+            year: 2019, 
+            veh_sale: 1554261,
+            veh_per_1000: 33.11,
+            variation: -1.18
+        }
+    ];
+    iniData.forEach( (e) => {
+        registrationsVehicles.push(e);
+    });
+    res.send(JSON.stringify(registrationsVehicles,null,2));
+})
+
+app.get(BASE_API_URL+"/registrations-vehicles/:country", (req,res) => {
+    var iuvCountry = req.params.country;
+    filteredIuv = registrationsVehicles.filter( (e) => {
+        return (e.country == iuvCountry);
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv,null,2));
+    }
+})
+
+app.get(BASE_API_URL+"/registrations-vehicles/:country/:year", (req,res) => {
+    var iuvCountry = req.params.country;
+    var iuvYear = req.params.year;
+    filteredIuv = registrationsVehicles.filter( (e) => {
+        return ((e.country == iuvCountry) && (e.year == iuvYear));
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filteredIuv[0],null,2));
+    }
+})
+
+app.post(BASE_API_URL+"/registrations-vehicles", (req,res) => {
+    registrationsVehicles.push(req.body);
+    res.sendStatus(201,"CREATED")
+});
