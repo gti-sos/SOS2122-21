@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8082;
 const BASE_API_URL = "/api/v1";
 
 app.use(bodyParser.json());
@@ -108,6 +108,48 @@ app.get(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
     else{
         res.send(JSON.stringify(filteredIuv[0],null,2));
     }
+})
+
+
+//BORRAR TODAS LAS ESTADISTICAS
+app.delete(BASE_API_URL+"/in-use-vehicles", (req,res) => {
+    inUseVehicles  = [];
+    res.sendStatus(200, "OK");
+})
+
+//BORRAR UNA ESTADISTICA SEGUN EL PAIS
+app.delete(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
+    var iuvCountry = req.params.country;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return ((e.country == iuvCountry));
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        inUseVehicles = inUseVehicles.filter( (e) => {
+            return ((e.country != iuvCountry));
+        });
+    }
+    res.sendStatus(200, "OK");
+})
+
+//BORRAR UNA ESTADISTICA CONCRETA
+app.delete(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
+    var iuvCountry = req.params.country;
+    var iuvYear = req.params.year;
+    filteredIuv = inUseVehicles.filter( (e) => {
+        return ((e.country == iuvCountry) && (e.year == iuvYear));
+    });
+    if(filteredIuv == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        inUseVehicles = inUseVehicles.filter( (e) => {
+            return ((e.country != iuvCountry) && (e.year != iuvYear));
+        });
+    }
+    res.sendStatus(200, "OK");
 })
 
 app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
