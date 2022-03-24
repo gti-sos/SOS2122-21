@@ -114,3 +114,88 @@ app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     inUseVehicles.push(req.body);
     res.sendStatus(201,"CREATED")
 });
+
+
+//Maria
+
+var ProductionsVehicles = []; 
+
+//api para producions-vehicles
+
+
+app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
+    res.send(JSON.stringify(ProductionsVehicles,null,2));
+})
+
+
+//datos de mi API
+
+app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
+    var iniData = [
+        {
+            country:  "spain",
+            year: 2020,
+            veh_comm: 467521,
+            veh_pass:1800664,
+            veh_annprod: 2268185,
+        },
+        {
+            country:  "germany",
+            year: 2020,
+            veh_comm: 227082,
+            veh_pass: 3515372,
+            veh_annprod: 3742454,
+        },
+        {
+            country:  "united kingdom",
+            year: 2020,
+            veh_comm:66116,
+            veh_pass: 920928,
+            veh_annprod:987044 ,
+        },
+        {
+            country:  "france",
+            year: 2020,
+            veh_comm: 388653,
+            veh_pass: 927718,
+            veh_annprod: 1316371,
+        },
+        {
+            country:  "italy",
+            year: 2020,
+            veh_comm: 325339,
+            veh_pass: 451826,
+            veh_annprod: 777165,
+        },
+        {
+            country: "spain", 
+            year: 2019, 
+            veh_comm : 524504, 
+            veh_pass: 2248019, 
+            veh_annprod: 2772523,	
+        }
+    ];
+    iniData.forEach( (e) => {
+        ProductionsVehicles.push(e);
+    });
+    res.send(JSON.stringify(ProductionsVehicles,null,2));
+})
+
+//GET a un recurso en concreto
+
+app.get(BASE_API_URL+"/productions-vehicles/:country/:year", (req,res) => {
+    var Country = req.params.country;
+    var Year = req.params.year;
+    filtered = ProductionsVehicles.filter( (e) => {
+        return ((e.country == Country) && (e.year == Year));
+    });
+    if(filtered == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        res.send(JSON.stringify(filtered[0],null,2));
+    }
+})
+
+
+
