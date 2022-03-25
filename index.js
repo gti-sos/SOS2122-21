@@ -176,67 +176,63 @@ app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
 
 
 
-
-
-
 //Maria
 
-var ProductionsVehicles = [];
+var ProductionsVehicles = []; 
 
-//api para producions-vehicles
-
+//productions-vehicles
 
 app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
     res.send(JSON.stringify(ProductionsVehicles,null,2));
 })
 
 
-//datos de mi API
+//datos de mi API->GET al conjunto de recursos
+//ruta que al hacer un GET que cree 6 datos en la base de datos si está vacía
 
 app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
     var iniData = [
         {
-            country:  "spain",
+            country:  "Spain",
             year: 2020,
-            veh_comm: 467521,
+            veh_comm: 467.521,
             veh_pass:1800664,
             veh_annprod: 2268185,
         },
         {
-            country:  "germany",
+            country:  "Germany",
             year: 2020,
-            veh_comm: 227082,
+            veh_comm: 227.082,
             veh_pass: 3515372,
             veh_annprod: 3742454,
         },
         {
-            country:  "united kingdom",
+            country:  "United Kingdom",
             year: 2020,
-            veh_comm:66116,
-            veh_pass: 920928,
-            veh_annprod:987044 ,
+            veh_comm:66.116,
+            veh_pass: 920.928,
+            veh_annprod:987.044 ,
         },
         {
-            country:  "france",
+            country:  "France",
             year: 2020,
-            veh_comm: 388653,
-            veh_pass: 927718,
+            veh_comm: 388.653,
+            veh_pass: 927.718,
             veh_annprod: 1316371,
         },
         {
-            country:  "italy",
+            country:  "Italy",
             year: 2020,
-            veh_comm: 325339,
-            veh_pass: 451826,
-            veh_annprod: 777165,
-
+            veh_comm: 325.339,
+            veh_pass: 451.826,
+            veh_annprod: 777.165,
         },
         {
-            country: "spain",
-            year: 2019,
-            veh_comm : 524504,
-            veh_pass: 2248019,
-            veh_annprod: 2772523,
+            country: "Spain", 
+            year: 2019, 
+            veh_comm : 524.504, 
+            veh_pass: 2248019, 
+            veh_annprod: 2772523,	
         }
     ];
     iniData.forEach( (e) => {
@@ -245,7 +241,8 @@ app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
     res.send(JSON.stringify(ProductionsVehicles,null,2));
 })
 
-//GET a un recurso en concreto
+//GET a un recurso en concreto 
+//obetener un recurso por país y por año
 
 app.get(BASE_API_URL+"/productions-vehicles/:country/:year", (req,res) => {
     var Country = req.params.country;
@@ -260,6 +257,130 @@ app.get(BASE_API_URL+"/productions-vehicles/:country/:year", (req,res) => {
         res.send(JSON.stringify(filtered[0],null,2));
     }
 })
+
+//POST al conjunto de recursos
+//añadir un recurso al conjunto de recursos
+
+app.post(BASE_API_URL+"/productions-vehicles", (req,res) => {
+    if(comprobacion(req)){
+        //no espera esos campos,en el caso de que sean null
+        res.sendStatus(400,"BAD REQUEST");
+    }else{
+        var filteredList = ProductionsVehicles.filter((e)=>
+        {
+            return(req.body.country == e.country && req.body.year == e.year
+                && req.body.veh_comm == e.veh_comm && req.body.veh_pass== e.veh_pass
+                && req.body.veh_annprod == e.veh_annprod)
+        })
+        
+        // tenemos un recurso que ya existe
+        if(filteredList.length != 0){
+            res.sendStatus(409,"CONFLICT");
+        }else{
+            ProductionsVehicles.push(req.body);
+            res.sendStatus(201,"CREATED");
+        }
+    }
+});
+
+//POST a un recurso en concreto
+//añado un recurso con país y año.
+//error,405 METHOD NOT ALLOWED
+
+
+app.post(BASE_API_URL+"/productions-vehicles/:country/:year",(req, res)=>{
+    res.sendStatus(405,"METHOD NOT ALLOWED");
+})
+
+//PUT al conjunto de recursos
+//actualizar la lista de recursos
+//error,405 METHOD NOT ALLOWED
+
+app.put(BASE_API_URL+"/productions-vehicles",(req, res)=>{
+    res.sendStatus(405,"METHOD NOT ALLOWED");
+})
+
+//PUT a un recurso en concreto
+//actualizar a un recurso en concreto por país y por año
+
+
+app.put(BASE_API_URL+"/productions-vehicles/:country/:year",(req, res)=>{
+    //no espera esos campos    
+    if(comprobacion(req)){
+        res.sendStatus(400,"BAD REQUEST");
+    }else{
+        //pais y año del recurso que quiero actualizar
+        var Country = req.params.country;
+        var Year = req.params.year;
+        var body = req.body;  
+        var index = ProductionsVehicles.findIndex((e) =>{
+            return (e.country == Country && e.year == Year)
+        })
+        //no exite el recurso que quiero actualizar
+        if(index == null){
+            res.sendStatus(404,"NOT FOUND");
+            //si el recurso con el año y el pais que quiero actualizar
+            //no es ese recurso me devuelve 400
+        }else if(country != body.country || year != body.year){
+            res.sendStatus(400,"BAD REQUEST");
+        
+            //si son iguales,entonces es el que quiero actualizar
+        }else{
+            var  update_ProductionsVehicles = {...body};
+            ProductionsVehicles[index] = update_ProductionsVehicles;
+        
+            res.sendStatus(200,"UPDATED");
+        }
+    }
+
+})
+
+
+
+//DELETE a un conjunto de recursos
+//borrar todos los recursos
+
+app.delete(BASE_API_URL+"/productions-vehicles",(req, res)=>{
+    ProductionsVehicles= [];
+    res.sendStatus(200,"OK");
+})
+
+//DELETE de un recurso en concreto
+//borrar un recurso en concreto por su país
+
+
+app.delete(BASE_API_URL+"/productions-vehicles/:country", (req,res) => {
+   //el país que quiero borrar
+    var Country = req.params.country;
+    filtered = ProductionsVehicles.filter( (e) => {
+        return ((e.country == Country));
+    });
+    //no encuentra el recurso que va a borrar
+    if(filtered == 0){
+        res.sendStatus(404,"NOT FOUND");
+    }
+    else{
+        ProductionsVehicles = ProductionsVehicles.filter( (e) => {
+            return ((e.country != Country));
+        });
+    }
+    res.sendStatus(200, "OK");
+})
+
+
+
+//método comprobacion
+
+function comprobacion(req){
+    return (req.body.country == null |
+            req.body.year == null | 
+            req.body.veh_comm == null | 
+            req.body.veh_pass == null | 
+            req.body.veh_annprod == null);
+}
+
+
+
 
 
 //---------------------------------------------------------------
