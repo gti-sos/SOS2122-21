@@ -24,19 +24,21 @@ app.listen(port, () => {
 
 
 
-//Antonio
+// ############################# Antonio #############################
 var inUseVehicles = [];
 
+
+// RECURSO BASE
 app.get(BASE_API_URL + "/in-use-vehicles", (req, res) => {
     res.send(JSON.stringify(inUseVehicles, null, 2));
 })
 
-
+// CREACION DE DATOS
 app.get(BASE_API_URL + "/in-use-vehicles/loadInitialData", (req, res) => {
     var iniData = [
         {
             country: "spain",
-            year: 2020,
+            year:2020,
             veh_use_comm: 4538423,
             veh_use_pass: 25169158,
             veh_use_per_1000: 626.76,
@@ -83,6 +85,7 @@ app.get(BASE_API_URL + "/in-use-vehicles/loadInitialData", (req, res) => {
     res.send(JSON.stringify(inUseVehicles, null, 2));
 })
 
+// ACCEDER A ESTADISTICAS DE UN PAIS
 app.get(BASE_API_URL + "/in-use-vehicles/:country", (req, res) => {
     var iuvCountry = req.params.country;
     filteredIuv = inUseVehicles.filter((e) => {
@@ -96,6 +99,8 @@ app.get(BASE_API_URL + "/in-use-vehicles/:country", (req, res) => {
     }
 })
 
+
+// ACCEDER A UNA ESTADISTICA CONCRETA
 app.get(BASE_API_URL + "/in-use-vehicles/:country/:year", (req, res) => {
     var iuvCountry = req.params.country;
     var iuvYear = req.params.year;
@@ -117,6 +122,8 @@ app.delete(BASE_API_URL+"/in-use-vehicles", (req,res) => {
     res.sendStatus(200, "OK");
 })
 
+
+
 //BORRAR UNA ESTADISTICA SEGUN EL PAIS
 app.delete(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
     var iuvCountry = req.params.country;
@@ -134,6 +141,7 @@ app.delete(BASE_API_URL+"/in-use-vehicles/:country", (req,res) => {
     res.sendStatus(200, "OK");
 })
 
+
 //BORRAR UNA ESTADISTICA CONCRETA
 app.delete(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
     var iuvCountry = req.params.country;
@@ -145,22 +153,27 @@ app.delete(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
         res.sendStatus(404,"NOT FOUND");
     }
     else{
-        inUseVehicles = inUseVehicles.filter( (e) => {
-            return ((e.country != iuvCountry) && (e.year != iuvYear));
-        });
+        var i = inUseVehicles.indexOf(filteredIuv[0]);
+        if(i!==-1){
+            inUseVehicles.splice(i,1);
+        }
     }
     res.sendStatus(200, "OK");
 })
 
+
+// CREAR NUEVA ESTADISTICA
 app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
-    inUseVehicles.push(req.body);
-    res.sendStatus(201,"CREATED")
+    if(Object.keys(req.body).length != 5){
+        res.sendStatus(400, "BAD REQUEST");
+    }
+    else{
+        inUseVehicles.push(req.body);
+        res.sendStatus(201,"CREATED");
+    }
 });
 
-app.post(BASE_API_URL + "/in-use-vehicles", (req, res) => {
-    inUseVehicles.push(req.body);
-    res.sendStatus(201, "CREATED")
-});
+
 
 
 
