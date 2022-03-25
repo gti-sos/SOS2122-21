@@ -176,7 +176,7 @@ app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
 
 
 
-//Maria
+//--------------------------------------------María Lacañina Camacho-------------------------------------
 
 var ProductionsVehicles = []; 
 
@@ -258,14 +258,32 @@ app.get(BASE_API_URL+"/productions-vehicles/:country/:year", (req,res) => {
     }
 })
 
+//GET a un recurso en concreto
+//obtener un recurso por país
+
+app.get(BASE_API_URL+"/productions-vehicles/:country", (req, res) => {
+    var Country = req.params.country;
+    filtered = ProductionsVehicles.filter((e) => {
+        return (e.country == Country);
+    });
+    if (filtered == 0) {
+        res.sendStatus(404, "NOT FOUND");
+    }
+    else {
+        res.send(JSON.stringify(filtered, null, 2));
+    }
+})
+
 //POST al conjunto de recursos
 //añadir un recurso al conjunto de recursos
 
+
+
 app.post(BASE_API_URL+"/productions-vehicles", (req,res) => {
-    if(comprobacion(req)){
-        //no espera esos campos,en el caso de que sean null
-        res.sendStatus(400,"BAD REQUEST");
-    }else{
+    if(Object.keys(req.body).length != 5){
+        res.sendStatus(400, "BAD REQUEST");
+    }
+    else{
         var filteredList = ProductionsVehicles.filter((e)=>
         {
             return(req.body.country == e.country && req.body.year == e.year
@@ -306,9 +324,10 @@ app.put(BASE_API_URL+"/productions-vehicles",(req, res)=>{
 
 app.put(BASE_API_URL+"/productions-vehicles/:country/:year",(req, res)=>{
     //no espera esos campos    
-    if(comprobacion(req)){
-        res.sendStatus(400,"BAD REQUEST");
-    }else{
+    if(Object.keys(req.body).length != 5){
+        res.sendStatus(400, "BAD REQUEST");
+    }
+    else{
         //pais y año del recurso que quiero actualizar
         var Country = req.params.country;
         var Year = req.params.year;
@@ -366,19 +385,6 @@ app.delete(BASE_API_URL+"/productions-vehicles/:country", (req,res) => {
     }
     res.sendStatus(200, "OK");
 })
-
-
-
-//método comprobacion
-
-function comprobacion(req){
-    return (req.body.country == null |
-            req.body.year == null | 
-            req.body.veh_comm == null | 
-            req.body.veh_pass == null | 
-            req.body.veh_annprod == null);
-}
-
 
 
 
