@@ -28,7 +28,7 @@ app.listen(port, () => {
 var inUseVehicles = [];
 const API_IUV_DOC = "https://documenter.getpostman.com/view/19548804/UVyn2JQg";
 
-app.get(BASE_API_URL + "/docs", (req, res) => {
+app.get(BASE_API_URL + "/in-use-vehicles/docs", (req, res) => {
     res.redirect(API_IUV_DOC);
 })
 
