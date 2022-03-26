@@ -164,10 +164,11 @@ app.delete(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
 
 // CREAR NUEVA ESTADISTICA
 function camposIncorrectos(e){
-    return (e.body.country == null |
-        e.body.year == null | 
-        e.body.veh_use_comm == null | 
-        e.body.veh_use_pass == null | 
+    return (Object.keys(e.body).length != 5 ||
+        e.body.country == null ||
+        e.body.year == null ||
+        e.body.veh_use_comm == null || 
+        e.body.veh_use_pass == null || 
         e.body.veh_use_per_1000 == null);
 }
 
