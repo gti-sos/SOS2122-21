@@ -163,18 +163,78 @@ app.delete(BASE_API_URL+"/in-use-vehicles/:country/:year", (req,res) => {
 
 
 // CREAR NUEVA ESTADISTICA
+function camposIncorrectos(e){
+    return (e.body.country == null |
+        e.body.year == null | 
+        e.body.veh_use_comm == null | 
+        e.body.veh_use_pass == null | 
+        e.body.veh_use_per_1000 == null);
+}
+
 app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
-    if(Object.keys(req.body).length != 5){
-        res.sendStatus(400, "BAD REQUEST");
+    if(camposIncorrectos(req)){
+        res.sendStatus(400,"BAD REQUEST")
     }
     else{
-        inUseVehicles.push(req.body);
-        res.sendStatus(201,"CREATED");
+        filteredIuv = inUseVehicles.filter( (e) => {
+            return (e.country == req.body.country
+                &&  e.year == req.body.year
+                &&  e.veh_use_comm == req.body.veh_use_comm
+                &&  e.veh_use_pass == req.body.veh_use_pass
+                &&  e.veh_use_per_1000 == req.body.veh_use_per_1000);
+        }); 
+
+        if(filteredIuv.length != 0){
+            res.sendStatus(409,"CONFLICT");
+        }else{
+            inUseVehicles.push(req.body);
+            res.sendStatus(201,"CREATED");
+        }
     }
 });
 
 
+// POST A UN RECURSO CONCRETO (INCORRECTO)
+app.post(BASE_API_URL+"/in-use-vehicles/:country/:year",(req, res)=>{
+    res.sendStatus(405,"METHOD NOT ALLOWED");
+})
 
+
+//PUT A UN RECURSO CONCRETO
+app.put(BASE_API_URL+"/in-use-vehicles/:country/:year",(req, res)=>{   
+    if(camposIncorrectos(req)){
+        res.sendStatus(400,"BAD REQUEST");
+    }else{
+        var iuvCountry = req.params.country;
+        var iuvYear = req.params.year;
+        var iuvBody = req.body;  
+        var filteredIuv = inUseVehicles.filter((e) =>{
+            return (e.country == iuvCountry && e.year == iuvYear)
+        })
+
+        var i = inUseVehicles.indexOf(filteredIuv[0]);
+
+        if(filteredIuv == 0){
+            res.sendStatus(404,"NOT FOUND");
+        }
+        else if(iuvCountry != iuvBody.country || iuvYear != iuvBody.year){
+            res.sendStatus(400,"BAD REQUEST");
+        }
+        else{
+            inUseVehicles[i].veh_use_comm = iuvBody.veh_use_comm;
+            inUseVehicles[i].veh_use_pass = iuvBody.veh_use_pass;
+            inUseVehicles[i].veh_use_per_1000 = iuvBody.veh_use_per_1000;
+            res.sendStatus(200,"OK");
+        }
+    }
+
+})
+
+
+//PUT INCORRECTO
+app.put(BASE_API_URL+"/in-use-vehicles",(req, res)=>{
+    res.sendStatus(405,"METHOD NOT ALLOWED");
+})
 
 //Maria
 
