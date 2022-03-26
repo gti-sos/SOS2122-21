@@ -35,6 +35,7 @@ app.get(BASE_API_URL + "/in-use-vehicles", (req, res) => {
 
 // CREACION DE DATOS
 app.get(BASE_API_URL + "/in-use-vehicles/loadInitialData", (req, res) => {
+    inUseVehicles = [];
     var iniData = [
         {
             country: "spain",
