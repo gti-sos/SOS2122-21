@@ -186,7 +186,10 @@ app.post(BASE_API_URL+"/in-use-vehicles", (req,res) => {
                 &&  e.veh_use_per_1000 == req.body.veh_use_per_1000);
         }); 
 
-        if(filteredIuv.length != 0){
+        recursoExistente = inUseVehicles.filter( (e) => {
+            return (e.year == req.body.year && e.country == req.body.country);
+        })
+        if(recursoExistente != 0){
             res.sendStatus(409,"CONFLICT");
         }else{
             inUseVehicles.push(req.body);
