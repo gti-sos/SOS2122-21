@@ -248,6 +248,14 @@ app.put(BASE_API_URL+"/in-use-vehicles",(req, res)=>{
 
 //--------------------------------------------María Lacañina Camacho-------------------------------------
 
+//POSTMAN
+
+const APIPV_DOC = "https://documenter.getpostman.com/view/20099214/UVyn2yuQ";
+
+app.get(BASE_API_URL + "/productions-vehicles/docs", (req, res) => {
+    res.redirect(API_PV_DOC);
+})
+
 var ProductionsVehicles = []; 
 
 //GET a todos los recursos
