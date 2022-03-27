@@ -368,7 +368,7 @@ app.post(BASE_API_URL+"/productions-vehicles", (req,res) => {
         res.sendStatus(400, "BAD REQUEST");
     }
     else{
-        filtered = inUseVehicles.filter( (e) => {
+        filtered = ProductionsVehicles.filter( (e) => {
             return (e.country == req.body.country
                 &&  e.year == req.body.year
                 &&  e.veh_comm == req.body.veh_comm
