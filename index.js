@@ -507,6 +507,7 @@ app.get(BASE_API_URL + "/registrations-vehicles", (req, res) => {
     res.send(JSON.stringify(registrationsVehicles, null, 2));
 })
 
+
 // CREACION DE DATOS
 app.get(BASE_API_URL + "/registrations-vehicles/loadInitialData", (req, res) => {
     var iniData = [
