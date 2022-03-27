@@ -250,7 +250,7 @@ app.put(BASE_API_URL+"/in-use-vehicles",(req, res)=>{
 
 //POSTMAN
 
-const APIPV_DOC = "https://documenter.getpostman.com/view/20099214/UVyn2yuQ";
+const API_PV_DOC = "https://documenter.getpostman.com/view/20099214/UVyn2yuQ";
 
 app.get(BASE_API_URL + "/productions-vehicles/docs", (req, res) => {
     res.redirect(API_PV_DOC);
