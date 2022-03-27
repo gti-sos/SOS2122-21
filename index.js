@@ -495,11 +495,10 @@ app.delete(BASE_API_URL+"/productions-vehicles/:country", (req,res) => {
 
 var registrationsVehicles = [];
 
-var registrationsVehicles = [];
-const API_IUV_DOC2 = "https://documenter.getpostman.com/view/20092351/UVyn2z4A";
+const API_DOC = "https://documenter.getpostman.com/view/20092351/UVyn2z4A";
 
 app.get(BASE_API_URL + "/registrations-vehicles/docs", (req, res) => {
-    res.redirect(API_IUV_DOC2);
+    res.redirect(API_DOC);
 })
 
 // RECURSO BASE
