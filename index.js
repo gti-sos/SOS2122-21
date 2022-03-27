@@ -250,7 +250,7 @@ app.put(BASE_API_URL+"/in-use-vehicles",(req, res)=>{
 
 var ProductionsVehicles = []; 
 
-//productions-vehicles
+//GET a todos los recursos
 
 app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
     res.send(JSON.stringify(ProductionsVehicles,null,2));
@@ -261,6 +261,7 @@ app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
 //ruta que al hacer un GET que cree 6 datos en la base de datos si está vacía
 
 app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
+    ProductionsVehicles=[];
     var iniData = [
         {
             country:  "Spain",
@@ -344,26 +345,44 @@ app.get(BASE_API_URL+"/productions-vehicles/:country", (req, res) => {
     }
 })
 
+
+//funcion auxiliar para la comprobación de los campos
+
+function comprobacion(e){
+    return (Object.keys(e.body).length != 5 ||
+        e.body.country == null ||
+        e.body.year == null ||
+        e.body.veh_comm == null || 
+        e.body.veh_pass == null || 
+        e.body.veh_annprod == null);
+}
+
+
 //POST al conjunto de recursos
 //añadir un recurso al conjunto de recursos
 
 
 
 app.post(BASE_API_URL+"/productions-vehicles", (req,res) => {
-    if(Object.keys(req.body).length != 5){
+    if(comprobacion(req)){
         res.sendStatus(400, "BAD REQUEST");
     }
     else{
-        var filteredList = ProductionsVehicles.filter((e)=>
-        {
-            return(req.body.country == e.country && req.body.year == e.year
-                && req.body.veh_comm == e.veh_comm && req.body.veh_pass== e.veh_pass
-                && req.body.veh_annprod == e.veh_annprod)
+        filteredIuv = inUseVehicles.filter( (e) => {
+            return (e.country == req.body.country
+                &&  e.year == req.body.year
+                &&  e.veh_comm == req.body.veh_comm
+                &&  e.veh_pass == req.body.veh_pass
+                &&  e.veh_ann == req.body.veh_ann);
+        }); 
+        recursoExistente = ProductionsVehicles.filter( (e) => {
+            return (e.year == req.body.year && e.country == req.body.country);
         })
         
-        // tenemos un recurso que ya existe
-        if(filteredList.length != 0){
+        // tenemos un recurso que ya existe,para que no exista tiene que dar 0
+        if(recursoExistente != 0){
             res.sendStatus(409,"CONFLICT");
+            //si no creamos el recurso
         }else{
             ProductionsVehicles.push(req.body);
             res.sendStatus(201,"CREATED");
@@ -394,31 +413,35 @@ app.put(BASE_API_URL+"/productions-vehicles",(req, res)=>{
 
 app.put(BASE_API_URL+"/productions-vehicles/:country/:year",(req, res)=>{
     //no espera esos campos    
-    if(Object.keys(req.body).length != 5){
+    if(comprobacion(req)){
         res.sendStatus(400, "BAD REQUEST");
     }
     else{
         //pais y año del recurso que quiero actualizar
         var Country = req.params.country;
         var Year = req.params.year;
-        var body = req.body;  
-        var index = ProductionsVehicles.findIndex((e) =>{
+        var Body = req.body;  
+        var filtered = ProductionsVehicles.filter((e) =>{
             return (e.country == Country && e.year == Year)
         })
-        //no exite el recurso que quiero actualizar
-        if(index == null){
+        var i = ProductionsVehicles.indexOf(filtered[0]);
+        
+        //no encuentra ningún recurso con el pais y año que quiero actualizar
+        if(filtered == 0){
             res.sendStatus(404,"NOT FOUND");
-            //si el recurso con el año y el pais que quiero actualizar
-            //no es ese recurso me devuelve 400
-        }else if(country != body.country || year != body.year){
+        }
+        //no coinciden los recursos de pais o de año con los del recurso que voy
+        //a actualizar
+        else if(Country != Body.country || Year != Body.year){
             res.sendStatus(400,"BAD REQUEST");
-        
-            //si son iguales,entonces es el que quiero actualizar
-        }else{
-            var  update_ProductionsVehicles = {...body};
-            ProductionsVehicles[index] = update_ProductionsVehicles;
-        
-            res.sendStatus(200,"UPDATED");
+        }
+        //voy a actualizar el recurso en concreto
+        //los tres datos que quedan es lo que actualizo
+        else{
+            ProductionsVehicles[i].veh_comm = Body.veh_comm;
+            ProductionsVehicles[i].veh_pass = Body.veh_pass;
+            ProductionsVehicles[i].veh_annprod = Body.veh_annprod;
+            res.sendStatus(200,"OK");
         }
     }
 
