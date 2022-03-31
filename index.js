@@ -9,13 +9,13 @@ const BASE_API_URL = "/api/v1";
 
 
 // ########################### INDEX.JS DE LAS DISTINTAS APIS ###########################
-const iuvBackend = require("./src/inUseVehicles");
+const iuvBackend = require("./src/inUseVehicles/indexIUV.js");
 iuvBackend(app, BASE_API_URL);
 
-const pvBackend = require("./src/productionsVehicles");
+const pvBackend = require("./src/productionsVehicles/indexPV.js");
 pvBackend(app, BASE_API_URL);
 
-const rvBackend = require("./src/registrationsVehicles");
+const rvBackend = require("./src/registrationsVehicles/indexRV.js");
 rvBackend(app, BASE_API_URL);
 // #######################################################################################
 
