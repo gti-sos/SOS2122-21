@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": " npx newman run ./tests/iuvBackend.json -e ./tests/env/local.json"
+    "test": " npx newman run ./tests/iuvBackend.json -e ./tests/env/heroku.json"
   },
   "repository": {
     "type": "git",
