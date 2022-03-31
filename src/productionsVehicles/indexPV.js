@@ -1,7 +1,9 @@
-module.exports = (app, BASE_API_URL) => {
+module.exports = (app, BASE_API_URL, bodyParser) => {
         //--------------------------------------------María Lacañina Camacho-------------------------------------
 
     //POSTMAN
+    app.use(bodyParser.json());
+
 
     const API_PV_DOC = "https://documenter.getpostman.com/view/20099214/UVyn2yuQ";
 

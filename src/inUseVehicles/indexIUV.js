@@ -1,5 +1,6 @@
-module.exports = (app, BASE_API_URL) => {
-        // ############################# Antonio #############################
+// ############################# Antonio #############################
+module.exports = (app, BASE_API_URL, bodyParser) => {
+    app.use(bodyParser.json());
     var inUseVehicles = [];
     const API_IUV_DOC = "https://documenter.getpostman.com/view/19548804/UVyn2JQg";
 

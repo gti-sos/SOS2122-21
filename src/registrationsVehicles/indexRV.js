@@ -1,6 +1,7 @@
-module.exports = (app, BASE_API_URL) => {
+module.exports = (app, BASE_API_URL, bodyParser) => {
         //---------------------------------------------------------------
     //Javi
+    app.use(bodyParser.json());
 
     var registrationsVehicles = [];
 
