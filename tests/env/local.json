@@ -1,0 +1,21 @@
+{
+	"id": "a86de51c-ec54-499d-af26-24762beefde2",
+	"name": "Local 8082",
+	"values": [
+		{
+			"key": "HOST",
+			"value": "localhost",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "PORT",
+			"value": "8082",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2022-03-31T16:43:35.777Z",
+	"_postman_exported_using": "Postman/9.15.6"
+}
