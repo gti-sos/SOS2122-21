@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": " npx newman run ./tests/iuvBackend.json -e ./tests/env/heroku.json"
+    "test-in-use-vehicles": " npx newman run ./tests/iuvBackend.json -e ./tests/env/heroku.json",
+    "test-productions-vehicles": " npx newman run ./tests/pvBackend.json -e ./tests/env/herokuproductionsvehicles.json",
+    "test-registrations-vehicles":"npx newman run ./tests/rvBackend.json -e ./tests/env/heroku.json",
+    "test": "npm run test-population-levels && npm run test-productions-vehicles && npm run test registrations-vehicles"
   },
+
+
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gti-sos/SOS2122-21.git"
