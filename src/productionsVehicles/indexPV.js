@@ -1,5 +1,5 @@
+  //--------------------------------------------María Lacañina Camacho-------------------------------------
 module.exports = (app, BASE_API_URL, bodyParser) => {
-        //--------------------------------------------María Lacañina Camacho-------------------------------------
 
     //POSTMAN
     app.use(bodyParser.json());
@@ -242,5 +242,25 @@ module.exports = (app, BASE_API_URL, bodyParser) => {
         res.sendStatus(200, "OK");
     })
 
+    //DELETE de un recurso en concreto
+    //borrar un recurso en concreto por país y año
+
+    app.delete(BASE_API_URL+"/productions-vehicles/:country/:year", (req,res) => {
+        var Country = req.params.country;
+        var Year = req.params.year;
+        filtered = ProductionsVehicles.filter( (e) => {
+            return ((e.country == Country) && (e.year == Year));
+        });
+        if(filtered == 0){
+            res.sendStatus(404,"NOT FOUND");
+        }
+        else{
+            var i = ProductionsVehicles.indexOf(filtered[0]);
+            if(i!==-1){
+                ProductionsVehicles.splice(i,1);
+            }
+        }
+        res.sendStatus(200, "OK");
+    })
 
 }
