@@ -1,23 +1,16 @@
-  //--------------------------------------------María Lacañina Camacho-------------------------------------
-module.exports = (app, BASE_API_URL, bodyParser) => {
 
-    //POSTMAN
+
+  //--------------------------------------------María Lacañina Camacho-------------------------------------
+  module.exports = (app, BASE_API_URL, bodyParser) => {
     app.use(bodyParser.json());
 
-
+//POSTMAN
     const API_PV_DOC = "https://documenter.getpostman.com/view/20099214/UVyn2yuQ";
-
     app.get(BASE_API_URL + "/productions-vehicles/docs", (req, res) => {
         res.redirect(API_PV_DOC);
     })
 
     var ProductionsVehicles = []; 
-
-    //GET a todos los recursos
-
-    app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
-        res.send(JSON.stringify(ProductionsVehicles,null,2));
-    })
 
 
     //datos de mi API->GET al conjunto de recursos
@@ -74,6 +67,13 @@ module.exports = (app, BASE_API_URL, bodyParser) => {
         });
         res.send(JSON.stringify(ProductionsVehicles,null,2));
     })
+
+    //GET a todos los recursos
+
+    app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
+        res.send(JSON.stringify(ProductionsVehicles,null,2));
+    })
+
 
     //GET a un recurso en concreto 
     //obetener un recurso por país y por año
