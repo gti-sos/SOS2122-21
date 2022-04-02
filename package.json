@@ -7,12 +7,9 @@
     "start": "node index.js",
     "test-in-use-vehicles": " npx newman run ./tests/iuvBackend.json -e ./tests/env/heroku.json",
     "test-productions-vehicles": " npx newman run ./tests/pvBackend.json -e ./tests/env/herokuproductionsvehicles.json",
-    "test-registrations-vehicles":"npx newman run ./tests/rvBackend.json -e ./tests/env/heroku.json",
-    "test": "npm run test-in-use-vehicles && npm run test-productions-vehicles && npm run test registrations-vehicles"
+    "test-registrations-vehicles": "npx newman run ./tests/rvBackend.json -e ./tests/env/heroku.json",
+    "test": "npm run test-in-use-vehicles && npm run test-productions-vehicles && npm run test-registrations-vehicles"
   },
-
-
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gti-sos/SOS2122-21.git"
@@ -25,6 +22,7 @@
   "homepage": "https://github.com/gti-sos/SOS2122-21#readme",
   "dependencies": {
     "cool-ascii-faces": "^1.3.4",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "nedb": "^1.8.0"
   }
 }

@@ -1,5 +1,5 @@
 // ############################# Antonio #############################
-module.exports = (app, BASE_API_URL, bodyParser) => {
+module.exports = (app, BASE_API_URL, bodyParser, db) => {
     app.use(bodyParser.json());
     var inUseVehicles = [];
     const API_IUV_DOC = "https://documenter.getpostman.com/view/19548804/UVyn2JQg";
@@ -7,7 +7,6 @@ module.exports = (app, BASE_API_URL, bodyParser) => {
     app.get(BASE_API_URL + "/in-use-vehicles/docs", (req, res) => {
         res.redirect(API_IUV_DOC);
     })
-
 
     // RECURSO BASE
     app.get(BASE_API_URL + "/in-use-vehicles", (req, res) => {

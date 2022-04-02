@@ -1,16 +1,19 @@
 const cool = require("cool-ascii-faces");
 const express = require("express");
 const bodyParser = require("body-parser");
+const Datastore = require("nedb");
 
 const app = express();
 const port = process.env.PORT || 8082;
 const BASE_API_URL = "/api/v1";
 
 
+db_in_use_vehicles = new Datastore();
+
 
 // ########################### INDEX.JS DE LAS DISTINTAS APIS ###########################
-const iuvBackend = require("./src/inUseVehicles/indexIUV.js");
-iuvBackend(app, BASE_API_URL, bodyParser);
+const iuvBackend = require("./src/inUseVehicles/indexIUVnedb.js");
+iuvBackend(app, BASE_API_URL, bodyParser, db_in_use_vehicles);
 
 const pvBackend = require("./src/productionsVehicles/indexPV.js");
 pvBackend(app, BASE_API_URL, bodyParser);
