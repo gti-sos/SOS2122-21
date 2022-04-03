@@ -290,7 +290,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
             var Year = req.params.year;
             var Body = req.body;  
             
-            if(Country != Body.country || Year != iuvBody.year){
+            if(Country != Body.country || Year != Body.year){
                 res.sendStatus(400, "BAD REQUEST");
             }
             else{
