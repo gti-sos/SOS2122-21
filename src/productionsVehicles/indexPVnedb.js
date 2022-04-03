@@ -324,6 +324,54 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
 
     })
         
+
+     //PUT a un recurso en concreto
+    //actualizar a un recurso en concreto por país 
+
+
+    app.put(BASE_API_URL+"/productions-vehicles/:country",(req, res)=>{
+        //no espera esos campos    
+        if(comprobacion(req)){
+            res.sendStatus(400, "BAD REQUEST");
+        }else{
+            var Country = req.params.country;
+            var Body = req.body;  
+            
+            if(Country != Body.country ){
+                res.sendStatus(400, "BAD REQUEST");
+            }
+            else{
+                db.find({country: Country}, function(err,docs){
+                    if(err){
+                        res.sendStatus(500,"INTERNAL SERVER ERROR");
+                    }
+                    else{
+                        if(docs==0){
+                            res.sendStatus(404, "NOT FOUND");
+                        }
+                        else{
+                            db.update({country: Country},
+                            { $set: {
+                                "year": Body.year,
+                                "veh_comm": Body.veh_comm,
+                                "veh_pass": Body.veh_pass,
+                                "veh_annprod": Body.veh_annprod
+                            }},function(err,newDocs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    res.sendStatus(200, "OK");
+                                }
+                            });
+                        }
+                    }
+                })
+            }
+        }
+
+    })
+        
            
 
     //DELETE a un conjunto de recursos
