@@ -333,6 +333,8 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
         //no espera esos campos    
         if(comprobacion(req)){
             res.sendStatus(400, "BAD REQUEST");
+
+            /*
         }else{
             var Country = req.params.country;
             var Body = req.body;  
@@ -340,7 +342,8 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
             if(Country != Body.country ){
                 res.sendStatus(400, "BAD REQUEST");
             }
-            else{
+            */
+        }else{
                 db.find({country: Country}, function(err,docs){
                     if(err){
                         res.sendStatus(500,"INTERNAL SERVER ERROR");
@@ -368,7 +371,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                 })
             }
-        }
+        
 
     })
         
