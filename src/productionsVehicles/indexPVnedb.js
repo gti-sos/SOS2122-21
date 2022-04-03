@@ -84,45 +84,369 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
 })
 
 
-    //funcion para la paginación
 
-    function funcionpaginacion(req, lista){
-
-        var res = [];
-        const limit = req.query.limit;
-        const offset = req.query.offset;
-        
-        if(limit < 1 || offset < 0 || offset > lista.length){
-            res.push("ERROR LIMIT,OFFSET");
-            return res;
-        }
-
-        res = lista.slice(offset,parseInt(limit)+parseInt(offset));
-        return res;
-
-    }
 
 
     //GET a todos los recursos
 
-    app.get(BASE_API_URL+"/productions-vehicles", (req,res) => {
-        db.find({}, function(err, docs){
-            if(err){
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
+    
+    // FUNCION COMPROBAR QUERYS
+    function compruebaQuery(e) {
+        if(e.length == 0){
+            return true;
+        }
+        else{
+            for (var i = 0; i < e.length; i++) {
+                var query = e[i];
+                if (query != "year" && query != "from" && query != "to" && query != "limit" && query != "offset") {
+                    return false;
+                }
             }
-            else{
-                res.send(JSON.stringify(docs.map( (e) => {
-                    return {
-                        country : e.country,
-                        year : e.year,
-                        veh_comm: e.veh_comm,
-                        veh_pass: e.veh_pass,
-                        veh_annprod: e.veh_annprod 
+        }
+    }
+
+    app.get(BASE_API_URL + "/productions-vehicles", (req, res) => {
+
+        var qYear = req.query.year;
+        var qOffset = req.query.offset;
+        var qLimit = req.query.limit;
+        var qFrom = req.query.from;
+        var qTo = req.query.to;
+
+        //ESTAN CORRECTAS LAS QUERYS?
+        if(compruebaQuery(Object.keys(req.query)) == false){
+            res.sendStatus(400, "BAD REQUEST");
+        }
+        
+        //SI estan correctas    
+        else{
+            // EXISTE LA QUERY FROM O TO?
+            if(qFrom != null || qTo != null){ // SI EXISTE
+                if(qFrom>qTo){ //COMPROBAR QUE EL FROM NO SEA MAYOR QUE EL TO
+                    res.sendStatus(400, "BAD REQUEST");
+                }
+                else{
+                    // EXISTE EL FROM Y EL TO
+                    if(qFrom != null && qTo != null){
+                        if(qOffset == undefined && qLimit == undefined){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        else if(qOffset != undefined && qLimit != undefined){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        else if(qOffset != undefined && qLimit == undefined){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        else{
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
                     }
-                }),null,2));
+                    //EXISTE EL TO PERO NO EL FROM
+                    else if(qFrom == null && qTo != null){
+                        // NO HAY OFFSET NI LIMIT
+                        if(qOffset == undefined && qLimit == undefined){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        // HAY OFFSET Y LIMIT
+                        else if(qOffset != undefined && qLimit != undefined){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        // HAY LIMIT PERO NO OFFSET
+                        else if(qOffset != undefined && qLimit == undefined){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        // HAY OFFSET PERO NO LIMIT
+                        else{
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                    }
+                    //EXISTE EL FROM PERO NO EL TO
+                    else {
+                        // NO HAY OFFSET Y LIMIT
+                        if(qOffset == undefined && qLimit == undefined){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}, function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        // HAY OFFSET Y LIMIT
+                        else if(qOffset != undefined && qLimit != undefined){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        // HAY LIMIT PERO NO OFFSET
+                        else if(qOffset != undefined && qLimit == undefined){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).skip(qOffset).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                        // HAY OFFSET PERO NO LIMIT
+                        else{
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).exec(function(err, docs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    docsCopy = docs;
+                                    docsCopy.forEach((e) => {
+                                    delete e._id;
+                                    });
+                                    res.send(JSON.stringify(docsCopy, null, 2));
+                                }
+                            });
+                        }
+                    }
+                }
             }
-        })
+            // NO HAY NI FROM NI TO
+            else{ 
+                // HAY QUERY YEAR?
+                // NO HAY
+                if(qYear == null){
+                    // NO HAY NI OFFSET NI LIMIT
+                    if(qOffset == undefined && qLimit == undefined){
+                        db.find({}, function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                    // HAY OFFSET PERO NO LIMIT
+                    else if(qOffset != undefined && qLimit == undefined){
+                        db.find({}).skip(qOffset).exec(function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                    // HAY LIMIT PERO NO OFFSET
+                    else if(qOffset == undefined && qLimit != undefined){
+                        db.find({}).limit(qLimit).exec(function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                    // HAY OFFSET Y LIMIT
+                    else{
+                        db.find({}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                }
+                else{ // NO HAY QUERY YEAR
+                    // NO HAY OFFSET NI LIMIT
+                    if(qOffset == undefined && qLimit == undefined){
+                        db.find({year: parseInt(qYear)}, function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                    // HAY OFFSET PERO NO LIMIT
+                    else if(qOffset != undefined && qLimit == undefined){
+                        db.find({year: parseInt(qYear)}).skip(qOffset).exec(function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                    // HAY LIMIT PERO NO OFFSET
+                    else if(qOffset == undefined && qLimit != undefined){
+                        db.find({year: parseInt(qYear)}).limit(qLimit).exec(function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                    // HAY LIMIT Y OFFSET
+                    else{
+                        db.find({year: parseInt(qYear)}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            if(err){
+                                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                            }
+                            else{
+                                docsCopy = docs;
+                                docsCopy.forEach((e) => {
+                                delete e._id;
+                                });
+                                res.send(JSON.stringify(docsCopy, null, 2));
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
     })
+
+
 
 
     //GET a un recurso en concreto 
@@ -157,15 +481,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
     
 
         
-/*
-        //paginación,limit y offset
-        //funcion paginación creada anteriormente
 
-        if(req.query.limit != undefined || req.query.offset != undefined){
-            filtered = funcionpaginacion(req,filtered);
-            res.send(JSON.stringify(filtered,null,2));
-        }
-*/
         
 
 
@@ -200,16 +516,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
     });
     
        
-        /*
-        //paginación,limit y offset
-        //funcion paginación creada anteriormente
-
-        if(req.query.limit != undefined || req.query.offset != undefined){
-            filtered = funcionpaginacion(req,filtered);
-            res.send(JSON.stringify(filtered,null,2));
-        }
-*/
-        
+      
             
         
 
