@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d7adffc7-1aed-46c7-8739-3fcdcc58e61d",
+		"_postman_id": "045d5f47-dc85-4282-84b3-ce65467ffbef",
 		"name": "SOS2122-21",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -368,7 +368,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE /in-use-vehicles/spain/2020",
+			"name": "DELETE /in-use-vehicles/spain/2019",
 			"event": [
 				{
 					"listen": "test",
@@ -454,7 +454,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"country\": \"spain\",\r\n\"year\": 2020,\r\n\"veh_use_comm\": 4538423,\r\n\"veh_use_pass\": 25169158,\r\n\"veh_use_per_1000\": 626.76\r\n}",
+					"raw": "{\r\n    \"country\": \"spain\",\r\n    \"year\": 2020,\r\n    \"veh_use_comm\": 4538423,\r\n    \"veh_use_pass\": 25169158,\r\n    \"veh_use_per_1000\": 626.76\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -747,6 +747,245 @@
 						"in-use-vehicles",
 						"spain",
 						"2019"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recargar datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/in-use-vehicles/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"in-use-vehicles",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Querys erroneas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/in-use-vehicles?wouhefo=2384&qwef",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"in-use-vehicles"
+					],
+					"query": [
+						{
+							"key": "wouhefo",
+							"value": "2384"
+						},
+						{
+							"key": "qwef",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "From mayor que to",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/in-use-vehicles?from=2030&to=2020",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"in-use-vehicles"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2030"
+						},
+						{
+							"key": "to",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query year",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/in-use-vehicles?year=2019",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"in-use-vehicles"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2019"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query from y to",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/in-use-vehicles?from=2019&to=2020",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"in-use-vehicles"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2019"
+						},
+						{
+							"key": "to",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query offset y limit (Paginacion)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/in-use-vehicles?offset=5&limit=1",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"in-use-vehicles"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "5"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
 					]
 				}
 			},
