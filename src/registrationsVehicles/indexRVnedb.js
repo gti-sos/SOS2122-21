@@ -11,7 +11,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
 
 
     // CREACION DE DATOS
-    app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
+    app.get(BASE_API_URL+"/registrations-vehicles/loadInitialData", (req,res) => {
         //búsqueda
         db.find({},function(err, docs){
 
