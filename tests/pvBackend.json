@@ -57,10 +57,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Respose is an array\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -198,6 +195,165 @@
 					"path": [
 						"Hungary",
 						"2020"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET búsqueda por año",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respose is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}?year=2019",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2019"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET de todas los recursos en un periodo(from y to)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respose is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}?from=2019&to=2020",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2019"
+						},
+						{
+							"key": "to",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET con to y from (400 Bad Request-from mayor que to)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}?from=2030&to=2020",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2030"
+						},
+						{
+							"key": "to",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET global con paginación",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respose is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}?offset=2&limit=3",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "2"
+						},
+						{
+							"key": "limit",
+							"value": "3"
+						}
 					]
 				}
 			},
@@ -453,7 +609,7 @@
 			"response": []
 		},
 		{
-			"name": "GET comprobación de la actualización",
+			"name": "GET comprobación de la actualización por país y por año",
 			"event": [
 				{
 					"listen": "test",
@@ -479,46 +635,6 @@
 					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}",
 					"host": [
 						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT Method Not Found 404 (al actualizar un recurso que no existe)",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n            \"country\": \"Hungary\", \r\n            \"year\": 2019, \r\n            \"veh_comm\" : 454.634, \r\n            \"veh_pass\": 3646356, \r\n            \"veh_annprod\": 9732524\r\n        }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}/Spain/2015",
-					"host": [
-						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
-					],
-					"path": [
-						"Spain",
-						"2015"
 					]
 				}
 			},
@@ -559,6 +675,77 @@
 					"path": [
 						"Hungary",
 						"2019"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT de un recurso en concreto por país(actualización de los demás datos)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"country\": \"Spain\", \r\n            \"year\": 2021, \r\n            \"veh_comm\" : 454.554, \r\n            \"veh_pass\": 3646363, \r\n            \"veh_annprod\": 9452924\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}/Spain",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					],
+					"path": [
+						"Spain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET comprobación de la actualización por país",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respose is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
 					]
 				}
 			},
@@ -627,6 +814,69 @@
 			"response": []
 		},
 		{
+			"name": "DELETE de un país y un año en concreto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}/Spain/2021",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					],
+					"path": [
+						"Spain",
+						"2021"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET comprobación del recurso borrado por país y año",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respose is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "DELETE de todos los recursos",
 			"event": [
 				{
@@ -654,7 +904,7 @@
 			"response": []
 		},
 		{
-			"name": "GET para estado inicial de la API",
+			"name": "GET para cargar los datos de la API",
 			"event": [
 				{
 					"listen": "test",
@@ -663,10 +913,7 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"Respose is an array\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -682,6 +929,38 @@
 					],
 					"path": [
 						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET para el estado inicial de la API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respose is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API PRODUCTIONS VEHICLES}}",
+					"host": [
+						"{{SERVER}}{{API PRODUCTIONS VEHICLES}}"
 					]
 				}
 			},
