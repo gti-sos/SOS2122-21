@@ -10,7 +10,7 @@ const BASE_API_URL = "/api/v1";
 
 db_in_use_vehicles = new Datastore();
 db_productions_vehicles=new Datastore();
-
+db_registrations_vehicles=new Datastore();
 
 // ########################### INDEX.JS DE LAS DISTINTAS APIS ###########################
 const iuvBackend = require("./src/inUseVehicles/indexIUVnedb.js");
@@ -20,7 +20,7 @@ const pvBackend = require("./src/productionsVehicles/indexPVnedb.js");
 pvBackend(app, BASE_API_URL, bodyParser,db_productions_vehicles);
 
 const rvBackend = require("./src/registrationsVehicles/indexRV.js");
-rvBackend(app, BASE_API_URL, bodyParser);
+rvBackend(app, BASE_API_URL, bodyParser, db_registrations_vehicles);
 // #######################################################################################
 
 

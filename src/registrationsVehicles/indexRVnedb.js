@@ -1,12 +1,12 @@
 // ############################# Antonio #############################
 module.exports = (app, BASE_API_URL, bodyParser, db) => {
     app.use(bodyParser.json());
-    var inUseVehicles = [];
-    const API_IUV_DOC = "https://documenter.getpostman.com/view/19548804/UVysxbPu";
+    var registrationsVehicles = [];
+    const API_DOC = "https://documenter.getpostman.com/view/19548804/UVysxbPu";
     
 
     app.get(BASE_API_URL + "/registrations-vehicles/docs", (req, res) => {
-        res.redirect(API_IUV_DOC);
+        res.redirect(API_DOC);
     })
 
 
