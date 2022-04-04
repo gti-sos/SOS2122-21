@@ -535,9 +535,9 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         return (Object.keys(e.body).length != 5 ||
             e.body.country == null ||
             e.body.year == null ||
-            e.body.veh_use_comm == null || 
-            e.body.veh_use_pass == null || 
-            e.body.veh_use_per_1000 == null);
+            e.body.veh_sale == null || 
+            e.body.veh_per_1000 == null || 
+            e.body.variation == null);
     }
 
     app.post(BASE_API_URL+"/registrations-vehicles", (req,res) => {
@@ -600,9 +600,9 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                         else{
                             db.update({country: iuvCountry, year: parseInt(iuvYear)},
                             { $set: {
-                                "veh_use_comm": iuvBody.veh_use_comm,
-                                "veh_use_pass": iuvBody.veh_use_pass,
-                                "veh_use_per_1000": iuvBody.veh_use_per_1000
+                                "veh_sale": iuvBody.veh_sale,
+                                "veh_per_1000": iuvBody.veh_use_per_1000,
+                                "variation": iuvBody.variation
                             }},function(err,newDocs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
