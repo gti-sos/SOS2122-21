@@ -4,7 +4,6 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
     var registrationsVehicles = [];
     const API_DOC = "https://documenter.getpostman.com/view/20092351/UVyn2z4A";
     
-
     app.get(BASE_API_URL + "/registrations-vehicles/docs", (req, res) => {
         res.redirect(API_DOC);
     })

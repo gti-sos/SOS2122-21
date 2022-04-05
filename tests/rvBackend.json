@@ -205,6 +205,66 @@
 			"response": []
 		},
 		{
+			"name": "Recurso base",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API REGISTRATIONS VEHICLES}}",
+					"host": [
+						"{{SERVER}}{{API REGISTRATIONS VEHICLES}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initial Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "DELETE/registrations-vehicles/spain",
 			"event": [
 				{
@@ -238,7 +298,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE/registrations-vehicles/spain/2022",
+			"name": "Comprobar datos eliminados",
 			"event": [
 				{
 					"listen": "test",
@@ -246,6 +306,99 @@
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/spain",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"spain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initial data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recurso base",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API REGISTRATIONS VEHICLES}}",
+					"host": [
+						"{{SERVER}}{{API REGISTRATIONS VEHICLES}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/registrations-vehicles/spain/2022",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -272,6 +425,39 @@
 			"response": []
 		},
 		{
+			"name": "Comprobar datos eliminados Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/spain",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"spain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "POST/registrations-vehicles",
 			"event": [
 				{
@@ -292,6 +478,74 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n        \"country\": \"spain\",\r\n        \"year\": 2018,\r\n        \"veh_sale\": 1554261,\r\n        \"veh_per_1000\": 33.11,\r\n        \"variation\": -1.18\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recurso base Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}{{API REGISTRATIONS VEHICLES}}",
+					"host": [
+						"{{SERVER}}{{API REGISTRATIONS VEHICLES}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /registrations-vehicles(JSON inadecuado)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hola\": \"spain\", \r\n    \"year\": 2020, \r\n    \"veh-use-comm\" : 4538423\r\n} ",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -347,6 +601,90 @@
 			"response": []
 		},
 		{
+			"name": "POST /registrations-vehicles(Recurso YA EXISTENTE)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"country\": \"spain\",\r\n\"year\": 2018,\r\n\"veh_sale\": 1994261,\r\n\"veh_per_1000\": 34.11,\r\n\"variation\": -1.38\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /registrations-vehicles (POST Incorrecto)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"country\": \"spain\",\r\n\"year\": 2021,\r\n\"veh_sale\": 1994261,\r\n\"veh_per_1000\": 34.11,\r\n\"variation\": -1.38\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/spain/2017",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"spain",
+						"2017"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "PUT/registrations-vehicles/spain/2022",
 			"event": [
 				{
@@ -366,7 +704,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"country\": \"spain\",\r\n        \"year\": 2022,\r\n        \"veh_sale\": 1234261,\r\n        \"veh_per_1000\": 34.11,\r\n        \"variation\": -1.10\r\n}",
+					"raw": "{\r\n        \"country\": \"spain\",\r\n        \"year\": 2018,\r\n        \"veh_sale\": 1234261,\r\n        \"veh_per_1000\": 34.11,\r\n        \"variation\": -1.10\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -374,7 +712,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{SERVER}}/api/v1/registrations-vehicles/spain/2022",
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/spain/2018",
 					"host": [
 						"{{SERVER}}"
 					],
@@ -383,7 +721,7 @@
 						"v1",
 						"registrations-vehicles",
 						"spain",
-						"2022"
+						"2018"
 					]
 				}
 			},
@@ -391,6 +729,44 @@
 		},
 		{
 			"name": "PUT/registrations-vehicles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"country\": \"spain\",\r\n        \"year\": 2019,\r\n        \"veh_sale\": 1234261,\r\n        \"veh_per_1000\": 34.11,\r\n        \"variation\": -1.10\r\n}"
+				},
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/spain/2020",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"spain",
+						"2020"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT/registrations-vehicles(Not allowed)",
 			"event": [
 				{
 					"listen": "test",
@@ -420,6 +796,234 @@
 						"api",
 						"v1",
 						"registrations-vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT/registrations-vehicles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initial Data Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/registrations-vehicles/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Querys erroneas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles?wouhefo=2384&qwef",
+					"protocol": "https",
+					"host": [
+						"sos2122-21",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					],
+					"query": [
+						{
+							"key": "wouhefo",
+							"value": "2384"
+						},
+						{
+							"key": "qwef",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "From mayor que to",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles?from=2030&to=2020",
+					"protocol": "https",
+					"host": [
+						"sos2122-21",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2030"
+						},
+						{
+							"key": "to",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query year",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles?year=2019",
+					"protocol": "https",
+					"host": [
+						"sos2122-21",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2019"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query from y to",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles?from=2019&to=2020",
+					"protocol": "https",
+					"host": [
+						"sos2122-21",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2019"
+						},
+						{
+							"key": "to",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paginacion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles?limit=2&offset=3",
+					"protocol": "https",
+					"host": [
+						"sos2122-21",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registrations-vehicles"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2"
+						},
+						{
+							"key": "offset",
+							"value": "3"
+						}
 					]
 				}
 			},
