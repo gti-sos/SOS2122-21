@@ -2,7 +2,7 @@
 module.exports = (app, BASE_API_URL, bodyParser, db) => {
     app.use(bodyParser.json());
     var registrationsVehicles = [];
-    const API_DOC = "https://documenter.getpostman.com/view/19548804/UVysxbPu";
+    const API_DOC = "https://documenter.getpostman.com/view/20092351/UVyn2z4A";
     
 
     app.get(BASE_API_URL + "/registrations-vehicles/docs", (req, res) => {
