@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOS2122-21</title>
-</head>
-<body>
+<main>
     <h2>SOS2122-21</h2>
     <ul>
       <li><h5>Team</h5></li>  
@@ -57,5 +49,4 @@
         </li>
     </ul>
 
-</body>
-</html>
+</main>
