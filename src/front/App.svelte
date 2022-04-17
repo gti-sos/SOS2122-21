@@ -7,7 +7,7 @@
    
     const routes = {
         "/": Home,
-        "/api/v1/productions-vehicles/frontend": PV,
+        "/productions-vehicles": PV,
            
     }
 </script>
