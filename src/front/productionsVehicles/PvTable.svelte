@@ -4,15 +4,19 @@
 	let productionsVehicles=[];
 	
 	import {onMount} from 'svelte';
+   import Table from "sveltestrap/src/Table.svelte";
+
 	onMount(getPv);
 	async function getPv(){
 		console.log("Fetching productions vehicles...")
-		const res=await fetch("api/v1/productions-vehicles");
-		if(res.ok){
-			const data=await res.json();
-			productionsVehicles=data;
-			console.log("Received vehicles: " +productionsVehicles.length);
-		}
+      await fetch("api/v1/productions-vehicles/loadInitialData").then(async function(response){
+         const res=await fetch("api/v1/productions-vehicles");
+         if(res.ok){
+            const data=await res.json();
+            productionsVehicles=data;
+            console.log("Received vehicles: " +productionsVehicles.length);
+         }
+      });
 	}
 </script>
 
@@ -21,7 +25,7 @@
     {#await productionsVehicles}
      loading
   {:then productionsVehicles}
-  <table>
+  <Table bordered>
     <thead>
         <tr>
             <th>
@@ -54,6 +58,6 @@
    {/each}
  </tbody>
 
- </table>
+</Table>
  {/await}
 </main>
