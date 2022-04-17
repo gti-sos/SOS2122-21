@@ -12,8 +12,8 @@
     const routes = {
         "/": Home,
         "/in-use-vehicles/frontend": IUV,
-        "/in-use-vehicles/data": IUVTable,
-        "/api/v1/productions-vehicles/frontend": PV         
+        "/in-use-vehicles/data": IUVTable,      
+        "/productions-vehicles": PV
     }
 
 </script>

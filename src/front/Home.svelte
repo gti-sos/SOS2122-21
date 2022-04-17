@@ -43,11 +43,10 @@
         <li>
             <h5>Frontends: </h5>
             <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/#/in-use-vehicles/frontend">https://sos2122-21.herokuapp.com/in-use-vehicles/frontend (developed by Antonio Ruiz Gonzalez)</a></li>
-                
+                <li><a href="https://sos2122-21.herokuapp.com/#/in-use-vehicles/frontend">https://sos2122-21.herokuapp.com/in-use-vehicles/frontend (developed by Antonio Ruiz Gonzalez)</a></li>              
             </ul>
             <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/api/v1/productions-vehicles/frontend">https://sos2122-21.herokuapp.com/api/v1/productions-vehicles/frontend (developed by María Lacañina Camacho)</a></li>
+                <li><a href="https://sos2122-21.herokuapp.com/#/productions-vehicles">https://sos2122-21.herokuapp.com/#/productions-vehicles (developed by María Lacañina Camacho)</a></li>
             </ul>
         </li>
     </ul>
