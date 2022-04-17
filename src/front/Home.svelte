@@ -43,7 +43,7 @@
         <li>
             <h5>Frontends: </h5>
             <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles/frontend">https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles/frontend (developed by Antonio Ruiz Gonzalez)</a></li>
+                <li><a href="https://sos2122-21.herokuapp.com/#/in-use-vehicles/frontend">https://sos2122-21.herokuapp.com/in-use-vehicles/frontend (developed by Antonio Ruiz Gonzalez)</a></li>
                 
             </ul>
             <ul>
