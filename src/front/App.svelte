@@ -8,6 +8,10 @@
 
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
+
+    //JAVI
+    import RV from './registrationsVehicles/RV.svelte';
+    import RvTable from './registrationsVehicles/RvTable.svelte';
    
     const routes = {
         "/": Home,
