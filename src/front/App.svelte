@@ -17,7 +17,8 @@
         "/": Home,
         "/in-use-vehicles/frontend": IUV,
         "/in-use-vehicles/data": IUVTable,      
-        "/productions-vehicles": PV
+        "/productions-vehicles": PV,
+        "/registrations-vehicles": RV
     }
 
 </script>
