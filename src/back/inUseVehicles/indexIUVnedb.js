@@ -478,7 +478,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                     docsCopy.forEach((e) => {
                         delete e._id;
                     })
-                    res.send(JSON.stringify(docsCopy,null,2));
+                    res.send(JSON.stringify(docsCopy[0],null,2));
                 }
             }
         });
