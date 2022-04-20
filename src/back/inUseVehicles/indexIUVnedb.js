@@ -10,7 +10,61 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
     })
 
 
-    // CREACION DE DATOS
+    // CREACION DE DATOS AUTOMÁTICA
+    db.find({}, (err,data) => {
+        if(data.length == 0){
+            db.insert([
+                {
+                    country: "spain",
+                    year:2020,
+                    veh_use_comm: 4538423,
+                    veh_use_pass: 25169158,
+                    veh_use_per_1000: 626.76,
+                },
+                {
+                    country: "germany",
+                    year: 2020,
+                    veh_use_comm: 4027249,
+                    veh_use_pass: 48248584,
+                    veh_use_per_1000: 628.66,
+                },
+                {
+                    country: "united kingdom",
+                    year: 2020,
+                    veh_use_comm: 5949323,
+                    veh_use_pass: 42403988,
+                    veh_use_per_1000: 632.65,
+                },
+                {
+                    country: "france",
+                    year: 2020,
+                    veh_use_comm: 6598185,
+                    veh_use_pass: 44944450,
+                    veh_use_per_1000: 666.44,
+                },
+                {
+                    country: "italy",
+                    year: 2020,
+                    veh_use_comm: 5281807,
+                    veh_use_pass: 44999681,
+                    veh_use_per_1000: 759.39,
+                },
+                {
+                    country: "spain",
+                    year: 2019,
+                    veh_use_comm: 4444698,
+                    veh_use_pass: 25008222,
+                    veh_use_per_1000: 622.25
+                }
+            ]);
+            console.log("Datos iniciales añadidos automaticamente");
+        }
+        else{
+            console.log("Base de datos cargarda con "+data.length+" registros");
+        }
+    })
+
+    // CREACION DE DATOS MANUAL
     app.get(BASE_API_URL+"/in-use-vehicles/loadInitialData", (req, res) => {
         db.find({}, function (err, docs) {
             if (err) {

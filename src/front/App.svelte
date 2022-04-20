@@ -15,7 +15,7 @@
    
     const routes = {
         "/": Home,
-        "/in-use-vehicles/frontend": IUV,
+        "/in-use-vehicles": IUV,
         "/in-use-vehicles/data": IUVTable,      
         "/productions-vehicles": PV,
         "/registrations-vehicles": RV
