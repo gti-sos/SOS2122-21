@@ -12,16 +12,26 @@
 		veh_use_per_1000: "",
 	};
 
+	var currentTime = new Date();
+	let yFrom = currentTime.getFullYear();
+	let yTo = currentTime.getFullYear();
+
 	onMount(getIuv);
 
-	async function getIuv() {
+	async function getIuv(parametros="") {
 		console.log("Fetching data....");
-		const res = await fetch("/api/v1/in-use-vehicles");
+		const res = await fetch("/api/v1/in-use-vehicles"+parametros);
 		console.log(res.ok);
 		if (res.ok) {
 			const data = await res.json();
 			iuv = data;
-			console.log("Received contacts: " + iuv.length);
+			for(let i=0; i<iuv.length ; i++){
+				let y = iuv[i].year;
+				if(y < yFrom){
+					yFrom = y;
+				}
+			}
+			console.log("Received data: " + iuv.length);
 		}
 	}
 
@@ -87,14 +97,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr align="center">
-					<td><input bind:value={newIuv.country} type="text" /></td>
-					<td><input bind:value={newIuv.year} type="text" /></td>
-					<td><input bind:value={newIuv.veh_use_comm}	type="text"	/></td>
-					<td><input bind:value={newIuv.veh_use_pass} type="text"/></td>
-					<td><input bind:value={newIuv.veh_use_per_1000} type="text"/></td>
-					<td	><Button outline color="primary" on:click={insertIuv}>Añadir</Button></td>
-				</tr>
 				<tr />
 				{#each iuv as e}
 					<tr align="center">
@@ -106,13 +108,23 @@
 						<td	><Button outline color="danger" on:click={deleteIuv(e.country,e.year)}>Eliminar</Button></td>
 					</tr>
 				{/each}
+				<tr align="center">
+					<td><input bind:value={newIuv.country} type="text" /></td>
+					<td><input bind:value={newIuv.year} type="text" /></td>
+					<td><input bind:value={newIuv.veh_use_comm}	type="text"	/></td>
+					<td><input bind:value={newIuv.veh_use_pass} type="text"/></td>
+					<td><input bind:value={newIuv.veh_use_per_1000} type="text"/></td>
+					<td	><Button outline color="primary" on:click={insertIuv}>Añadir</Button></td>
+				</tr>
 			</tbody>
 		</Table>
-		<Button color="danger" on:click={deleteAll}
-			>ELIMINAR TODOS LOS REGISTROS</Button
-		>
-		<Button outline color="primary" on:click={loadInitialData}
-			>Importar registros por defecto</Button
-		>
+		<Button color="danger" on:click={deleteAll}>ELIMINAR TODOS LOS REGISTROS</Button>
+		<Button outline color="primary" on:click={loadInitialData}>Importar registros por defecto</Button>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el <input bind:value={yTo} type="text"/> <Button color="info" on:click={getIuv(`?from=${yFrom}&to=${yTo}`)}>Buscar</Button> </h5>
 	{/await}
 </main>

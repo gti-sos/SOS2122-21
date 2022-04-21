@@ -156,7 +156,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                     // EXISTE EL FROM Y EL TO
                     if(qFrom != null && qTo != null){
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}, function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -170,7 +170,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                             });
                         }
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -184,7 +184,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                             });
                         }
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -198,7 +198,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                             });
                         }
                         else{
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
