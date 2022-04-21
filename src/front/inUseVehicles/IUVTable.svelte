@@ -13,13 +13,9 @@
 	};
 
 	onMount(getIuv);
-	async function cargarDatos() {
-		await fetch("/api/v1/in-use-vehicles/loadInitialData");
-	}
 
 	async function getIuv() {
 		console.log("Fetching data....");
-		//await fetch("/api/v1/in-use-vehicles/loadInitialData").then(async function (response) {
 		const res = await fetch("/api/v1/in-use-vehicles");
 		console.log(res.ok);
 		if (res.ok) {
@@ -27,7 +23,6 @@
 			iuv = data;
 			console.log("Received contacts: " + iuv.length);
 		}
-		//});
 	}
 
 	async function insertIuv() {
@@ -81,9 +76,9 @@
 	{#await iuv}
 		loading
 	{:then iuv}
-		<Table bordered responsive>
+		<Table bordered>
 			<thead>
-				<tr>
+				<tr align="center">
 					<th> País </th>
 					<th> Año </th>
 					<th> Vehículos comerciales en uso </th>
@@ -92,7 +87,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr align="center">
 					<td><input bind:value={newIuv.country} type="text" /></td>
 					<td><input bind:value={newIuv.year} type="text" /></td>
 					<td><input bind:value={newIuv.veh_use_comm}	type="text"	/></td>
@@ -102,8 +97,8 @@
 				</tr>
 				<tr />
 				{#each iuv as e}
-					<tr>
-						<td>{e.country}</td>
+					<tr align="center">
+						<td><a href="#/in-use-vehicles/{e.country}/{e.year}">{e.country}</a></td>
 						<td>{e.year}</td>
 						<td>{e.veh_use_comm}</td>
 						<td>{e.veh_use_pass}</td>

@@ -4,6 +4,7 @@
 
     //ANTONIO
     import IUV from './inUseVehicles/IUV.svelte';
+    import IUVnewData from './inUseVehicles/IUVnewData.svelte';
     import IUVTable from './inUseVehicles/IUVTable.svelte';
 
     //MARIA
@@ -17,6 +18,7 @@
         "/": Home,
         "/in-use-vehicles": IUV,
         "/in-use-vehicles/data": IUVTable,      
+        "/in-use-vehicles/:country/:year": IUVnewData,
         "/productions-vehicles": PV,
         "/registrations-vehicles": RV
     }
