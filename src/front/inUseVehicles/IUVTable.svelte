@@ -3,6 +3,8 @@
 	import Table from "sveltestrap/src/Table.svelte";
 	import Button from "sveltestrap/src/Button.svelte";
 
+	const delay = ms => new Promise(res => setTimeout(res, ms));
+
 	let iuv = [];
 	let newIuv = {
 		country: "",
@@ -18,11 +20,27 @@
 
 	onMount(getIuv);
 
-	async function getIuv(parametros="") {
+	async function getIuv(parametros="",b=false) {
 		console.log("Fetching data....");
 		const res = await fetch("/api/v1/in-use-vehicles"+parametros);
+						
+
 		console.log(res.ok);
-		if (res.ok) {
+		if (res.ok && b) {
+			
+			const data = await res.json();
+			iuv = data;
+			await delay(50);
+			window.alert("Búsqueda realizada");
+			for(let i=0; i<iuv.length ; i++){
+				let y = iuv[i].year;
+				if(y < yFrom){
+					yFrom = y;
+				}
+			}
+			console.log("Received data: " + iuv.length);
+		}
+		else if(res.ok && !b){	
 			const data = await res.json();
 			iuv = data;
 			for(let i=0; i<iuv.length ; i++){
@@ -32,6 +50,20 @@
 				}
 			}
 			console.log("Received data: " + iuv.length);
+		}
+		else{
+			if(res.status == "400"){
+				window.alert("BAD REQUEST");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
 		}
 	}
 
@@ -43,8 +75,22 @@
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}).then(function (res) {
-			getIuv();
+		}).then(async function (res) {
+			if (res.ok){
+				newIuv.country="";
+				newIuv.year="";
+				newIuv.veh_use_comm="";
+				newIuv.veh_use_pass="";
+				newIuv.veh_use_per_1000="";
+				getIuv();
+				await delay(50);
+				window.alert("Registro añadido correctamente");
+			}
+			else{
+				if(res.status == "409"){
+					window.alert("No se puede añadir este registro porque ya existe");
+				}
+			}
 		});
 		console.log("DONE");
 	}
@@ -53,17 +99,19 @@
 		console.log("Deleting all");
 		const res = await fetch("/api/v1/in-use-vehicles", {
 			method: "DELETE",
-		}).then(function (res) {
+		}).then(async function (res) {
 			getIuv();
+			await delay(50);
+			window.alert("Registros eliminados correctamente");
 		});
 	}
 
 	async function loadInitialData() {
 		console.log("Inserting default data");
-		await fetch("/api/v1/in-use-vehicles/loadInitialData").then(function (
-			res
-		) {
+		await fetch("/api/v1/in-use-vehicles/loadInitialData").then(async function (res) {
 			getIuv();
+			await delay(50);
+			window.alert("Registros añadidos correctamente");
 		});
 	}
 
@@ -72,9 +120,10 @@
 		const id = country + "/" + year;
 		const res = await fetch("/api/v1/in-use-vehicles/"+id, {
 			method: "DELETE",
-		}).then(function (res) {
-			console.log("/api/v1/in-use-vehicles"+id)
+		}).then(async function (res) {
 			getIuv();
+			await delay(50);
+			window.alert("Registro eliminado correctamente");
 		});
 	}
 
@@ -110,10 +159,10 @@
 				{/each}
 				<tr align="center">
 					<td><input bind:value={newIuv.country} type="text" /></td>
-					<td><input bind:value={newIuv.year} type="text" /></td>
-					<td><input bind:value={newIuv.veh_use_comm}	type="text"	/></td>
-					<td><input bind:value={newIuv.veh_use_pass} type="text"/></td>
-					<td><input bind:value={newIuv.veh_use_per_1000} type="text"/></td>
+					<td><input bind:value={newIuv.year} type="number" /></td>
+					<td><input bind:value={newIuv.veh_use_comm}	type="number"	/></td>
+					<td><input bind:value={newIuv.veh_use_pass} type="number"/></td>
+					<td><input bind:value={newIuv.veh_use_per_1000} type="number"/></td>
 					<td	><Button outline color="primary" on:click={insertIuv}>Añadir</Button></td>
 				</tr>
 			</tbody>
@@ -125,6 +174,6 @@
 		<br>
 		<br>
 		<br>
-		<h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el <input bind:value={yTo} type="text"/> <Button color="info" on:click={getIuv(`?from=${yFrom}&to=${yTo}`)}>Buscar</Button> </h5>
+		<h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el <input bind:value={yTo} type="text"/> <Button color="info" on:click={getIuv(`?from=${yFrom}&to=${yTo}`,true)}>Buscar</Button> </h5>
 	{/await}
 </main>

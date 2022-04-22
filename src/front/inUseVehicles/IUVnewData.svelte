@@ -5,6 +5,8 @@
     import { pop } from "svelte-spa-router"
     import { Icon } from 'sveltestrap';
 
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
     onMount(getIuv);
 
     let iuv = {};
@@ -56,6 +58,8 @@
 			},
 		}).then(function (res) {
 			getIuv();
+            window.alert("Registro modificado correctamente");
+            pop();
 		});
 		console.log("DONE");
 	}
@@ -82,9 +86,9 @@
                 <tr align="center">
                     <td>{updatedCountry} </td>
                     <td>{updatedYear}</td>
-                    <td><input bind:value="{updatedVeh_use_comm}"></td>
-                    <td><input bind:value="{updatedVeh_use_pass}" type=""></td>
-                    <td><input bind:value="{updatedVeh_use_per_1000}"></td>
+                    <td><input bind:value="{updatedVeh_use_comm}" type="number"></td>
+                    <td><input bind:value="{updatedVeh_use_pass}" type="number"></td>
+                    <td><input bind:value="{updatedVeh_use_per_1000}" type="number"></td>
                     <td><Button outline color="primary" on:click="{editIuv}">Editar</Button>
                     </td>
                 </tr>
