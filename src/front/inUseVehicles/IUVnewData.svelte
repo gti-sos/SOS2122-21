@@ -40,6 +40,12 @@
 
             console.log("Received data.");
         }
+        else{
+            if(res.status=="404"){
+                window.alert(`No existe un registro con el pais '${params.country}' y el año '${params.year}'`);
+                pop();
+            }
+        }
     }
 
     async function editIuv() {
