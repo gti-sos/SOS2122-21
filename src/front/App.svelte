@@ -10,6 +10,7 @@
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
     import PVTable from './productionsVehicles/PVTable.svelte';
+    import PVnewData from './productionsVehicles/PVnewData.svelte';
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';
@@ -21,6 +22,7 @@
         "/in-use-vehicles/:country/:year": IUVnewData,
         "/productions-vehicles": PV,
         "/productions-vehicles/data":PVTable,
+        "/productions-vehicles/:country/:year": PVnewData,
         "/registrations-vehicles": RV
     }
 
