@@ -12,9 +12,6 @@
 
 //MODIFICACIÓN PARA EL FRONT-END -creación de datos automática
 
-db.find({ system: 'solar' }).sort({ planet: -1 }).exec(function (err, docs) {
-    // docs is [doc1, doc3, doc2]
-  });
 
 // CREACION DE DATOS AUTOMÁTICA
 db.find({}).sort({year:1}).exec((err,data) => {
@@ -71,7 +68,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
 });
 
 
-    //datos de mi API->GET al conjunto de recursos
+    //datos de mi API->GET al conjunto de recursos (Manual)
     //ruta que al hacer un GET que cree 6 datos en la base de datos si está vacía
 
     app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
@@ -164,6 +161,8 @@ db.find({}).sort({year:1}).exec((err,data) => {
         }
     }
 
+
+
     app.get(BASE_API_URL + "/productions-vehicles", (req, res) => {
 
         var qYear = req.query.year;
@@ -188,7 +187,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     // EXISTE EL FROM Y EL TO
                     if(qFrom != null && qTo != null){
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -202,7 +201,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                             });
                         }
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -216,7 +215,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                             });
                         }
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -230,7 +229,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                             });
                         }
                         else{
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -248,7 +247,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     else if(qFrom == null && qTo != null){
                         // NO HAY OFFSET NI LIMIT
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -263,7 +262,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                         }
                         // HAY OFFSET Y LIMIT
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -278,7 +277,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                         }
                         // HAY LIMIT PERO NO OFFSET
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -293,7 +292,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                         }
                         // HAY OFFSET PERO NO LIMIT
                         else{
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -311,7 +310,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     else {
                         // NO HAY OFFSET Y LIMIT
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}, function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -326,7 +325,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                         }
                         // HAY OFFSET Y LIMIT
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -341,7 +340,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                         }
                         // HAY LIMIT PERO NO OFFSET
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -356,7 +355,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                         }
                         // HAY OFFSET PERO NO LIMIT
                         else{
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -379,7 +378,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                 if(qYear == null){
                     // NO HAY NI OFFSET NI LIMIT
                     if(qOffset == undefined && qLimit == undefined){
-                        db.find({}, function(err, docs){
+                        db.find({}).sort({year:1}).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -394,7 +393,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     }
                     // HAY OFFSET PERO NO LIMIT
                     else if(qOffset != undefined && qLimit == undefined){
-                        db.find({}).skip(qOffset).exec(function(err, docs){
+                        db.find({}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -409,7 +408,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     }
                     // HAY LIMIT PERO NO OFFSET
                     else if(qOffset == undefined && qLimit != undefined){
-                        db.find({}).limit(qLimit).exec(function(err, docs){
+                        db.find({}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -424,7 +423,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     }
                     // HAY OFFSET Y LIMIT
                     else{
-                        db.find({}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                        db.find({}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -441,7 +440,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                 else{ // NO HAY QUERY YEAR
                     // NO HAY OFFSET NI LIMIT
                     if(qOffset == undefined && qLimit == undefined){
-                        db.find({year: parseInt(qYear)}, function(err, docs){
+                        db.find({year: parseInt(qYear)}).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -456,7 +455,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     }
                     // HAY OFFSET PERO NO LIMIT
                     else if(qOffset != undefined && qLimit == undefined){
-                        db.find({year: parseInt(qYear)}).skip(qOffset).exec(function(err, docs){
+                        db.find({year: parseInt(qYear)}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -471,7 +470,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     }
                     // HAY LIMIT PERO NO OFFSET
                     else if(qOffset == undefined && qLimit != undefined){
-                        db.find({year: parseInt(qYear)}).limit(qLimit).exec(function(err, docs){
+                        db.find({year: parseInt(qYear)}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -486,7 +485,7 @@ db.find({}).sort({year:1}).exec((err,data) => {
                     }
                     // HAY LIMIT Y OFFSET
                     else{
-                        db.find({year: parseInt(qYear)}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                        db.find({year: parseInt(qYear)}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
