@@ -9,7 +9,7 @@
 
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
-    import PVTable from './productionsVehicles/PVTable.svelte';
+    import PVTable from './productionsVehicles/PvTable.svelte';
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';
