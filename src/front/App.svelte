@@ -8,9 +8,7 @@
     import IUVTable from './inUseVehicles/IUVTable.svelte';
 
     //MARIA
-    import PV from './productionsVehicles/PV.svelte';
-    import PVTable from './productionsVehicles/PVTable.svelte';
-    import PVnewData from './productionsVehicles/PVnewData.svelte';
+    
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';

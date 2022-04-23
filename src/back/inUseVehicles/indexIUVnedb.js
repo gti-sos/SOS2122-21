@@ -9,12 +9,8 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         res.redirect(API_IUV_DOC);
     })
 
-    db.find({ system: 'solar' }).sort({ planet: -1 }).exec(function (err, docs) {
-        // docs is [doc1, doc3, doc2]
-      });
-
     // CREACION DE DATOS AUTOMÁTICA
-    db.find({}).sort({year:1}).exec((err,data) => {
+    db.find({}).sort({year:1}).exec(function(err,data){
         if(data.length == 0){
             db.insert([
                 {
