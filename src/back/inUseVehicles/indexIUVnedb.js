@@ -120,6 +120,20 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                         veh_use_comm: 4444698,
                         veh_use_pass: 25008222,
                         veh_use_per_1000: 622.25
+                    },
+                    {
+                        country: "spain",
+                        year: 2018,
+                        veh_use_comm: 4444698,
+                        veh_use_pass: 25008222,
+                        veh_use_per_1000: 622.25
+                    },
+                    {
+                        country: "spain",
+                        year: 2017,
+                        veh_use_comm: 4444698,
+                        veh_use_pass: 25008222,
+                        veh_use_per_1000: 622.25
                     }
                 ];
                 iniData.forEach((e) => {
@@ -174,9 +188,14 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
                                 else{
-                                    docsCopy = docs;
+                                    docsCopy = [];
+                                    for(let i=0; i < qLimit ; i++){
+                                        if(docs[i] != undefined){
+                                            docsCopy.push(docs[i]);
+                                        }
+                                    }
                                     docsCopy.forEach((e) => {
-                                    delete e._id;
+                                        delete e._id;
                                     });
                                     res.send(JSON.stringify(docsCopy, null, 2));
                                 }
@@ -235,9 +254,14 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
                                 else{
-                                    docsCopy = docs;
+                                    docsCopy = [];
+                                    for(let i=0; i < qLimit ; i++){
+                                        if(docs[i] != undefined){
+                                            docsCopy.push(docs[i]);
+                                        }
+                                    }
                                     docsCopy.forEach((e) => {
-                                    delete e._id;
+                                        delete e._id;
                                     });
                                     res.send(JSON.stringify(docsCopy, null, 2));
                                 }
@@ -298,9 +322,14 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
                                 else{
-                                    docsCopy = docs;
+                                    docsCopy = [];
+                                    for(let i=0; i < qLimit ; i++){
+                                        if(docs[i] != undefined){
+                                            docsCopy.push(docs[i]);
+                                        }
+                                    }
                                     docsCopy.forEach((e) => {
-                                    delete e._id;
+                                        delete e._id;
                                     });
                                     res.send(JSON.stringify(docsCopy, null, 2));
                                 }
@@ -391,14 +420,19 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                     }
                     // HAY OFFSET Y LIMIT
                     else{
-                        db.find({}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
+                        db.find({}).skip(qOffset).sort({year:1}).limit(qLimit).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
                             else{
-                                docsCopy = docs;
+                                docsCopy = [];
+                                for(let i=0; i < qLimit ; i++){
+                                    if(docs[i] != undefined){
+                                        docsCopy.push(docs[i]);
+                                    }
+                                }
                                 docsCopy.forEach((e) => {
-                                delete e._id;
+                                    delete e._id;
                                 });
                                 res.send(JSON.stringify(docsCopy, null, 2));
                             }
@@ -458,9 +492,14 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
                             else{
-                                docsCopy = docs;
+                                docsCopy = [];
+                                for(let i=0; i < qLimit ; i++){
+                                    if(docs[i] != undefined){
+                                        docsCopy.push(docs[i]);
+                                    }
+                                }
                                 docsCopy.forEach((e) => {
-                                delete e._id;
+                                    delete e._id;
                                 });
                                 res.send(JSON.stringify(docsCopy, null, 2));
                             }
