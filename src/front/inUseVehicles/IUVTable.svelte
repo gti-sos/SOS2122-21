@@ -53,7 +53,7 @@
 		}
 		else{
 			if(res.status == "400"){
-				window.alert("BAD REQUEST");
+				window.alert("No se puede realizar la búsqueda entre dichos años");
 			}
 			if(res.status == "405"){
 				window.alert("Método no permitido");
