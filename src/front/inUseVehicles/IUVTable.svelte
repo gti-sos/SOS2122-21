@@ -201,13 +201,9 @@
 		</Table>
 
 		<div align="center">
-			{#await numPags}
-			loading
 			{#each Array(numPags) as _,i}
 				<Button outline color="secondary" on:click={()=>{getIuvPag(i)}}>{i}</Button>&nbsp
 			{/each}
-
-			{/await}
 		</div>
 
 		<Button color="danger" on:click={deleteAll}>ELIMINAR TODOS LOS REGISTROS</Button>
