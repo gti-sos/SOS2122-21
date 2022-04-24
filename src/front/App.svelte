@@ -16,7 +16,7 @@
     import RV from './registrationsVehicles/RV.svelte';
    
     const routes = {
-        "/": Home,
+        "/info": Home,
         "/in-use-vehicles": IUV,
         "/in-use-vehicles/data": IUVTable,      
         "/in-use-vehicles/:country/:year": IUVnewData,
