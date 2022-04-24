@@ -69,6 +69,7 @@ let productionsVehicles=[];
 			console.log("Received data: " + productionsVehicles.length);
 		}
 		else{
+			//mostrar error en la búsqueda
 			if(res.status == "400"){
 				window.alert("No se puede realizar la búsqueda entre dichos años");
 			}
