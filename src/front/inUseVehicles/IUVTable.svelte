@@ -6,6 +6,7 @@
 	const delay = ms => new Promise(res => setTimeout(res, ms));
 
 	let iuv = [];
+	let iuvCopy = [];
 
 	let newIuv = {
 		country: "",
@@ -20,7 +21,7 @@
 	let yTo = currentTime.getFullYear();
 
 	let numPags = 0;
-	const limitPag = 2;
+	const limitPag = 4;
 	const defaultOffset = 0;
 	onMount(getPags)
 	onMount(getIuv);
@@ -35,24 +36,27 @@
 	}
 
 	async function getIuv(parametros="",busqueda=false) {
-		getPags();
 		console.log("Fetching data....");
 		let res;
+		let resBusqueda;
 		if(busqueda){
 			res = await fetch("/api/v1/in-use-vehicles"+parametros+`&offset=${defaultOffset}&limit=${limitPag}`);
+			resBusqueda = await fetch("/api/v1/in-use-vehicles"+parametros);
 		}
 		else{
 			res = await fetch("/api/v1/in-use-vehicles"+parametros+`?offset=${defaultOffset}&limit=${limitPag}`);
 		}
 		
 		console.log(res.ok);
+
 		if (res.ok && busqueda) {
-			console.log("/api/v1/in-use-vehicles"+parametros+`&offset=${defaultOffset}&limit=${limitPag}`);
 			const data = await res.json();
+			const data2 = await resBusqueda.json();
 			iuv = data;
-			numPags = Math.ceil(iuv.length/limitPag)
+			iuvCopy = data2;
+			numPags = Math.ceil(iuvCopy.length/limitPag)
 			await delay(50);
-			window.alert("Búsqueda realizada");
+			window.alert("Búsqueda realizada correctamente");
 			for(let i=0; i<iuv.length ; i++){
 				let y = iuv[i].year;
 				if(y < yFrom){
@@ -91,7 +95,7 @@
 
 	async function getIuvPag(offset){
 		let off = offset * limitPag;
-		const res = await fetch(`/api/v1/in-use-vehicles?offset=${off}&limit=${limitPag}`);
+		const res = await fetch(`/api/v1/in-use-vehicles?from=${yFrom}&to=${yTo}&offset=${off}&limit=${limitPag}`);
 		if(res.ok){
 			const data = await res.json();
 				iuv = data;
@@ -214,6 +218,13 @@
 		<br>
 		<br>
 		<br>
-		<h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el <input bind:value={yTo} type="text"/> <Button color="info" on:click={getIuv(`?from=${yFrom}&to=${yTo}`,true)}>Buscar</Button> </h5>
+		<h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el <input bind:value={yTo} type="text"/> 
+			<Button color="info" on:click={getIuv(`?from=${yFrom}&to=${yTo}`,true)}>Buscar</Button> 
+			<Button outline color="info" on:click={async () =>{
+				window.alert("Búsqueda limpiada correctamente");
+				getIuv(); 
+				location.reload();
+				}}>Limpiar búsqueda</Button> 
+		</h5>
 	{/await}
 </main>

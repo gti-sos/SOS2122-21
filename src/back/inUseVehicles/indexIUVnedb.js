@@ -54,7 +54,70 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                     veh_use_comm: 4444698,
                     veh_use_pass: 25008222,
                     veh_use_per_1000: 622.25
-                }
+                },
+                {
+                    country: "germany",
+                    year: 2019,
+                    veh_use_comm: 3889521,
+                    veh_use_pass: 47715977,
+                    veh_use_per_1000: 620.51,
+                },
+                {
+                    country: "united kingdom",
+                    year: 2019,
+                    veh_use_comm: 5218170,
+                    veh_use_pass: 35168259,
+                    veh_use_per_1000: 602.55,
+                },
+                {
+                    country: "france",
+                    year: 2019,
+                    veh_use_comm: 6702546,
+                    veh_use_pass: 38467190,
+                    veh_use_per_1000: 669.32,
+                },
+                {
+                    country: "italy",
+                    year: 2019,
+                    veh_use_comm: 5219523,
+                    veh_use_pass: 39545232,
+                    veh_use_per_1000: 750.56,
+                },
+                {
+                    country: "spain",
+                    year: 2018,
+                    veh_use_comm: 4316530,
+                    veh_use_pass: 24520287,
+                    veh_use_per_1000: 614.37
+                },
+                {
+                    country: "germany",
+                    year: 2018,
+                    veh_use_comm: 3751843,
+                    veh_use_pass: 47095784,
+                    veh_use_per_1000: 612.48,
+                },
+                {
+                    country: "united kingdom",
+                    year: 2018,
+                    veh_use_comm: 5097345,
+                    veh_use_pass: 34887915,
+                    veh_use_per_1000: 599.95,
+                },
+                {
+                    country: "france",
+                    year: 2018,
+                    veh_use_comm: 6891587,
+                    veh_use_pass: 38253851,
+                    veh_use_per_1000: 670.90,
+                },
+                {
+                    country: "italy",
+                    year: 2018,
+                    veh_use_comm: 5150556,
+                    veh_use_pass: 39018170,
+                    veh_use_per_1000: 738.40,
+                },
             ]);
             console.log("Datos iniciales añadidos automaticamente");
         }
@@ -122,19 +185,68 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                         veh_use_per_1000: 622.25
                     },
                     {
-                        country: "spain",
-                        year: 2018,
-                        veh_use_comm: 4444698,
-                        veh_use_pass: 25008222,
-                        veh_use_per_1000: 622.25
+                        country: "germany",
+                        year: 2019,
+                        veh_use_comm: 3889521,
+                        veh_use_pass: 47715977,
+                        veh_use_per_1000: 620.51,
+                    },
+                    {
+                        country: "united kingdom",
+                        year: 2019,
+                        veh_use_comm: 5218170,
+                        veh_use_pass: 35168259,
+                        veh_use_per_1000: 602.55,
+                    },
+                    {
+                        country: "france",
+                        year: 2019,
+                        veh_use_comm: 6702546,
+                        veh_use_pass: 38467190,
+                        veh_use_per_1000: 669.32,
+                    },
+                    {
+                        country: "italy",
+                        year: 2019,
+                        veh_use_comm: 5219523,
+                        veh_use_pass: 39545232,
+                        veh_use_per_1000: 750.56,
                     },
                     {
                         country: "spain",
-                        year: 2017,
-                        veh_use_comm: 4444698,
-                        veh_use_pass: 25008222,
-                        veh_use_per_1000: 622.25
-                    }
+                        year: 2018,
+                        veh_use_comm: 4316530,
+                        veh_use_pass: 24520287,
+                        veh_use_per_1000: 614.37
+                    },
+                    {
+                        country: "germany",
+                        year: 2018,
+                        veh_use_comm: 3751843,
+                        veh_use_pass: 47095784,
+                        veh_use_per_1000: 612.48,
+                    },
+                    {
+                        country: "united kingdom",
+                        year: 2018,
+                        veh_use_comm: 5097345,
+                        veh_use_pass: 34887915,
+                        veh_use_per_1000: 599.95,
+                    },
+                    {
+                        country: "france",
+                        year: 2018,
+                        veh_use_comm: 6891587,
+                        veh_use_pass: 38253851,
+                        veh_use_per_1000: 670.90,
+                    },
+                    {
+                        country: "italy",
+                        year: 2018,
+                        veh_use_comm: 5150556,
+                        veh_use_pass: 39018170,
+                        veh_use_per_1000: 738.40,
+                    },
                 ];
                 iniData.forEach((e) => {
                     db.insert(e);
