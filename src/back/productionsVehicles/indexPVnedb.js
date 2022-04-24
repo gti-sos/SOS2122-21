@@ -1,5 +1,5 @@
-  //--------------------------------------------María Lacañina Camacho-------------------------------------
-module.exports = (app,BASE_API_URL,bodyParser, db) => {
+ //--------------------------------------------María Lacañina Camacho-------------------------------------
+ module.exports = (app,BASE_API_URL,bodyParser, db) => {
     app.use(bodyParser.json());
     var ProductionsVehicles = []; 
 
@@ -10,7 +10,65 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
     })
 
 
-    //datos de mi API->GET al conjunto de recursos
+//MODIFICACIÓN PARA EL FRONT-END -creación de datos automática
+
+
+// CREACION DE DATOS AUTOMÁTICA
+db.find({}).sort({year:1}).exec((err,data) => {
+    if(data.length == 0){
+        db.insert([
+            {
+                country: "spain",
+                year:2020,
+                veh_use_comm: 4538423,
+                veh_use_pass: 25169158,
+                veh_use_per_1000: 626.76,
+            },
+            {
+                country: "germany",
+                year: 2020,
+                veh_use_comm: 4027249,
+                veh_use_pass: 48248584,
+                veh_use_per_1000: 628.66,
+            },
+            {
+                country: "united kingdom",
+                year: 2020,
+                veh_use_comm: 5949323,
+                veh_use_pass: 42403988,
+                veh_use_per_1000: 632.65,
+            },
+            {
+                country: "france",
+                year: 2020,
+                veh_use_comm: 6598185,
+                veh_use_pass: 44944450,
+                veh_use_per_1000: 666.44,
+            },
+            {
+                country: "italy",
+                year: 2020,
+                veh_use_comm: 5281807,
+                veh_use_pass: 44999681,
+                veh_use_per_1000: 759.39,
+            },
+            {
+                country: "spain",
+                year: 2019,
+                veh_use_comm: 4444698,
+                veh_use_pass: 25008222,
+                veh_use_per_1000: 622.25
+            }
+        ]);
+        console.log("Datos iniciales añadidos automaticamente");
+    }
+    else{
+        console.log("Base de datos cargarda con "+data.length+" registros");
+    }
+});
+
+
+    //datos de mi API->GET al conjunto de recursos (Manual)
     //ruta que al hacer un GET que cree 6 datos en la base de datos si está vacía
 
     app.get(BASE_API_URL+"/productions-vehicles/loadInitialData", (req,res) => {
@@ -103,6 +161,8 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
         }
     }
 
+
+
     app.get(BASE_API_URL + "/productions-vehicles", (req, res) => {
 
         var qYear = req.query.year;
@@ -127,7 +187,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     // EXISTE EL FROM Y EL TO
                     if(qFrom != null && qTo != null){
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -141,7 +201,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                             });
                         }
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -155,7 +215,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                             });
                         }
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -169,7 +229,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                             });
                         }
                         else{
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$and: [{year: {$gte: parseInt(qFrom)}}, {year: {$lte: parseInt(qTo)}}]}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -187,7 +247,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     else if(qFrom == null && qTo != null){
                         // NO HAY OFFSET NI LIMIT
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}, function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -202,7 +262,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                         }
                         // HAY OFFSET Y LIMIT
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -217,7 +277,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                         }
                         // HAY LIMIT PERO NO OFFSET
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -232,7 +292,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                         }
                         // HAY OFFSET PERO NO LIMIT
                         else{
-                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$or: [{year: {$lte: parseInt(qTo)}}]}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -250,7 +310,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     else {
                         // NO HAY OFFSET Y LIMIT
                         if(qOffset == undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}, function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -265,7 +325,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                         }
                         // HAY OFFSET Y LIMIT
                         else if(qOffset != undefined && qLimit != undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -280,7 +340,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                         }
                         // HAY LIMIT PERO NO OFFSET
                         else if(qOffset != undefined && qLimit == undefined){
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).skip(qOffset).exec(function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -295,7 +355,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                         }
                         // HAY OFFSET PERO NO LIMIT
                         else{
-                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).exec(function(err, docs){
+                            db.find({$or: [{year: {$gte: parseInt(qFrom)}}]}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                                 if(err){
                                     res.sendStatus(500,"INTERNAL SERVER ERROR");
                                 }
@@ -318,7 +378,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                 if(qYear == null){
                     // NO HAY NI OFFSET NI LIMIT
                     if(qOffset == undefined && qLimit == undefined){
-                        db.find({}, function(err, docs){
+                        db.find({}).sort({year:1}).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -333,7 +393,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                     // HAY OFFSET PERO NO LIMIT
                     else if(qOffset != undefined && qLimit == undefined){
-                        db.find({}).skip(qOffset).exec(function(err, docs){
+                        db.find({}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -348,7 +408,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                     // HAY LIMIT PERO NO OFFSET
                     else if(qOffset == undefined && qLimit != undefined){
-                        db.find({}).limit(qLimit).exec(function(err, docs){
+                        db.find({}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -363,7 +423,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                     // HAY OFFSET Y LIMIT
                     else{
-                        db.find({}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                        db.find({}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -380,7 +440,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                 else{ // NO HAY QUERY YEAR
                     // NO HAY OFFSET NI LIMIT
                     if(qOffset == undefined && qLimit == undefined){
-                        db.find({year: parseInt(qYear)}, function(err, docs){
+                        db.find({year: parseInt(qYear)}).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -395,7 +455,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                     // HAY OFFSET PERO NO LIMIT
                     else if(qOffset != undefined && qLimit == undefined){
-                        db.find({year: parseInt(qYear)}).skip(qOffset).exec(function(err, docs){
+                        db.find({year: parseInt(qYear)}).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -410,7 +470,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                     // HAY LIMIT PERO NO OFFSET
                     else if(qOffset == undefined && qLimit != undefined){
-                        db.find({year: parseInt(qYear)}).limit(qLimit).exec(function(err, docs){
+                        db.find({year: parseInt(qYear)}).limit(qLimit).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }
@@ -425,7 +485,7 @@ module.exports = (app,BASE_API_URL,bodyParser, db) => {
                     }
                     // HAY LIMIT Y OFFSET
                     else{
-                        db.find({year: parseInt(qYear)}).limit(qLimit).skip(qOffset).exec(function(err, docs){
+                        db.find({year: parseInt(qYear)}).limit(qLimit).skip(qOffset).sort({year:1}).exec(function(err, docs){
                             if(err){
                                 res.sendStatus(500,"INTERNAL SERVER ERROR");
                             }

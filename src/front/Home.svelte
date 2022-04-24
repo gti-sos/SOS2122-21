@@ -1,57 +1,30 @@
+<script>
+	import { push } from "svelte-spa-router";
+	import Button from "sveltestrap/src/Button.svelte";
+</script>
+
 <main>
-    <h2>SOS2122-21</h2>
-    <ul>
-      <li><h5>Team</h5></li>  
-      <ul>
-          <li><a href="https://github.com/marialc0">María Lacañina Camacho</a></li>
-          <li><a href="https://github.com/antruigon">Antonio Ruiz González</a></li>
-          <li><a href="https://github.com/javrodmor29">Javier Rodríguez Morales</a></li>
-      </ul>
-    </ul>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>SOS2122-21</title>
+	</head>
+		<div class="container">
+			<div class="text-center">
+				<h1>SOS2122-21</h1>
+				<p class="lead">
+					Bienvenido a la página principal del proyecto SOS2122-21.
+				</p>
+				<Button color= "primary" on:click={()=>push("#/info")}>Información</Button>
+				
 
-    <ul>
-        <li><h5>Project description:</h5> Nuestro trabajo consiste en la producción de vehículos,las matriculaciones de vehículos nuevos y los vehículos en uso.</li>
-    </ul>
-
-    <ul>
-        <li>
-            <h5>Repository: </h5>
-            <a href="https://github.com/gti-sos/SOS2122-21">gti-sos/SOS2122-21</a>
-        </li>
-    </ul>
-
-    <ul>
-        <li>
-            <h5>URL: </h5>
-            <a href="http://sos2122-21.herokuapp.com"> http://sos2122-21.herokuapp.com
-            </a>
-        </li>
-    </ul>
-
-    <ul>
-        <li>
-            <h5>APIs: </h5>
-            <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/api/v1/productions-vehicles/docs">https://sos2122-21.herokuapp.com/api/v1/productions-vehicles/docs (developed by María Lacañina Camacho)</a></li>
-                <li><a href="https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles/docs">https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles/docs (developed by Antonio Ruiz González)</a></li>
-                <li><a href="https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles/docs">https://sos2122-21.herokuapp.com/api/v1/registrations-vehicles/docs (developed by Javier Rodríguez Morales)</a></li>
-            </ul>
-        </li>
-    </ul>
-
-    <ul>
-        <li>
-            <h5>Frontends: </h5>
-            <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/#/in-use-vehicles">https://sos2122-21.herokuapp.com/in-use-vehicles (developed by Antonio Ruiz Gonzalez)</a></li>              
-            </ul>
-            <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/#/productions-vehicles">https://sos2122-21.herokuapp.com/productions-vehicles (developed by María Lacañina Camacho)</a></li>
-            </ul>
-            <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/#/registrations-vehicles">https://sos2122-21.herokuapp.com/#/registrations-vehicles (developed by Javier Rodríguez Morales)</a></li>
-            </ul>
-        </li>
-    </ul>
-
+			</div>
+		</div>	
+	<style>
+		.text-center {
+			text-align: center;
+			margin-top: 10em;
+			margin-bottom: 23.1em;
+		}
+	</style>
 </main>
