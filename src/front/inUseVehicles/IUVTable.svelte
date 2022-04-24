@@ -36,6 +36,7 @@
 	}
 
 	async function getIuv(parametros="",busqueda=false) {
+		getPags();
 		console.log("Fetching data....");
 		let res;
 		let resBusqueda;
