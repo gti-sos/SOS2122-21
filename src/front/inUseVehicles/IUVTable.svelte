@@ -36,7 +36,6 @@
 	}
 
 	async function getIuv(parametros="",busqueda=false) {
-		getPags();
 		console.log("Fetching data....");
 		let res;
 		let resBusqueda;
@@ -49,6 +48,7 @@
 		}
 		
 		console.log(res.ok);
+		getPags();
 
 		if (res.ok && busqueda) {
 			const data = await res.json();
