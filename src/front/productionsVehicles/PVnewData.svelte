@@ -77,9 +77,25 @@
 				"Content-Type": "application/json",
 			},
 		}).then(function (res) {
+            if (res.ok){
 			getPv();
             window.alert("Registro modificado correctamente");
             pop();
+        }
+        else{
+            if(res.status == "400"){
+				window.alert("La petición no está correctamente formulada");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
+        }
 		});
 		console.log("DONE");
 	}
