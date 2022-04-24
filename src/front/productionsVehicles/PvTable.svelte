@@ -45,6 +45,7 @@ let productionsVehicles=[];
 			
 			const data = await res.json();
 			productionsVehicles = data;
+			//getPaginacionPV();
 			await delay(50);
 			window.alert("Búsqueda realizada");
 			for(let i=0; i<productionsVehicles.length ; i++){
@@ -59,6 +60,7 @@ let productionsVehicles=[];
 		else if(res.ok && !b){	
 			const data = await res.json();
 			productionsVehicles = data;
+			//getPaginacionPV();
 			for(let i=0; i<productionsVehicles.length ; i++){
 				let y = productionsVehicles[i].year;
 				if(y < yFrom){
@@ -70,7 +72,7 @@ let productionsVehicles=[];
 		else{
 			//mostrar error en la búsqueda
 			if(res.status == "400"){
-				window.alert("No se puede realizar la búsqueda entre dichos años");
+				window.alert("La petición no está correctamente formulada");
 			}
 			if(res.status == "405"){
 				window.alert("Método no permitido");
@@ -112,6 +114,18 @@ let productionsVehicles=[];
 				if(res.status == "409"){
 					window.alert("No se puede añadir este registro porque ya existe");
 				}
+				if(res.status == "400"){
+				window.alert("La petición no está correctamente formulada");
+			    }
+			    if(res.status == "405"){
+				window.alert("Método no permitido");
+			    }
+			   if(res.status == "404"){
+			   window.alert("Elemento no encontrado");
+			   }
+			  if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			 }
 			}
 		});
 		console.log("DONE");
@@ -122,9 +136,27 @@ let productionsVehicles=[];
    async function loadInitialData() {
 		console.log("Inserting default data");
 		await fetch("/api/v1/productions-vehicles/loadInitialData").then(async function (res) {
+			if (res.ok){
 			getPv();
 			await delay(50);
 			window.alert("Registros añadidos correctamente");
+		   }
+        else{
+			if(res.status == "400"){
+				window.alert("La petición no está correctamente formulada");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
+
+		}
+
 		});
 	}
 
@@ -135,10 +167,27 @@ let productionsVehicles=[];
 		const res = await fetch("/api/v1/productions-vehicles/"+id, {
 			method: "DELETE",
 		}).then(async function (res) {
+			if(res.ok){
 			getPv();
 			await delay(50);
          //mensaje de eliminado el recurso en concreto
 			window.alert("Registro eliminado correctamente");
+		}
+		else{
+			if(res.status == "400"){
+				window.alert("La petición no está correctamente formulada");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
+
+		}
 		});
 	}
 
@@ -149,10 +198,26 @@ let productionsVehicles=[];
 		const res = await fetch("/api/v1/productions-vehicles", {
 			method: "DELETE",
 		}).then(async function (res) {
+			if(res.ok){
 			getPv();
 			await delay(50);
          //mensaje de elminado todos los registros
 			window.alert("Registros eliminados correctamente");
+		}
+		else{
+			if(res.status == "400"){
+				window.alert("La petición no está correctamente formulada");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
+		}
 		});
 	}
 
@@ -180,7 +245,7 @@ let productionsVehicles=[];
 			update();
 		}else{
 			if(res.status == "400"){
-				window.alert("No se puede realizar la paginación");
+				window.alert("La petición no está correctamente formulada");
 			}
 			if(res.status == "405"){
 				window.alert("Método no permitido");

@@ -10,8 +10,8 @@
 
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
-    import PVTable from './productionsVehicles/PVTable.svelte';
     import PVnewData from './productionsVehicles/PVnewData.svelte';
+    import PVTable from './productionsVehicles/PVTable.svelte';
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';
