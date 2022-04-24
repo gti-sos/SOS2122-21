@@ -2,8 +2,7 @@
 <script>
 
 import {onMount} from 'svelte';
-   import Table from "sveltestrap/src/Table.svelte";
-   import Button from "sveltestrap/src/Button.svelte";
+import {Pagination, PaginationItem, PaginationLink, Table, Button, Alert } from "sveltestrap";
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -104,6 +103,7 @@ let productionsVehicles=[];
 				newPV.veh_pass="";
 				newPV.veh_annprod="";
 				getPv(); //para que cuando se añadan los registros no haga falta recargar,si no que directamente aparezca la actualización con los añadidos
+				getPaginacionPV();
 				await delay(50);
 				window.alert("Registro añadido correctamente");
 			}
@@ -156,6 +156,72 @@ let productionsVehicles=[];
 		});
 	}
 
+
+/////////////////////////////////////
+
+	//PAGINACIÓN
+
+	let c_offset = 0;
+    let offset = 0;
+    let limit = 10;
+    let c_page = 1;
+    let lastPage = 1;
+    let total = 0;
+
+	async function getPaginacionPV() {
+    	console.log("Fetching data...");
+   		const res = await fetch("/api/v1/productions-vehicles"+ "?limit=" + limit + "&offset=" + c_offset);
+		
+        if(res.ok){
+
+			const data = await res.json();
+			productionsVehicles= data;
+			console.log("Registros recibidos: "+productionsVehicles.length);
+			update();
+		}else{
+			if(res.status == "400"){
+				window.alert("No se puede realizar la paginación");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
+		}
+  	}
+
+//funciones
+
+	  async function update() {
+      const res = await fetch("/api/v1/productions-vehicles");
+      if (res.status == 200) {
+        const json = await res.json();
+        total = json.length;
+        changePage(c_page, c_offset);
+      } 
+    }
+
+	
+	function range(size, start = 0) {
+      return [...Array(size).keys()].map((i) => i + start);
+	}
+
+	function changePage(page, offset) {
+      
+      lastPage = Math.ceil(total/limit);
+      console.log("Last page = " + lastPage);
+      if (page !== c_page) {
+        c_offset = offset;
+        c_page = page;
+        getPv();
+		getPaginacionPV();
+      }
+
+	}
 
 
 </script>
@@ -219,7 +285,26 @@ let productionsVehicles=[];
          <br>
          <!--para la búsqueda (to y from)-->
          <h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el año <input bind:value={yTo} type="text"/> <Button color="info" on:click={getPv(`?from=${yFrom}&to=${yTo}`,true)}>Buscar</Button> </h5>
-      {/await}
+      
+		 <div>
+			<Pagination ariaLabel="Web pagination">
+			  <PaginationItem class = {c_page === 1 ? "disabled" : ""}>
+					<PaginationLink previous href="#/productions-vehicles/data" on:click={() => changePage(c_page - 1, c_offset - 10)}/>
+			  </PaginationItem>
+			  {#each range(lastPage, 1) as page}
+					<PaginationItem class = {c_page === page ? "active" : ""}>
+					  <PaginationLink previous href="#/productions-vehicles/data" on:click={() => changePage(page, (page - 1) * 10)}>
+						  {page}
+					  </PaginationLink>
+					</PaginationItem>
+			  {/each}
+			  <PaginationItem class = {c_page === lastPage ? "disabled" : ""}>
+					<PaginationLink next href="#/productions-vehicles/data" on:click={() => changePage(c_page + 1, c_offset + 10)}/>
+			  </PaginationItem>
+			</Pagination>
+	
+	  </div>
+		 {/await}
    </main>
    
 

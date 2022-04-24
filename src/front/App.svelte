@@ -1,6 +1,7 @@
 <script>
     import Router from 'svelte-spa-router';
     import Home from './Home.svelte';
+    import Info from './Info.svelte';
 
     //ANTONIO
     import IUV from './inUseVehicles/IUV.svelte';
@@ -16,7 +17,8 @@
     import RV from './registrationsVehicles/RV.svelte';
    
     const routes = {
-        "/info": Home,
+        "/": Home,
+        "/info":Info,
         "/in-use-vehicles": IUV,
         "/in-use-vehicles/data": IUVTable,      
         "/in-use-vehicles/:country/:year": IUVnewData,
