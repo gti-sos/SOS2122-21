@@ -1,11 +1,12 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount, afterUpdate } from "svelte";
 	import Table from "sveltestrap/src/Table.svelte";
 	import Button from "sveltestrap/src/Button.svelte";
 
 	const delay = ms => new Promise(res => setTimeout(res, ms));
 
 	let iuv = [];
+
 	let newIuv = {
 		country: "",
 		year: "",
@@ -18,18 +19,38 @@
 	let yFrom = currentTime.getFullYear();
 	let yTo = currentTime.getFullYear();
 
+	let numPags = 0;
+	const limitPag = 2;
+	const defaultOffset = 0;
+	onMount(getPags)
 	onMount(getIuv);
 
-	async function getIuv(parametros="",b=false) {
-		console.log("Fetching data....");
-		const res = await fetch("/api/v1/in-use-vehicles"+parametros);
-						
-
-		console.log(res.ok);
-		if (res.ok && b) {
-			
+	async function getPags(){
+		const res = await fetch("/api/v1/in-use-vehicles");
+		if(res.ok){
 			const data = await res.json();
 			iuv = data;
+		}
+		numPags = Math.ceil(iuv.length/limitPag);
+	}
+
+	async function getIuv(parametros="",busqueda=false) {
+		getPags();
+		console.log("Fetching data....");
+		let res;
+		if(busqueda){
+			res = await fetch("/api/v1/in-use-vehicles"+parametros+`&offset=${defaultOffset}&limit=${limitPag}`);
+		}
+		else{
+			res = await fetch("/api/v1/in-use-vehicles"+parametros+`?offset=${defaultOffset}&limit=${limitPag}`);
+		}
+		
+		console.log(res.ok);
+		if (res.ok && busqueda) {
+			console.log("/api/v1/in-use-vehicles"+parametros+`&offset=${defaultOffset}&limit=${limitPag}`);
+			const data = await res.json();
+			iuv = data;
+			numPags = Math.ceil(iuv.length/limitPag)
 			await delay(50);
 			window.alert("Búsqueda realizada");
 			for(let i=0; i<iuv.length ; i++){
@@ -40,7 +61,7 @@
 			}
 			console.log("Received data: " + iuv.length);
 		}
-		else if(res.ok && !b){	
+		else if(res.ok && !busqueda){	
 			const data = await res.json();
 			iuv = data;
 			for(let i=0; i<iuv.length ; i++){
@@ -49,6 +70,7 @@
 					yFrom = y;
 				}
 			}
+			console.log("Numero paginas: "+numPags);
 			console.log("Received data: " + iuv.length);
 		}
 		else{
@@ -64,6 +86,16 @@
 			if(res.status == "500"){
 				window.alert("INTERNAL SERVER ERROR");
 			}
+		}
+	}
+
+	async function getIuvPag(offset){
+		let off = offset * limitPag;
+		const res = await fetch(`/api/v1/in-use-vehicles?offset=${off}&limit=${limitPag}`);
+		if(res.ok){
+			const data = await res.json();
+				iuv = data;
+				await delay(50);
 		}
 	}
 
@@ -167,8 +199,20 @@
 				</tr>
 			</tbody>
 		</Table>
+
+		<div align="center">
+			{#await numPags}
+			loading
+			{#each Array(numPags) as _,i}
+				<Button outline color="secondary" on:click={()=>{getIuvPag(i)}}>{i}</Button>&nbsp
+			{/each}
+
+			{/await}
+		</div>
+
 		<Button color="danger" on:click={deleteAll}>ELIMINAR TODOS LOS REGISTROS</Button>
 		<Button outline color="primary" on:click={loadInitialData}>Importar registros por defecto</Button>
+		<br>
 		<br>
 		<br>
 		<br>
