@@ -1,5 +1,5 @@
 <script>
-	import { onMount, afterUpdate } from "svelte";
+	import { onMount } from "svelte";
 	import Table from "sveltestrap/src/Table.svelte";
 	import Button from "sveltestrap/src/Button.svelte";
 
@@ -36,6 +36,7 @@
 	}
 
 	async function getIuv(parametros="",busqueda=false) {
+		getPags();
 		console.log("Fetching data....");
 		let res;
 		let resBusqueda;
@@ -48,7 +49,6 @@
 		}
 		
 		console.log(res.ok);
-		getPags();
 
 		if (res.ok && busqueda) {
 			const data = await res.json();
@@ -224,7 +224,6 @@
 			<Button outline color="info" on:click={async () =>{
 				window.alert("Búsqueda limpiada correctamente");
 				getIuv(); 
-				location.reload();
 				}}>Limpiar búsqueda</Button> 
 		</h5>
 	{/await}
