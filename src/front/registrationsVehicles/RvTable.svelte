@@ -21,7 +21,7 @@
 	let yTo = currentTime.getFullYear();
 
 	let numPags = 0;
-	const limitPag = 4;
+	const limitPag = 10;
 	const defaultOffset = 0;
 	onMount(getPags)
 	onMount(getRv);
@@ -229,5 +229,3 @@
 		</h5>
 	{/await}
 </main>
-
-
