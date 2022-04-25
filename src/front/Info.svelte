@@ -64,7 +64,7 @@
                 <li><a href="https://sos2122-21.herokuapp.com/#/productions-vehicles">https://sos2122-21.herokuapp.com/productions-vehicles (developed by María Lacañina Camacho)</a></li>
             </ul>
             <ul>
-                <li><a href="https://sos2122-21.herokuapp.com/#/registrations-vehicles">https://sos2122-21.herokuapp.com/#/registrations-vehicles (developed by Javier Rodríguez Morales)</a></li>
+                <li><a href="https://sos2122-21.herokuapp.com/#/registrations-vehicles">https://sos2122-21.herokuapp.com/registrations-vehicles (developed by Javier Rodríguez Morales)</a></li>
             </ul>
         </li>
     </ul>

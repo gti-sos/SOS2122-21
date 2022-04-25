@@ -15,7 +15,9 @@
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';
-   
+    import RVnewData from './registrationsVehicles/RVnewData.svelte';
+    import RvTable from './registrationsVehicles/RvTable.svelte';
+
     const routes = {
         "/": Home,
         "/info":Info,
@@ -25,7 +27,10 @@
         "/productions-vehicles": PV,
         "/productions-vehicles/data":PVTable,
         "/productions-vehicles/:country/:year": PVnewData,
-        "/registrations-vehicles": RV
+        "/registrations-vehicles": RV,
+        "/registrations-vehicles/data":RvTable,
+        "/registrations-vehicles/:country/:year": RVnewData
+
     }
 
 </script>
