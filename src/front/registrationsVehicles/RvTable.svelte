@@ -224,7 +224,6 @@
 			<Button outline color="info" on:click={async () =>{
 				window.alert("Búsqueda limpiada correctamente");
 				getRv(); 
-				location.reload();
 				}}>Limpiar búsqueda</Button> 
 		</h5>
 	{/await}
