@@ -64,8 +64,9 @@
 			iuv = data;
 			iuvCopy = data2;
 			numPags = Math.ceil(iuvCopy.length/limitPag)
-			await delay(50);
-			window.alert("Búsqueda realizada correctamente");
+			visibilidad = true;
+			color="success";
+			estado="Búsqueda realizada correctamente";
 			for(let i=0; i<iuv.length ; i++){
 				let y = iuv[i].year;
 				if(y < yFrom){
