@@ -9,7 +9,126 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
     })
 
 
-    // CREACION DE DATOS
+    // CREACION DE DATOS AUTOMÁTICA
+    db.find({}).sort({year:1}).exec(function(err,data){
+        if(data.length == 0){
+            db.insert([
+                {
+                    country: "spain",
+                    year:2020,
+                    veh_sale: 4538423,
+                    veh_per_1000: 25169158,
+                    variation: 626.76,
+                },
+                {
+                    country: "germany",
+                    year: 2020,
+                    veh_sale: 4027249,
+                    veh_per_1000: 48248584,
+                    variation: 628.66,
+                },
+                {
+                    country: "united kingdom",
+                    year: 2020,
+                    veh_sale: 5949323,
+                    veh_per_1000: 42403988,
+                    variation: 632.65,
+                },
+                {
+                    country: "france",
+                    year: 2020,
+                    veh_sale: 6598185,
+                    veh_per_1000: 44944450,
+                    variation: 666.44,
+                },
+                {
+                    country: "italy",
+                    year: 2020,
+                    veh_sale: 5281807,
+                    veh_per_1000: 44999681,
+                    variation: 759.39,
+                },
+                {
+                    country: "spain",
+                    year: 2019,
+                    veh_sale: 4444698,
+                    veh_per_1000: 25008222,
+                    variation: 622.25
+                },
+                {
+                    country: "germany",
+                    year: 2019,
+                    veh_sale: 3889521,
+                    veh_per_1000: 47715977,
+                    variation: 620.51,
+                },
+                {
+                    country: "united kingdom",
+                    year: 2019,
+                    veh_sale: 5218170,
+                    veh_per_1000: 35168259,
+                    variation: 602.55,
+                },
+                {
+                    country: "france",
+                    year: 2019,
+                    veh_sale: 6702546,
+                    veh_per_1000: 38467190,
+                    variation: 669.32,
+                },
+                {
+                    country: "italy",
+                    year: 2019,
+                    veh_sale: 5219523,
+                    veh_per_1000: 39545232,
+                    variation: 750.56,
+                },
+                {
+                    country: "spain",
+                    year: 2018,
+                    veh_sale: 4316530,
+                    veh_per_1000: 24520287,
+                    variation: 614.37
+                },
+                {
+                    country: "germany",
+                    year: 2018,
+                    veh_sale: 3751843,
+                    veh_per_1000: 47095784,
+                    variation: 612.48,
+                },
+                {
+                    country: "united kingdom",
+                    year: 2018,
+                    veh_sale: 5097345,
+                    veh_per_1000: 34887915,
+                    variation: 599.95,
+                },
+                {
+                    country: "france",
+                    year: 2018,
+                    veh_sale: 6891587,
+                    veh_per_1000: 38253851,
+                    variation: 670.90,
+                },
+                {
+                    country: "italy",
+                    year: 2018,
+                    veh_sale: 5150556,
+                    veh_per_1000: 39018170,
+                    variation: 738.40,
+                },
+            ]);
+            console.log("Datos iniciales añadidos automaticamente");
+        }
+        else{
+            console.log("Base de datos cargarda con "+data.length+" registros");
+        }
+    });
+
+
+
+    // CREACION DE DATOS MANUAL
     app.get(BASE_API_URL+"/registrations-vehicles/loadInitialData", (req,res) => {
         //búsqueda
         db.find({},function(err, docs){
