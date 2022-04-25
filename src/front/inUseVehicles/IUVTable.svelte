@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { Alert } from "sveltestrap";
+	import { Alert, Col, Container, Row } from "sveltestrap";
 	import Table from "sveltestrap/src/Table.svelte";
 	import Button from "sveltestrap/src/Button.svelte";
 
@@ -124,10 +124,10 @@
 	async function insertIuv() {
 		console.log("Inserting data...." + JSON.stringify(newIuv));
 		if (newIuv.country == "" || 
-			newIuv.year == null ||
-            newIuv.veh_use_comm == null || 
-			newIuv.veh_use_pass == null || 
-			newIuv.veh_use_per_1000 == null ){
+			newIuv.year == "" ||
+            newIuv.veh_use_comm == "" || 
+			newIuv.veh_use_pass == "" || 
+			newIuv.veh_use_per_1000 == "" ){
 			visibilidad = true;
 			color="warning";
 			estado=`Ningún campo debe estar vacio`;
@@ -205,9 +205,16 @@
 	{#await iuv}
 		loading
 	{:then iuv}
-		<Alert color={color} isOpen={visibilidad} toggle={() => (visibilidad = false)}>
-				{estado}
-		</Alert>
+		<Container>
+			<Row>
+				<Col xs="6" sm="4"></Col>
+    			<Col xs="6" sm="4">
+					<Alert color={color} isOpen={visibilidad} toggle={() => (visibilidad = false)}>
+						{estado}
+					</Alert>
+				</Col>
+			</Row>
+		</Container>
 		
 		<Table bordered>
 			<thead>
@@ -259,7 +266,9 @@
 		<h5>Buscar registros entre el año <input bind:value={yFrom} type="text"/> y el <input bind:value={yTo} type="text"/> 
 			<Button color="info" on:click={getIuv(`?from=${yFrom}&to=${yTo}`,true)}>Buscar</Button> 
 			<Button outline color="info" on:click={async () =>{
-				window.alert("Búsqueda limpiada correctamente");
+				visibilidad = true;
+				color="success";
+				estado="Búsqueda limpiada correctamente";
 				getIuv(); 
 				}}>Limpiar búsqueda</Button> 
 		</h5>
