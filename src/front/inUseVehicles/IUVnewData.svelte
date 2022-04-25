@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     export let params = {};
-    import { Table,Button } from "sveltestrap";
+    import { Table,Button,Alert } from "sveltestrap";
     import { pop } from "svelte-spa-router"
     import { Icon } from 'sveltestrap';
 
@@ -10,6 +10,10 @@
     onMount(getIuv);
 
     let iuv = {};
+
+    let estado = "";
+    let visibilidad = false;
+    let color = "danger";
 
     let updatedCountry;
     let updatedYear;
@@ -42,8 +46,10 @@
         }
         else{
             if(res.status=="404"){
-                window.alert(`No existe un registro con el pais '${params.country}' y el año '${params.year}'`);
-                pop();
+                visibilidad = true;
+			    color="danger";
+			    estado=`No existe ningun recurso con el país "${params.country}" y el año "${params.year}"`;
+                //pop();
             }
         }
     }
@@ -56,18 +62,28 @@
         newIuv.veh_use_per_1000 = updatedVeh_use_per_1000;
 		console.log("Updating...." + JSON.stringify(newIuv));
         console.log(newIuv);
-		const res = await fetch("/api/v1/in-use-vehicles/"+params.country+"/"+params.year, {
-			method: "PUT",
-			body: JSON.stringify(newIuv),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		}).then(function (res) {
-			getIuv();
-            window.alert("Registro modificado correctamente");
-            pop();
-		});
-		console.log("DONE");
+        if (updatedVeh_use_comm == null || 
+			updatedVeh_use_pass == null || 
+			updatedVeh_use_per_1000 == null ){
+			visibilidad = true;
+			color="danger";
+			estado=`Ningún campo debe estar vacio`;
+		}
+        else{
+            const res = await fetch("/api/v1/in-use-vehicles/"+params.country+"/"+params.year, {
+                method: "PUT",
+                body: JSON.stringify(newIuv),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then(function (res) {
+                getIuv();
+                visibilidad = true;
+                color="success";
+                estado=`Registro editado correctamente`;
+            });
+            console.log("DONE");
+        }
 	}
 </script>
 
@@ -77,7 +93,11 @@
     loading
         {:then iuv}
         
-    
+        <Alert color={color} isOpen={visibilidad} toggle={() => (visibilidad = false)}>
+            {estado}
+        </Alert>
+
+        {#if !visibilidad}
         <Table bordered>
             <thead>
                 <tr align="center">
@@ -100,6 +120,7 @@
                 </tr>
             </tbody>
         </Table>
+        {/if}
     {/await}
 
     <Button color="info" on:click="{pop}"> <Icon name="arrow-return-left"/> </Button>

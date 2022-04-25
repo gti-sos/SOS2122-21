@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from "svelte";
+	import { Alert } from "sveltestrap";
 	import Table from "sveltestrap/src/Table.svelte";
 	import Button from "sveltestrap/src/Button.svelte";
 
@@ -7,6 +8,10 @@
 
 	let iuv = [];
 	let iuvCopy = [];
+
+	let estado = "";
+    let visibilidad = false;
+    let color = "danger";
 
 	let newIuv = {
 		country: "",
@@ -16,6 +21,8 @@
 		veh_use_per_1000: "",
 	};
 
+
+
 	var currentTime = new Date();
 	let yFrom = currentTime.getFullYear();
 	let yTo = currentTime.getFullYear();
@@ -23,7 +30,7 @@
 	let numPags = 0;
 	const limitPag = 4;
 	const defaultOffset = 0;
-	onMount(getPags)
+	//onMount(getPags)
 	onMount(getIuv);
 
 	async function getPags(){
@@ -34,8 +41,9 @@
 		}
 		numPags = Math.ceil(iuv.length/limitPag);
 	}
-
+	
 	async function getIuv(parametros="",busqueda=false) {
+		
 		getPags();
 		console.log("Fetching data....");
 		let res;
@@ -80,16 +88,24 @@
 		}
 		else{
 			if(res.status == "400"){
-				window.alert("No se puede realizar la búsqueda entre dichos años");
+				visibilidad = true;
+				color="danger";
+				estado="No se puede realizar la búsqueda entre dichos años";
 			}
 			if(res.status == "405"){
-				window.alert("Método no permitido");
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
 			}
 			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
 			}
 			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
 			}
 		}
 	}
@@ -106,30 +122,44 @@
 
 	async function insertIuv() {
 		console.log("Inserting data...." + JSON.stringify(newIuv));
-		const res = await fetch("/api/v1/in-use-vehicles", {
-			method: "POST",
-			body: JSON.stringify(newIuv),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		}).then(async function (res) {
-			if (res.ok){
-				newIuv.country="";
-				newIuv.year="";
-				newIuv.veh_use_comm="";
-				newIuv.veh_use_pass="";
-				newIuv.veh_use_per_1000="";
-				getIuv();
-				await delay(50);
-				window.alert("Registro añadido correctamente");
-			}
-			else{
-				if(res.status == "409"){
-					window.alert("No se puede añadir este registro porque ya existe");
+		if (newIuv.country == "" || 
+			newIuv.year == null ||
+            newIuv.veh_use_comm == null || 
+			newIuv.veh_use_pass == null || 
+			newIuv.veh_use_per_1000 == null ){
+			visibilidad = true;
+			color="warning";
+			estado=`Ningún campo debe estar vacio`;
+		}
+		else{
+			const res = await fetch("/api/v1/in-use-vehicles", {
+				method: "POST",
+				body: JSON.stringify(newIuv),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}).then(async function (res) {
+				if (res.ok){
+					newIuv.country="";
+					newIuv.year="";
+					newIuv.veh_use_comm="";
+					newIuv.veh_use_pass="";
+					newIuv.veh_use_per_1000="";
+					getIuv();
+					visibilidad = true;
+					color="success";
+					estado="Registro añadido correctamente";
 				}
-			}
-		});
-		console.log("DONE");
+				else{
+					if(res.status == "409"){
+						visibilidad = true;
+						color="danger";
+						estado=`Ya existe un registro con el país "${newIuv.country}" y el año "${newIuv.year}"`;
+					}
+				}
+			});
+			console.log("DONE");
+		}
 	}
 
 	async function deleteAll() {
@@ -137,9 +167,10 @@
 		const res = await fetch("/api/v1/in-use-vehicles", {
 			method: "DELETE",
 		}).then(async function (res) {
+			visibilidad = true;
 			getIuv();
-			await delay(50);
-			window.alert("Registros eliminados correctamente");
+			color="success";
+			estado="Registros eliminados correctamente";
 		});
 	}
 
@@ -147,8 +178,9 @@
 		console.log("Inserting default data");
 		await fetch("/api/v1/in-use-vehicles/loadInitialData").then(async function (res) {
 			getIuv();
-			await delay(50);
-			window.alert("Registros añadidos correctamente");
+			visibilidad = true;
+			color="success";
+			estado="Registros añadidos correctamente";
 		});
 	}
 
@@ -159,11 +191,11 @@
 			method: "DELETE",
 		}).then(async function (res) {
 			getIuv();
-			await delay(50);
-			window.alert("Registro eliminado correctamente");
+			visibilidad = true;
+			color="success";
+			estado="Registro eliminado correctamente";
 		});
 	}
-
 
 </script>
 
@@ -172,6 +204,10 @@
 	{#await iuv}
 		loading
 	{:then iuv}
+		<Alert color={color} isOpen={visibilidad} toggle={() => (visibilidad = false)}>
+				{estado}
+		</Alert>
+		
 		<Table bordered>
 			<thead>
 				<tr align="center">
@@ -195,11 +231,11 @@
 					</tr>
 				{/each}
 				<tr align="center">
-					<td><input bind:value={newIuv.country} type="text" /></td>
-					<td><input bind:value={newIuv.year} type="number" /></td>
-					<td><input bind:value={newIuv.veh_use_comm}	type="number"	/></td>
-					<td><input bind:value={newIuv.veh_use_pass} type="number"/></td>
-					<td><input bind:value={newIuv.veh_use_per_1000} type="number"/></td>
+					<td><input bind:value={newIuv.country} type="text" required/></td>
+					<td><input bind:value={newIuv.year} type="number" required/></td>
+					<td><input bind:value={newIuv.veh_use_comm}	type="number"	required/></td>
+					<td><input bind:value={newIuv.veh_use_pass} type="number" required/></td>
+					<td><input bind:value={newIuv.veh_use_per_1000} type="number" required/></td>
 					<td	><Button outline color="primary" on:click={insertIuv}>Añadir</Button></td>
 				</tr>
 			</tbody>
