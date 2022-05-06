@@ -7,6 +7,7 @@
     import IUV from './inUseVehicles/IUV.svelte';
     import IUVnewData from './inUseVehicles/IUVnewData.svelte';
     import IUVTable from './inUseVehicles/IUVTable.svelte';
+    import IuvGraph from './inUseVehicles/IUVGraph.svelte';
 
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
@@ -29,7 +30,8 @@
         "/productions-vehicles/:country/:year": PVnewData,
         "/registrations-vehicles": RV,
         "/registrations-vehicles/data":RvTable,
-        "/registrations-vehicles/:country/:year": RVnewData
+        "/registrations-vehicles/:country/:year": RVnewData,
+        "/in-use-vehicles/graph": IuvGraph
 
     }
 
