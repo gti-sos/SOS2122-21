@@ -1,5 +1,8 @@
 <script>
     import { onMount } from "svelte";
+    import {Col, Container, Row} from "sveltestrap";
+    import App from "../App.svelte";
+    import Home from "../Home.svelte";
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let apiData = [];
@@ -17,6 +20,9 @@
     let m3 = new Map();
 
     let years = [];
+
+    let yK = [];
+    let lab = [];
 
     function sortSet(set) {
         const entries = [];
@@ -46,10 +52,12 @@
             });
 
             apiData.forEach((e) => {
-                if (m.has(e.country)) {
-                    m.get(e.country).push(e.veh_use_per_1000);
+                if (m.has(e.year)) {
+                    let lAux =  [e.country, e.veh_use_per_1000];
+                    m.get(e.year).push(lAux);
                 } else {
-                    m.set(e.country, [e.veh_use_per_1000]);
+                    let lAux = [e.country, e.veh_use_per_1000];
+                    m.set(e.year, [lAux]);
                 }
 
                 if (m2.has(e.country)) {
@@ -72,7 +80,8 @@
                 }
             });
 
-            dataPer1000 = crearData(m, sortedS);
+
+            dataPer1000 = crearDataMorris(m);
             dataComm = crearData(m2, sortedS);
             dataPass = crearData(m3, sortedS);
 
@@ -82,6 +91,32 @@
             console.log("Error in request");
         }
     }
+
+
+    function crearDataMorris(m){
+        const iterator = m[Symbol.iterator]();
+        let array = [];
+            for(let e of iterator){
+                let json = {};
+                json["year"] = e[0];
+                let datos = e[1].sort((a, b) => b[1] - a[1]);
+                for(let i = 0 ; i < datos.length ; i++){
+                    let pais = datos[i][0];
+                    let dato = datos[i][1];
+                    json[pais] = dato;
+                
+                    if(!yK.includes(pais)){
+                        yK.push(pais);
+                    }
+                    if(!lab.includes(pais)){
+                        lab.push(pais);
+                    }
+                }
+                array.push(json);
+            }
+        return array;
+    }
+
 
     function crearData(m, sortedS) {
         let aux = [];
@@ -102,7 +137,9 @@
         return aux;
     }
 
+
     async function loadGraph() {
+
         Highcharts.chart("container", {
             title: {
                 text: `Vehículos comerciales en uso, ${minY}-${maxY}`,
@@ -162,7 +199,7 @@
                 text: `Vehículos de pasajeros en uso, ${minY}-${maxY}`,
             },
             subtitle: {
-                text: "Fuenta: datosmacro.com",
+                text: "Fuente: datosmacro.com",
             },
 
             xAxis: {
@@ -194,18 +231,17 @@
             series: dataPass,
         });
 
-        new Morris.Area({
+        new Morris.Bar({
             element: "container3",
-            data: [
-                { year: "2008", value: 20,a: 12 },
-                { year: "2009", value: 10, a:15 },
-                { year: "2010", value: 5, a: 22},
-                { year: "2011", value: 5,a:30},
-                { year: "2012", value: 20,a: 17},
-            ],
-            xkey: "year",
-            ykeys: ["value", "a"],
-            labels: ["Value", "a"],
+            data: dataPer1000,
+            xkey: 'year',
+            ykeys: yK,
+            labels: lab,
+            fillOpacity: 0.6,
+            hideHover: 'auto',
+            behaveLikeLine: true,
+            resize: true,
+            stacked: true,
         });
     }
     onMount(getData);
@@ -236,6 +272,9 @@
     </figure>
 
     <figure class="highcharts-figure">
+        <Row>
+            <h5 class="text-center">Vehículos en uso por cada 1000 personas (Gráfico Morris.js)</h5>
+        </Row>
         <div id="container3" />
         <br />
     </figure>
