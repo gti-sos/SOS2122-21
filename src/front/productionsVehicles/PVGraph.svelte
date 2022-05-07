@@ -22,7 +22,7 @@
                 graphDatavehuseper1000.push([country_year, per])
             });
         } else {
-            console.log("Error loading fires");
+            console.log("Error cargando datos");
         }
         console.log("Generando grafo con los siguientes datos:")
         //el gráfico
