@@ -43,7 +43,7 @@
             yAxis: {
                 title: {
                     text: 'Número de unidades',
-                    x: -10
+                    x: 10
                 },
                 labels: {
                     format: '{value:,.0f} unidades'
