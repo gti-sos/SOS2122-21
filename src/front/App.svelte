@@ -13,6 +13,7 @@
     import PV from './productionsVehicles/PV.svelte';
     import PVnewData from './productionsVehicles/PVnewData.svelte';
     import PVTable from './productionsVehicles/PvTable.svelte';
+    import PVGraph from './productionsVehicles/PVGraph.svelte';
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';
@@ -25,13 +26,15 @@
         "/in-use-vehicles": IUV,
         "/in-use-vehicles/data": IUVTable,      
         "/in-use-vehicles/:country/:year": IUVnewData,
+        "/in-use-vehicles/graph": IuvGraph,
         "/productions-vehicles": PV,
         "/productions-vehicles/data":PVTable,
         "/productions-vehicles/:country/:year": PVnewData,
+        "/productions-vehicles/graph": PVGraph,
         "/registrations-vehicles": RV,
         "/registrations-vehicles/data":RvTable,
-        "/registrations-vehicles/:country/:year": RVnewData,
-        "/in-use-vehicles/graph": IuvGraph
+        "/registrations-vehicles/:country/:year": RVnewData
+    
 
     }
 
