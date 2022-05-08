@@ -1,3 +1,4 @@
+
 <script>
     import {onMount} from "svelte";
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -14,15 +15,15 @@
             console.log(JSON.stringify(PVData, null, 2))
             PVData.forEach(data => {
                 let country_year = data.country + "-" + data.year;
-                let comm = data["veh_use_comm"];
-                let pass = data["veh_use_pass"];
-                let per= data["veh_use_per_1000"]
+                let comm = data["veh_comm"];
+                let pass = data["veh_pass"];
+                let per= data["veh_annprod"]
                 graphDatavehusecomm.push([country_year, comm])
                 graphDatavehusepass.push([country_year, pass])
                 graphDatavehuseper1000.push([country_year, per])
             });
         } else {
-            console.log("Error cargando datos");
+            console.log("Error loading fires");
         }
         console.log("Generando grafo con los siguientes datos:")
         //el gráfico
@@ -41,10 +42,14 @@
                 text: "Estadísticas de vehículos comerciales,pasajeros y la produción anual de vehículos"
             },
             yAxis: {
+                
                 title: {
-                    text: 'Número de unidades',
-                    x: 10
+                    text:
+                     'Número de unidades',
+                    x:5
+                    
                 },
+                
                 labels: {
                     format: '{value:,.0f} unidades'
                 },
@@ -81,7 +86,7 @@
             series: [{
                 name: "Vehiculos comerciales",
                 lineColor: 'rgb(180,90,50)',
-                color: 'rgb(200,110,50)',
+                color: 'rgb(201,110,50)',
                 fillColor: 'rgb(200,110,50)',
                 data:graphDatavehusecomm 
             }, {
