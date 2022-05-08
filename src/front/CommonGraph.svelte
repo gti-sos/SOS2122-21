@@ -1,28 +1,31 @@
 <script>
     import { onMount } from "svelte";
     import {Col, Container, Row} from "sveltestrap";
-    import App from "../App.svelte";
-    import Home from "../Home.svelte";
+
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let apiData = [];
 
-    let dataComm = [];
-    let dataPass = [];
-    let dataPer1000 = [];
+    let IUVdataComm = [];
+    let IUVdataPass = [];
+    let IUVdataPer1000 = [];
+
+    let PVdataComm = [];
+
+    let totalData = [];
 
     const date = new Date();
     let minY = date.getFullYear();
     let maxY = 0;
 
-    let m = new Map();
-    let m2 = new Map();
-    let m3 = new Map();
+    let mapDataIUVper1000 = new Map();
+    let mapDataIUVcomm = new Map();
+    let mapDataIUVpass = new Map();
+    let mapDataPVcomm = new Map();
+
+
 
     let years = [];
-
-    let yK = [];
-    let lab = [];
 
     function sortSet(set) {
         const entries = [];
@@ -38,6 +41,7 @@
 
     async function getData() {
         const res = await fetch("/api/v1/in-use-vehicles");
+        const res2 = await fetch("/api/v1/productions-vehicles");
         if (res.ok) {
             let s = new Set();
             const json = await res.json();
@@ -52,24 +56,22 @@
             });
 
             apiData.forEach((e) => {
-                if (m.has(e.year)) {
-                    let lAux =  [e.country, e.veh_use_per_1000];
-                    m.get(e.year).push(lAux);
+                if (mapDataIUVper1000.has(e.country)) {
+                    mapDataIUVper1000.get(e.country).push(e.veh_use_per_1000*10000);
                 } else {
-                    let lAux = [e.country, e.veh_use_per_1000];
-                    m.set(e.year, [lAux]);
+                    mapDataIUVper1000.set(e.country, [e.veh_use_per_1000*10000]);
                 }
 
-                if (m2.has(e.country)) {
-                    m2.get(e.country).push(e.veh_use_comm);
+                if (mapDataIUVcomm.has(e.country)) {
+                    mapDataIUVcomm.get(e.country).push(e.veh_use_comm);
                 } else {
-                    m2.set(e.country, [e.veh_use_comm]);
+                    mapDataIUVcomm.set(e.country, [e.veh_use_comm]);
                 }
 
-                if (m3.has(e.country)) {
-                    m3.get(e.country).push(e.veh_use_pass);
+                if (mapDataIUVpass.has(e.country)) {
+                    mapDataIUVpass.get(e.country).push(e.veh_use_pass);
                 } else {
-                    m3.set(e.country, [e.veh_use_pass]);
+                    mapDataIUVpass.set(e.country, [e.veh_use_pass]);
                 }
 
                 if (e.year < minY) {
@@ -81,46 +83,82 @@
             });
 
 
-            dataPer1000 = crearDataMorris(m);
-            dataComm = crearData(m2, sortedS);
-            dataPass = crearData(m3, sortedS);
+            IUVdataPer1000 = crearData(mapDataIUVper1000,sortedS, "Vehículos en uso por cada 1000 personas(*1000): ");
+            IUVdataComm = crearData(mapDataIUVcomm, sortedS, "Vehículos comerciales en uso: ");
+            IUVdataPass = crearData(mapDataIUVpass, sortedS, "Vehículos de pasajeros en uso: ");
 
-            await delay(1000);
-            loadGraph();
+            //DATOS A MOSTRAR EN LA GRÁFICA
+            IUVdataComm.forEach((e) => {
+                totalData.push(e);
+            });
+
+            /*IUVdataPass.forEach((e) => {
+                totalData.push(e);
+            });*/
+
+            /*IUVdataPer1000.forEach((e) => {
+                totalData.push(e);
+            });*/
+
         } else {
             console.log("Error in request");
         }
-    }
 
+        if (res2.ok) {
+            let s = new Set();
+            const json = await res2.json();
+            apiData = json;
+            apiData.forEach((e) => {
+                s.add(e.year);
+            });
 
-    function crearDataMorris(m){
-        const iterator = m[Symbol.iterator]();
-        let array = [];
-            for(let e of iterator){
-                let json = {};
-                json["year"] = e[0];
-                let datos = e[1].sort((a, b) => b[1] - a[1]);
-                for(let i = 0 ; i < datos.length ; i++){
-                    let pais = datos[i][0];
-                    let dato = datos[i][1];
-                    json[pais] = dato;
-                
-                    if(!yK.includes(pais)){
-                        yK.push(pais);
-                    }
-                    if(!lab.includes(pais)){
-                        lab.push(pais);
-                    }
+            let sortedS = sortSet(s);
+            sortedS.forEach((e) => {
+                years.push(e);
+            });
+
+            apiData.forEach((e) => {
+                if (mapDataPVcomm.has(e.country)) {
+                    mapDataPVcomm.get(e.country).push(e.veh_comm*10);
+                } else {
+                    mapDataPVcomm.set(e.country, [e.veh_comm*10]);
                 }
-                array.push(json);
-            }
-        return array;
+
+                if (e.year < minY) {
+                    minY = e.year;
+                }
+                if (e.year > maxY) {
+                    maxY = e.year;
+                }
+            });
+
+
+            PVdataComm = crearData(mapDataPVcomm,sortedS, "Producción de vehículos (*10): ");
+
+            //DATOS A MOSTRAR EN LA GRÁFICA
+            PVdataComm.forEach((e) => {
+                totalData.push(e);
+            });
+
+            /*IUVdataPass.forEach((e) => {
+                totalData.push(e);
+            });
+
+            IUVdataPer1000.forEach((e) => {
+                totalData.push(e);
+            });*/
+
+        } else {
+            console.log("Error in request");
+        }
+        await delay(1000);
+        loadGraph();
     }
 
 
-    function crearData(m, sortedS) {
+    function crearData(mapDataIUVper1000, sortedS, clase) {
         let aux = [];
-        const iterator = m[Symbol.iterator]();
+        const iterator = mapDataIUVper1000[Symbol.iterator]();
         for (let e of iterator) {
             let valores = e[1];
             if (e[1].length != sortedS.size) {
@@ -128,8 +166,9 @@
                     valores.unshift(null);
                 }
             }
+            let string = clase + e[0];
             let json = {
-                name: e[0],
+                name: string,
                 data: valores,
             };
             aux.push(json);
@@ -142,7 +181,7 @@
 
         Highcharts.chart("container", {
             title: {
-                text: `Vehículos comerciales en uso, ${minY}-${maxY}`,
+                text: `Gráfica común de producción y uso de vehículos, ${minY}-${maxY}`,
             },
             subtitle: {
                 text: "Fuente: datosmacro.com",
@@ -172,7 +211,7 @@
                     pointStart: minY,
                 },
             },
-            series: dataComm,
+            series: totalData,
             responsive: {
                 rules: [
                     {
@@ -189,59 +228,6 @@
                     },
                 ],
             },
-        });
-
-        Highcharts.chart("container2", {
-            chart: {
-                type: "column",
-            },
-            title: {
-                text: `Vehículos de pasajeros en uso, ${minY}-${maxY}`,
-            },
-            subtitle: {
-                text: "Fuente: datosmacro.com",
-            },
-
-            xAxis: {
-                categories: years,
-                crosshair: true,
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: "Número de vehículos",
-                },
-            },
-            tooltip: {
-                headerFormat:
-                    '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat:
-                    '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y} vehículos</b></td></tr>',
-                footerFormat: "</table>",
-                shared: true,
-                useHTML: true,
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0,
-                },
-            },
-            series: dataPass,
-        });
-
-        new Morris.Bar({
-            element: "container3",
-            data: dataPer1000,
-            xkey: 'year',
-            ykeys: yK,
-            labels: lab,
-            fillOpacity: 0.6,
-            hideHover: 'auto',
-            behaveLikeLine: true,
-            resize: true,
-            stacked: true,
         });
     }
     onMount(getData);
@@ -265,19 +251,7 @@
     <figure class="highcharts-figure">
         <div id="container" />
         <br />
-    </figure>
-
-    <figure class="highcharts-figure">
-        <div id="container2" />
-        <br />
-    </figure>
-
-    <figure class="highcharts-figure">
-        <Row>
-            <h5 class="text-center">Vehículos en uso por cada 1000 personas (Gráfico Morris.js)</h5>
-        </Row>
-        <div id="container3" />
-        <br />
+        <p>(Algunos datos se han tenido que multiplicar por 10 para que la gráfica sea más visual)</p>
     </figure>
 </main>
 

@@ -3,6 +3,9 @@
     import Home from './Home.svelte';
     import Info from './Info.svelte';
 
+
+    import CommonGraph from "./CommonGraph.svelte";
+
     //ANTONIO
     import IUV from './inUseVehicles/IUV.svelte';
     import IUVnewData from './inUseVehicles/IUVnewData.svelte';
@@ -33,8 +36,8 @@
         "/productions-vehicles/graph": PVGraph,
         "/registrations-vehicles": RV,
         "/registrations-vehicles/data":RvTable,
-        "/registrations-vehicles/:country/:year": RVnewData
-    
+        "/registrations-vehicles/:country/:year": RVnewData,
+        "/commonGraph": CommonGraph,
 
     }
 
