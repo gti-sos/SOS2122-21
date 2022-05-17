@@ -14,110 +14,47 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         if(data.length == 0){
             db.insert([
                 {
-                    country: "spain",
+                    country: "Spain",
                     year:2020,
                     veh_sale: 4538423,
                     veh_per_1000: 25169158,
                     variation: 626.76,
                 },
                 {
-                    country: "germany",
+                    country: "Germany",
                     year: 2020,
                     veh_sale: 4027249,
                     veh_per_1000: 48248584,
                     variation: 628.66,
                 },
                 {
-                    country: "united kingdom",
+                    country: "United Kingdom",
                     year: 2020,
                     veh_sale: 5949323,
                     veh_per_1000: 42403988,
                     variation: 632.65,
                 },
                 {
-                    country: "france",
+                    country: "France",
                     year: 2020,
                     veh_sale: 6598185,
                     veh_per_1000: 44944450,
                     variation: 666.44,
                 },
                 {
-                    country: "italy",
+                    country: "Italy",
                     year: 2020,
                     veh_sale: 5281807,
                     veh_per_1000: 44999681,
                     variation: 759.39,
                 },
                 {
-                    country: "spain",
+                    country: "Spain",
                     year: 2019,
                     veh_sale: 4444698,
                     veh_per_1000: 25008222,
                     variation: 622.25
-                },
-                {
-                    country: "germany",
-                    year: 2019,
-                    veh_sale: 3889521,
-                    veh_per_1000: 47715977,
-                    variation: 620.51,
-                },
-                {
-                    country: "united kingdom",
-                    year: 2019,
-                    veh_sale: 5218170,
-                    veh_per_1000: 35168259,
-                    variation: 602.55,
-                },
-                {
-                    country: "france",
-                    year: 2019,
-                    veh_sale: 6702546,
-                    veh_per_1000: 38467190,
-                    variation: 669.32,
-                },
-                {
-                    country: "italy",
-                    year: 2019,
-                    veh_sale: 5219523,
-                    veh_per_1000: 39545232,
-                    variation: 750.56,
-                },
-                {
-                    country: "spain",
-                    year: 2018,
-                    veh_sale: 4316530,
-                    veh_per_1000: 24520287,
-                    variation: 614.37
-                },
-                {
-                    country: "germany",
-                    year: 2018,
-                    veh_sale: 3751843,
-                    veh_per_1000: 47095784,
-                    variation: 612.48,
-                },
-                {
-                    country: "united kingdom",
-                    year: 2018,
-                    veh_sale: 5097345,
-                    veh_per_1000: 34887915,
-                    variation: 599.95,
-                },
-                {
-                    country: "france",
-                    year: 2018,
-                    veh_sale: 6891587,
-                    veh_per_1000: 38253851,
-                    variation: 670.90,
-                },
-                {
-                    country: "italy",
-                    year: 2018,
-                    veh_sale: 5150556,
-                    veh_per_1000: 39018170,
-                    variation: 738.40,
-                },
+                }
             ]);
             console.log("Datos iniciales añadidos automaticamente");
         }
@@ -147,42 +84,42 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                });
        var iniData = [
         {
-            country: "spain",
+            country: "Spain",
             year: 2022,
             veh_sale: 1030173,
             veh_per_1000: 21.77,
             variation: -0.18,
         },
         {
-            country: "germany",
+            country: "Germany",
             year: 2022,
             veh_sale: 2986933,
             veh_per_1000: 35.92,
             variation: 0.45,
         },
         {
-            country: "united kingdom",
+            country: "United Kingdom",
             year: 2022,
             veh_sale: 2065898,
             veh_per_1000: 30.82,
             variation: 0.93,
         },
         {
-            country: "france",
+            country: "France",
             year: 2022,
             veh_sale: 2112136,
             veh_per_1000: 31.32,
             variation: -1.42,
         },
         {
-            country: "italy",
+            country: "Italy",
             year: 2022,
             veh_sale: 1637736,
             veh_per_1000: 27.64,
             variation: -1.58,
         },
         {
-            country: "spain",
+            country: "Spain",
             year: 2019,
             veh_sale: 1554261,
             veh_per_1000: 33.11,
@@ -196,6 +133,21 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
    }
   });
 })
+
+    // FUNCION COMPROBAR QUERYS
+    function compruebaQuery(e) {
+        if(e.length == 0){
+            return true;
+        }
+        else{
+            for (var i = 0; i < e.length; i++) {
+                var query = e[i];
+                if (query != "year" && query != "from" && query != "to" && query != "limit" && query != "offset") {
+                    return false;
+                }
+            }
+        }
+    }
 
     // RECURSO BASE
     app.get(BASE_API_URL + "/registrations-vehicles", (req, res) => {
@@ -540,28 +492,13 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
     })
     
 
-    // FUNCION COMPROBAR QUERYS
-    function compruebaQuery(e) {
-        if(e.length == 0){
-            return true;
-        }
-        else{
-            for (var i = 0; i < e.length; i++) {
-                var query = e[i];
-                if (query != "year" && query != "from" && query != "to" && query != "limit" && query != "offset") {
-                    return false;
-                }
-            }
-        }
-    }
-
     // ACCEDER A ESTADISTICAS DE UN PAIS
     app.get(BASE_API_URL + "/registrations-vehicles/:country", (req, res) => {
         var iuvCountry = req.params.country;
-        var iuvCountry = req.params.country;
+        //búsqueda
         db.find({country: iuvCountry}, function(err,docs){
             if(err){
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
+                res.sendStatus(500, "ERROR IN CLIENT");
                 return;
             }
             else{
@@ -586,7 +523,7 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         var iuvYear = req.params.year;
         db.find({country: iuvCountry, year: parseInt(iuvYear)}, function(err,docs){
             if(err){
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
+                res.sendStatus(500,  "ERROR IN CLIENT");
                 return;
             }
             else{

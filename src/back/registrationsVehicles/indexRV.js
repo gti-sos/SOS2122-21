@@ -11,52 +11,48 @@ module.exports = (app, BASE_API_URL, bodyParser) => {
         res.redirect(API_DOC);
     })
 
-    // RECURSO BASE
-    app.get(BASE_API_URL + "/registrations-vehicles", (req, res) => {
-        res.send(JSON.stringify(registrationsVehicles, null, 2));
-    })
-
-
+    
+    
     // CREACION DE DATOS
     app.get(BASE_API_URL + "/registrations-vehicles/loadInitialData", (req, res) => {
         var iniData = [
             {
-                country: "spain",
+                country: "Spain",
                 year: 2022,
                 veh_sale: 1030173,
                 veh_per_1000: 21.77,
                 variation: -0.18,
             },
             {
-                country: "germany",
+                country: "Germany",
                 year: 2019,
                 veh_sale: 2986933,
                 veh_per_1000: 35.92,
                 variation: 0.45,
             },
             {
-                country: "united kingdom",
+                country: "United Kingdom",
                 year: 2018,
                 veh_sale: 2065898,
                 veh_per_1000: 30.82,
                 variation: 0.93,
             },
             {
-                country: "france",
+                country: "France",
                 year: 2021,
                 veh_sale: 2112136,
                 veh_per_1000: 31.32,
                 variation: -1.42,
             },
             {
-                country: "italy",
+                country: "Italy",
                 year: 2020,
                 veh_sale: 1637736,
                 veh_per_1000: 27.64,
                 variation: -1.58,
             },
             {
-                country: "spain",
+                country: "Spain",
                 year: 2019,
                 veh_sale: 1554261,
                 veh_per_1000: 33.11,
@@ -66,6 +62,11 @@ module.exports = (app, BASE_API_URL, bodyParser) => {
         iniData.forEach((e) => {
             registrationsVehicles.push(e);
         });
+        res.send(JSON.stringify(registrationsVehicles, null, 2));
+    })
+    
+    // RECURSO BASE
+    app.get(BASE_API_URL + "/registrations-vehicles", (req, res) => {
         res.send(JSON.stringify(registrationsVehicles, null, 2));
     })
 
