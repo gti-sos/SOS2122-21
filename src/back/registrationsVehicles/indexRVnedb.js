@@ -540,65 +540,27 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
             }
         });
     });
+    
 
-
-    //BORRAR TODAS LAS ESTADISTICAS
-    app.delete(BASE_API_URL+"/registrations-vehicles", (req,res) => {
-        db.remove({}, { multi: true }, (err,num)=>{
-            if (err){
-                res.sendStatus(500,"ERROR EN CLIENTE");
-                return;
-            }
-            res.sendStatus(200, "OK")
-            return;
-        });
-    })
-
-
-
-    //BORRAR UNA ESTADISTICA SEGUN EL PAIS
-    app.delete(BASE_API_URL+"/registrations-vehicles/:country", (req,res) => {
-        var iuvCountry = req.params.country;
-        db.remove({country: iuvCountry}, { multi: true }, (err,num)=>{
-            if (err){
-                res.sendStatus(500,"ERROR EN CLIENTE");
-                return;
-            }
-            res.sendStatus(200, "OK")
-            return;
-        });
-    })
-
-
-    //BORRAR UNA ESTADISTICA CONCRETA
-    app.delete(BASE_API_URL+"/registrations-vehicles/:country/:year", (req,res) => {
-        var iuvCountry = req.params.country;
-        var iuvYear = req.params.year;
-        db.remove({country: iuvCountry, year: parseInt(iuvYear)}, { multi: true }, (err,num)=>{
-            if (err){
-                res.sendStatus(500,"ERROR EN CLIENTE");
-                return;
-            }
-            res.sendStatus(200, "OK")
-            return;
-        });
-    })
-
-
+    
+    
     // CREAR NUEVA ESTADISTICA
     function camposIncorrectos(e){
         return (Object.keys(e.body).length != 5 ||
-            e.body.country == null ||
+        e.body.country == null ||
             e.body.year == null ||
             e.body.veh_sale == null || 
             e.body.veh_per_1000 == null || 
             e.body.variation == null);
-    }
-
-    app.post(BASE_API_URL+"/registrations-vehicles", (req,res) => {
-        if(camposIncorrectos(req)){
-            res.sendStatus(400,"BAD REQUEST")
         }
+        
+        
+        
+        
+        app.post(BASE_API_URL+"/registrations-vehicles", (req,res) => {
+            if(camposIncorrectos(req)){
+                res.sendStatus(400,"BAD REQUEST")
+            }
         else{
             
             db.find({country: req.body.country, year: req.body.year}, function(err,docs){
@@ -623,10 +585,15 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
             })
         }
     });
-
-
+    
+    
     // POST A UN RECURSO CONCRETO (INCORRECTO)
     app.post(BASE_API_URL+"/registrations-vehicles/:country/:year",(req, res)=>{
+        res.sendStatus(405,"METHOD NOT ALLOWED");
+    })
+
+    //PUT INCORRECTO
+    app.put(BASE_API_URL+"/registrations-vehicles",(req, res)=>{
         res.sendStatus(405,"METHOD NOT ALLOWED");
     })
 
@@ -673,10 +640,96 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         }
 
     })
+    
+    //PUT a un recurso en concreto
+    //actualizar a un recurso en concreto por país 
 
 
-    //PUT INCORRECTO
-    app.put(BASE_API_URL+"/registrations-vehicles",(req, res)=>{
-        res.sendStatus(405,"METHOD NOT ALLOWED");
+    app.put(BASE_API_URL+"/registrations-vehicles/:country",(req, res)=>{
+        //no espera esos campos    
+        if(camposIncorrectos(req)){
+            res.sendStatus(400, "BAD REQUEST");
+
+            
+        }else{
+            var iuvCountry = req.params.country;
+            var iuvBody = req.body;  
+            
+            if(iuvCountry != iuvBody.country ){
+                res.sendStatus(400, "BAD REQUEST");
+            }
+            
+        else{
+                db.find({country: iuvCountry}, function(err,docs){
+                    if(err){
+                        res.sendStatus(500,"INTERNAL SERVER ERROR");
+                    }
+                    else{
+                        if(docs==0){
+                            res.sendStatus(404, "NOT FOUND");
+                        }
+                        else{
+                            db.update({country: iuvCountry},
+                            { $set: {
+                                "year": iuvBody.year,
+                                "veh_sale": iuvBody.veh_sale,
+                                "veh_per_1000": iuvBody.veh_per_1000,
+                                "variation": iuvBody.variation
+                            }},function(err,newDocs){
+                                if(err){
+                                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                                }
+                                else{
+                                    res.sendStatus(200, "OK");
+                                }
+                            });
+                        }
+                    }
+                })
+            }
+        }
+
+    })
+    
+    //BORRAR TODAS LAS ESTADISTICAS
+    app.delete(BASE_API_URL+"/registrations-vehicles", (req,res) => {
+        db.remove({}, { multi: true }, (err,num)=>{
+            if (err){
+                res.sendStatus(500,"ERROR EN CLIENTE");
+                return;
+            }
+            res.sendStatus(200, "OK")
+            return;
+        });
+    })
+    
+    
+    
+    //BORRAR UNA ESTADISTICA SEGUN EL PAIS
+    app.delete(BASE_API_URL+"/registrations-vehicles/:country", (req,res) => {
+        var iuvCountry = req.params.country;
+        db.remove({country: iuvCountry}, { multi: true }, (err,num)=>{
+            if (err){
+                res.sendStatus(500,"ERROR EN CLIENTE");
+                return;
+            }
+            res.sendStatus(200, "OK")
+            return;
+        });
+    })
+    
+    
+    //BORRAR UNA ESTADISTICA CONCRETA
+    app.delete(BASE_API_URL+"/registrations-vehicles/:country/:year", (req,res) => {
+        var iuvCountry = req.params.country;
+        var iuvYear = req.params.year;
+        db.remove({country: iuvCountry, year: parseInt(iuvYear)}, { multi: true }, (err,num)=>{
+            if (err){
+                res.sendStatus(500,"ERROR EN CLIENTE");
+                return;
+            }
+            res.sendStatus(200, "OK")
+            return;
+        });
     })
 }
