@@ -15,6 +15,6 @@
   </h2>
   <a href="/#/productions-vehicles/data" >Pulsa aquí para seguir</a>
    
-  </main>
+</main>
 
 

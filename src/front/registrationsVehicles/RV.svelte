@@ -1,10 +1,7 @@
 <main>
-    <h1>
-        Bienvenido a la API de registrations-vehicles, 
-    </h1>
-    <a href="/#/registrations-vehicles/data">pulsa aquí para acceder al contenido</a>
-    <br>
-    <br>
-    <h5>Desarrollada por Javier Rodríguez Morales</h5>
-  </main>
+	<h1 align="center">REGISTRO DE VEHÍCULOS</h1>
+	<h2 align="center">Bienvenidos a la API de Registro de vehículos realizada por Javier Rodríguez Morales</h2>
+  <a href="/#/registrations-vehicles/data" >Pulsa aquí para seguir</a>
+   
+</main>
 
