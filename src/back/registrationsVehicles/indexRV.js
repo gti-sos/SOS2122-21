@@ -17,42 +17,42 @@ module.exports = (app, BASE_API_URL, bodyParser) => {
     app.get(BASE_API_URL + "/registrations-vehicles/loadInitialData", (req, res) => {
         var iniData = [
             {
-                country: "Spain",
+                country: "spain",
                 year: 2022,
                 veh_sale: 1030173,
                 veh_per_1000: 21.77,
                 variation: -0.18,
             },
             {
-                country: "Germany",
+                country: "germany",
                 year: 2019,
                 veh_sale: 2986933,
                 veh_per_1000: 35.92,
                 variation: 0.45,
             },
             {
-                country: "United Kingdom",
+                country: "united kingdom",
                 year: 2018,
                 veh_sale: 2065898,
                 veh_per_1000: 30.82,
                 variation: 0.93,
             },
             {
-                country: "France",
+                country: "france",
                 year: 2021,
                 veh_sale: 2112136,
                 veh_per_1000: 31.32,
                 variation: -1.42,
             },
             {
-                country: "Italy",
+                country: "italy",
                 year: 2020,
                 veh_sale: 1637736,
                 veh_per_1000: 27.64,
                 variation: -1.58,
             },
             {
-                country: "Spain",
+                country: "spain",
                 year: 2019,
                 veh_sale: 1554261,
                 veh_per_1000: 33.11,
