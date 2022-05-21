@@ -2,6 +2,7 @@ const cool = require("cool-ascii-faces");
 const express = require("express");
 const bodyParser = require("body-parser");
 const Datastore = require("nedb");
+const request = require("request");
 const cors = require("cors");
 
 const app = express();

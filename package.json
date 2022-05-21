@@ -29,6 +29,7 @@
     "express": "^4.17.3",
     "morris.js": "^0.5.0",
     "nedb": "^1.8.0",
+    "request": "^2.88.2",
     "svelte-spa-router": "^3.1.0",
     "sveltestrap": "^5.9.0"
   },
