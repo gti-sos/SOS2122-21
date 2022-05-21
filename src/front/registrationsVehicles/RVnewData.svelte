@@ -9,7 +9,7 @@
 
     onMount(getRv);
 
-    let rv = {};
+    let registrationsVehicles = {};
 
     let updatedCountry;
     let updatedYear;
@@ -25,18 +25,21 @@
 		variation: "",
 	};
 
+    //función para que me cargue los registros antes de que sean editados
 
     async function getRv(){
         console.log("Fetching data....");
         const res = await fetch("/api/v1/registrations-vehicles/"+params.country+"/"+params.year); 
         if(res.ok){
             const data = await res.json();
-            rv = data;
-            updatedCountry = rv.country;
-            updatedYear = rv.year;
-            updatedVeh_sale = rv.veh_sale;
-		    updatedVeh_per_1000 = rv.veh_per_1000;
-		    updatedVeh_use_per_1000 = rv.variation;
+            registrationsVehicles = data;
+            //datos que tenemos con los que queremos acualizar
+
+            updatedCountry = registrationsVehicles.country;
+            updatedYear = registrationsVehicles.year;
+            updatedVeh_sale = registrationsVehicles.veh_sale;
+		    updatedVeh_per_1000 = registrationsVehicles.veh_per_1000;
+		    updatedVariation = registrationsVehicles.variation;
 
             console.log("Received data.");
         }
@@ -47,10 +50,15 @@
             }
         }
     }
+ 
+    //función para que me edite los registros de ese año y de ese pais
 
     async function editRv() {
-        newRv.country = rv.country;
-        newRv.year = rv.year;
+        //año y pais no se actualizan
+        newRv.country = registrationsVehicles.country;
+        newRv.year = registrationsVehicles.year;
+        //actualizamos los demás datos
+        //datos que queremos actualizar completando un newRv
         newRv.veh_sale = updatedVeh_sale;
         newRv.veh_per_1000 = updatedVeh_per_1000;
         newRv.variation = updatedVariation;
@@ -63,9 +71,25 @@
 				"Content-Type": "application/json",
 			},
 		}).then(function (res) {
+            if (res.ok){
 			getRv();
             window.alert("Registro modificado correctamente");
             pop();
+        }
+        else{
+            if(res.status == "400"){
+				window.alert("La petición no está correctamente formulada");
+			}
+			if(res.status == "405"){
+				window.alert("Método no permitido");
+			}
+			if(res.status == "404"){
+				window.alert("Elemento no encontrado");
+			}
+			if(res.status == "500"){
+				window.alert("INTERNAL SERVER ERROR");
+			}
+        }
 		});
 		console.log("DONE");
 	}
@@ -73,21 +97,22 @@
 
 <main>
     <h1>Editar registro "{params.country}" para el año "{params.year}" </h1>
-    {#await rv}
+    {#await registrationsVehicles}
     loading
-        {:then rv}
+        {:then registrationsVehicles}
         
     
         <Table bordered>
             <thead>
-                <tr align="center">
-					<th> País </th>
-					<th> Año </th>
-					<th> Venta anual de vehículos </th>
-					<th> Venta anual de vehículos por 1000 habitantes </th>
-					<th> Variación </th>
-				</tr>
-            </thead>
+                <tr>
+                 <tr align="center">
+                   <th>País</th>
+                   <th> Año</th>
+                   <th>Venta anual de vehículos </th>
+                   <th>Venta anual de vehículos por 1000 habitantes </th>
+                   <th>Variación</th>
+                </tr>
+           </thead>
             <tbody>
                 <tr align="center">
                     <td>{updatedCountry} </td>
