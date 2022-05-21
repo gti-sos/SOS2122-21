@@ -23,7 +23,7 @@
     let mapDataIUVpass = new Map();
     let mapDataPVcomm = new Map();
 
-
+    let totalYears = new Set();
 
     let years = [];
 
@@ -55,23 +55,28 @@
                 years.push(e);
             });
 
+
+            if(sortedS.size > totalYears.size){
+                totalYears = sortedS;
+            }
+            
             apiData.forEach((e) => {
                 if (mapDataIUVper1000.has(e.country)) {
-                    mapDataIUVper1000.get(e.country).push(e.veh_use_per_1000*10000);
+                    mapDataIUVper1000.get(e.country).push([e.year,e.veh_use_per_1000*10000]);
                 } else {
-                    mapDataIUVper1000.set(e.country, [e.veh_use_per_1000*10000]);
+                    mapDataIUVper1000.set(e.country, [[e.year,e.veh_use_per_1000*10000]]);
                 }
 
                 if (mapDataIUVcomm.has(e.country)) {
-                    mapDataIUVcomm.get(e.country).push(e.veh_use_comm);
+                    mapDataIUVcomm.get(e.country).push([e.year,e.veh_use_comm]);
                 } else {
-                    mapDataIUVcomm.set(e.country, [e.veh_use_comm]);
+                    mapDataIUVcomm.set(e.country, [[e.year,e.veh_use_comm]]);
                 }
 
                 if (mapDataIUVpass.has(e.country)) {
-                    mapDataIUVpass.get(e.country).push(e.veh_use_pass);
+                    mapDataIUVpass.get(e.country).push([e.year,e.veh_use_pass]);
                 } else {
-                    mapDataIUVpass.set(e.country, [e.veh_use_pass]);
+                    mapDataIUVpass.set(e.country, [[e.year,e.veh_use_pass]]);
                 }
 
                 if (e.year < minY) {
@@ -82,23 +87,9 @@
                 }
             });
 
-
-            IUVdataPer1000 = crearData(mapDataIUVper1000,sortedS, "Vehículos en uso por cada 1000 personas(*1000): ");
-            IUVdataComm = crearData(mapDataIUVcomm, sortedS, "Vehículos comerciales en uso: ");
-            IUVdataPass = crearData(mapDataIUVpass, sortedS, "Vehículos de pasajeros en uso: ");
-
-            //DATOS A MOSTRAR EN LA GRÁFICA
-            IUVdataComm.forEach((e) => {
-                totalData.push(e);
-            });
-
-            /*IUVdataPass.forEach((e) => {
-                totalData.push(e);
-            });*/
-
-            /*IUVdataPer1000.forEach((e) => {
-                totalData.push(e);
-            });*/
+            IUVdataPer1000 = crearData(mapDataIUVper1000,totalYears, "Vehículos en uso por cada 1000 personas(*1000): ");
+            IUVdataComm = crearData(mapDataIUVcomm, totalYears, "Vehículos comerciales en uso: ");
+            IUVdataPass = crearData(mapDataIUVpass, totalYears, "Vehículos de pasajeros en uso: ");
 
         } else {
             console.log("Error in request");
@@ -117,11 +108,15 @@
                 years.push(e);
             });
 
+            if(sortedS.size > totalYears.size){
+                totalYears = sortedS;
+            }
+
             apiData.forEach((e) => {
                 if (mapDataPVcomm.has(e.country)) {
-                    mapDataPVcomm.get(e.country).push(e.veh_comm*10);
+                    mapDataPVcomm.get(e.country).push([e.year,e.veh_comm*10]);
                 } else {
-                    mapDataPVcomm.set(e.country, [e.veh_comm*10]);
+                    mapDataPVcomm.set(e.country, [[e.year,e.veh_comm*10]]);
                 }
 
                 if (e.year < minY) {
@@ -132,49 +127,56 @@
                 }
             });
 
-
-            PVdataComm = crearData(mapDataPVcomm,sortedS, "Producción de vehículos (*10): ");
-
-            //DATOS A MOSTRAR EN LA GRÁFICA
-            PVdataComm.forEach((e) => {
-                totalData.push(e);
-            });
-
-            /*IUVdataPass.forEach((e) => {
-                totalData.push(e);
-            });
-
-            IUVdataPer1000.forEach((e) => {
-                totalData.push(e);
-            });*/
+            PVdataComm = crearData(mapDataPVcomm, totalYears, "Vehículos comerciales producidos (*10): ");
 
         } else {
             console.log("Error in request");
         }
+
+
+        
+        //DATOS A MOSTRAR EN LA GRÁFICA
+        IUVdataComm.forEach((e) => {
+            totalData.push(e);
+        });
+
+        PVdataComm.forEach((e) => {
+            totalData.push(e);
+        });
+
         await delay(1000);
         loadGraph();
     }
 
 
-    function crearData(mapDataIUVper1000, sortedS, clase) {
+    function crearData(m, sortedS, clase) {
         let aux = [];
-        const iterator = mapDataIUVper1000[Symbol.iterator]();
+        const iterator = m[Symbol.iterator]();
         for (let e of iterator) {
             let valores = e[1];
-            if (e[1].length != sortedS.size) {
-                for (let i = 0; i < sortedS.size - e[1].length + 2; i++) {
-                    valores.unshift(null);
+            let valoresAux = []; 
+
+            let setIterator = sortedS.entries();
+            let cont = 0;
+            for (const entry of setIterator) {
+                if(valores[cont][0] != entry[0]){
+                    valoresAux.push(null);
+                }
+                else{
+                    valoresAux.push(valores[cont][1]);
+                    cont++;
                 }
             }
             let string = clase + e[0];
             let json = {
                 name: string,
-                data: valores,
+                data: valoresAux,
             };
             aux.push(json);
         }
         return aux;
     }
+    
 
 
     async function loadGraph() {

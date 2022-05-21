@@ -61,15 +61,15 @@
                 }
 
                 if (m2.has(e.country)) {
-                    m2.get(e.country).push(e.veh_use_comm);
+                    m2.get(e.country).push([e.year,e.veh_use_comm]);
                 } else {
-                    m2.set(e.country, [e.veh_use_comm]);
+                    m2.set(e.country, [[e.year,e.veh_use_comm]]);
                 }
 
                 if (m3.has(e.country)) {
-                    m3.get(e.country).push(e.veh_use_pass);
+                    m3.get(e.country).push([e.year,e.veh_use_pass]);
                 } else {
-                    m3.set(e.country, [e.veh_use_pass]);
+                    m3.set(e.country, [[e.year,e.veh_use_pass]]);
                 }
 
                 if (e.year < minY) {
@@ -123,14 +123,23 @@
         const iterator = m[Symbol.iterator]();
         for (let e of iterator) {
             let valores = e[1];
-            if (e[1].length != sortedS.size) {
-                for (let i = 0; i < sortedS.size - e[1].length + 2; i++) {
-                    valores.unshift(null);
+            let valoresAux = []; 
+
+            let setIterator = sortedS.entries();
+            let cont = 0;
+            for (const entry of setIterator) {
+                if(valores[cont][0] != entry[0]){
+                    valoresAux.push(null);
                 }
+                else{
+                    valoresAux.push(valores[cont][1])
+                }
+                cont++;
             }
+
             let json = {
                 name: e[0],
-                data: valores,
+                data: valoresAux,
             };
             aux.push(json);
         }
@@ -247,7 +256,6 @@
     onMount(getData);
 </script>
 
-
 <svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
@@ -255,10 +263,16 @@
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"/>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"
+    />
+    <script
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script
+        src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script
+        src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 </svelte:head>
 
 <main>
@@ -274,10 +288,11 @@
 
     <figure class="highcharts-figure">
         <Row>
-            <h5 class="text-center">Vehículos en uso por cada 1000 personas (Gráfico Morris.js)</h5>
+            <h5 class="text-center">
+                Vehículos en uso por cada 1000 personas (Gráfico Morris.js)
+            </h5>
         </Row>
         <div id="container3" />
         <br />
     </figure>
 </main>
-

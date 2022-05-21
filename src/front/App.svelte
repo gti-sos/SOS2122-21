@@ -37,8 +37,7 @@
         "/registrations-vehicles": RV,
         "/registrations-vehicles/data":RvTable,
         "/registrations-vehicles/:country/:year": RVnewData,
-        "/commonGraph": CommonGraph,
-
+        "/commonGraph": CommonGraph
     }
 
 </script>
