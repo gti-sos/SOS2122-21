@@ -34,7 +34,7 @@
 	onMount(getIuv);
 
 	async function getPags(){
-		const res = await fetch("/api/v1/in-use-vehicles");
+		const res = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles");
 		if(res.ok){
 			const data = await res.json();
 			iuv = data;
@@ -49,11 +49,11 @@
 		let res;
 		let resBusqueda;
 		if(busqueda){
-			res = await fetch("/api/v1/in-use-vehicles"+parametros+`&offset=${defaultOffset}&limit=${limitPag}`);
-			resBusqueda = await fetch("/api/v1/in-use-vehicles"+parametros);
+			res = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles"+parametros+`&offset=${defaultOffset}&limit=${limitPag}`);
+			resBusqueda = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles"+parametros);
 		}
 		else{
-			res = await fetch("/api/v1/in-use-vehicles"+parametros+`?offset=${defaultOffset}&limit=${limitPag}`);
+			res = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles"+parametros+`?offset=${defaultOffset}&limit=${limitPag}`);
 		}
 		
 		console.log(res.ok);
@@ -113,7 +113,7 @@
 
 	async function getIuvPag(offset){
 		let off = offset * limitPag;
-		const res = await fetch(`/api/v1/in-use-vehicles?from=${yFrom}&to=${yTo}&offset=${off}&limit=${limitPag}`);
+		const res = await fetch(`https://sos2122.herokuapp.com/api/v1/in-use-vehicles?from=${yFrom}&to=${yTo}&offset=${off}&limit=${limitPag}`);
 		if(res.ok){
 			const data = await res.json();
 				iuv = data;
@@ -133,7 +133,7 @@
 			estado=`Ningún campo debe estar vacio`;
 		}
 		else{
-			const res = await fetch("/api/v1/in-use-vehicles", {
+			const res = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles", {
 				method: "POST",
 				body: JSON.stringify(newIuv),
 				headers: {
@@ -165,7 +165,7 @@
 
 	async function deleteAll() {
 		console.log("Deleting all");
-		const res = await fetch("/api/v1/in-use-vehicles", {
+		const res = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles", {
 			method: "DELETE",
 		}).then(async function (res) {
 			visibilidad = true;
@@ -177,7 +177,7 @@
 
 	async function loadInitialData() {
 		console.log("Inserting default data");
-		await fetch("/api/v1/in-use-vehicles/loadInitialData").then(async function (res) {
+		await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles/loadInitialData").then(async function (res) {
 			getIuv();
 			visibilidad = true;
 			color="success";
@@ -188,7 +188,7 @@
 
 	async function deleteIuv(country,year){
 		const id = country + "/" + year;
-		const res = await fetch("/api/v1/in-use-vehicles/"+id, {
+		const res = await fetch("https://sos2122.herokuapp.com/api/v1/in-use-vehicles/"+id, {
 			method: "DELETE",
 		}).then(async function (res) {
 			getIuv();

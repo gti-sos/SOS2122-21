@@ -2,7 +2,9 @@ const cool = require("cool-ascii-faces");
 const express = require("express");
 const bodyParser = require("body-parser");
 const Datastore = require("nedb");
+const cors = require("cors");
 
+app.use(cors());
 const app = express();
 const port = process.env.PORT || 8082;
 const BASE_API_URL = "/api/v1";
