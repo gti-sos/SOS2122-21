@@ -37,7 +37,7 @@
     }
 
     async function getData() {
-        const res = await fetch("/api/v1/in-use-vehicles");
+        const res = await fetch("/api/v1/registrations-vehicles");
         if (res.ok) {
             let s = new Set();
             const json = await res.json();
@@ -53,23 +53,23 @@
 
             apiData.forEach((e) => {
                 if (m.has(e.year)) {
-                    let lAux =  [e.country, e.veh_use_per_1000];
+                    let lAux =  [e.country, e.variation];
                     m.get(e.year).push(lAux);
                 } else {
-                    let lAux = [e.country, e.veh_use_per_1000];
+                    let lAux = [e.country, e.variation];
                     m.set(e.year, [lAux]);
                 }
 
                 if (m2.has(e.country)) {
-                    m2.get(e.country).push(e.veh_use_comm);
+                    m2.get(e.country).push(e.veh_sale);
                 } else {
-                    m2.set(e.country, [e.veh_use_comm]);
+                    m2.set(e.country, [e.veh_sale]);
                 }
 
                 if (m3.has(e.country)) {
-                    m3.get(e.country).push(e.veh_use_pass);
+                    m3.get(e.country).push(e.veh_per_1000);
                 } else {
-                    m3.set(e.country, [e.veh_use_pass]);
+                    m3.set(e.country, [e.veh_per_1000]);
                 }
 
                 if (e.year < minY) {
