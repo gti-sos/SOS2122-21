@@ -1,6 +1,8 @@
 <script>
     import { onMount } from "svelte";
-    import {Col, Container, Row} from "sveltestrap";
+    import {Button, Icon,Col, Container, Row} from "sveltestrap";
+    import { pop } from "svelte-spa-router";
+
 
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -301,5 +303,6 @@
         <div id="container" />
         <p style="font-style: italic;">(Algunos datos se han tenido que multiplicar por 10 para que la gráfica sea más visual)</p>
     </figure>
+    <Button color="info" on:click="{pop}"> <Icon name="arrow-return-left"/> Volver atrás</Button>
 </main>
 

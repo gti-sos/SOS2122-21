@@ -2,7 +2,9 @@
     import Router from 'svelte-spa-router';
     import Home from './Home.svelte';
     import Info from './Info.svelte';
-
+    import HomeV2 from "./HomeV2.svelte";
+    import Charts from "./Charts.svelte";
+    import Integrations from "./Integrations.svelte";
 
     import CommonGraph from "./CommonGraph.svelte";
 
@@ -42,10 +44,13 @@
         "/registrations-vehicles/data":RvTable,
         "/registrations-vehicles/:country/:year": RVnewData,
         "/registrations-vehicles/graph": RVGraph,
-        "/commonGraph": CommonGraph,
+        "/analytics": CommonGraph,
         "/in-use-vehicles/integracion1": I1,
         "/in-use-vehicles/integracion2": I2,
         "/in-use-vehicles/integracion3": I3,
+        "/home": HomeV2,
+        "/charts": Charts,
+        "/integrations": Integrations,
 
     }
 

@@ -15,7 +15,7 @@
 				<p class="lead">
 					Bienvenido a la página principal del proyecto SOS2122-21.
 				</p>
-				<Button color= "primary" on:click={()=>push("#/info")}>Información</Button>
+				<Button color= "primary" on:click={()=>push("#/home")}>Información</Button>
 				
 
 			</div>
