@@ -12,6 +12,8 @@
 
     let PVdataComm = [];
 
+    let RVdataComm = [];
+
     let totalData = [];
 
     const date = new Date();
@@ -22,6 +24,7 @@
     let mapDataIUVcomm = new Map();
     let mapDataIUVpass = new Map();
     let mapDataPVcomm = new Map();
+    let mapDataRVcomm = new Map();
 
     let totalYears = new Set();
 
@@ -42,6 +45,7 @@
     async function getData() {
         const res = await fetch("/api/v1/in-use-vehicles");
         const res2 = await fetch("/api/v1/productions-vehicles");
+        const res3 = await fetch("/api/v1/registrations-vehicles");
         if (res.ok) {
             let s = new Set();
             const json = await res.json();
@@ -133,7 +137,43 @@
             console.log("Error in request");
         }
 
+        if (res3.ok) {
+            let s = new Set();
+            const json = await res3.json();
+            apiData = json;
+            apiData.forEach((e) => {
+                s.add(e.year);
+            });
 
+            let sortedS = sortSet(s);
+            sortedS.forEach((e) => {
+                years.push(e);
+            });
+
+            if(sortedS.size > totalYears.size){
+                totalYears = sortedS;
+            }
+
+            apiData.forEach((e) => {
+                if (mapDataRVcomm.has(e.country)) {
+                    mapDataRVcomm.get(e.country).push([e.year,e.veh_sale]);
+                } else {
+                    mapDataRVcomm.set(e.country, [[e.year,e.veh_sale]]);
+                }
+
+                if (e.year < minY) {
+                    minY = e.year;
+                }
+                if (e.year > maxY) {
+                    maxY = e.year;
+                }
+            });
+
+            RVdataComm = crearData(mapDataRVcomm, totalYears, "Vehículos comerciales vendidos: ");
+
+        } else {
+            console.log("Error in request");
+        }
         
         //DATOS A MOSTRAR EN LA GRÁFICA
         IUVdataComm.forEach((e) => {
@@ -141,6 +181,10 @@
         });
 
         PVdataComm.forEach((e) => {
+            totalData.push(e);
+        });
+
+        RVdataComm.forEach((e) => {
             totalData.push(e);
         });
 
@@ -182,6 +226,9 @@
     async function loadGraph() {
 
         Highcharts.chart("container", {
+            chart: {
+                type: 'column'
+            },
             title: {
                 text: `Gráfica común de producción y uso de vehículos, ${minY}-${maxY}`,
             },
@@ -252,8 +299,7 @@
 <main>
     <figure class="highcharts-figure">
         <div id="container" />
-        <br />
-        <p>(Algunos datos se han tenido que multiplicar por 10 para que la gráfica sea más visual)</p>
+        <p style="font-style: italic;">(Algunos datos se han tenido que multiplicar por 10 para que la gráfica sea más visual)</p>
     </figure>
 </main>
 
