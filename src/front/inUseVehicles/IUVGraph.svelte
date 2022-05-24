@@ -124,7 +124,6 @@
         for (let e of iterator) {
             let valores = e[1];
             let valoresAux = []; 
-
             let setIterator = sortedS.entries();
             let cont = 0;
             for (const entry of setIterator) {

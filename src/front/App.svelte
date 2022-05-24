@@ -11,6 +11,9 @@
     import IUVnewData from './inUseVehicles/IUVnewData.svelte';
     import IUVTable from './inUseVehicles/IUVTable.svelte';
     import IuvGraph from './inUseVehicles/IUVGraph.svelte';
+    import I1 from "./inUseVehicles/Integracion1.svelte";
+    import I2 from "./inUseVehicles/Integracion2.svelte";
+    import I3 from "./inUseVehicles/Integracion3.svelte";
 
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
@@ -37,7 +40,10 @@
         "/registrations-vehicles": RV,
         "/registrations-vehicles/data":RvTable,
         "/registrations-vehicles/:country/:year": RVnewData,
-        "/commonGraph": CommonGraph
+        "/commonGraph": CommonGraph,
+        "/in-use-vehicles/integracion1": I1,
+        "/in-use-vehicles/integracion2": I2,
+        "/in-use-vehicles/integracion3": I3,
     }
 
 </script>
