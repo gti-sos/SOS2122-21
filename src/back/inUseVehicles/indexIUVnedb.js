@@ -2,7 +2,7 @@
 const request = require("request");
 
 var urlAPI1='/remoteAPI1';
-var apiHost1 = 'https://idealspot-geodata.p.rapidapi.com/api/v1/traffic/counts/1595369397';
+var apiHost1 = 'https://rawg-video-games-database.p.rapidapi.com/games';
 
 var urlAPI2 = '/remoteAPI2';
 var apiHost2 = 'https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats'
@@ -14,8 +14,9 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
 
     //INTEGRACIONES
     app.use(urlAPI1, function(req, res) {
-        var url = apiHost1 + req.url;
-        console.log('piped: ' + req.baseUrl + req.url);
+        var aux = req.url;
+        var url = apiHost1 + aux.slice(1);
+        console.log('piped: ' + req.baseUrl + aux);
         req.pipe(request(url)).pipe(res);
     });
 

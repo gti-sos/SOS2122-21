@@ -1,92 +1,48 @@
 <script>
     import { onMount } from "svelte";
+    import {Col, Container, Row} from "sveltestrap";
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     onMount(getData);
+    let apiData = [];
     let dataGraph = [];
-
     async function getData() {
         console.log("Fetching data....");
         const options = {
             method: "GET",
             headers: {
-                "X-RapidAPI-Host": "countries-population.p.rapidapi.com",
+                "X-RapidAPI-Host": "rawg-video-games-database.p.rapidapi.com",
                 "X-RapidAPI-Key":
                     "c70ce6ea89msh8767c3249b8f1fep1a1020jsn0e167cead932",
             },
+            
         };
 
-        const res = await fetch(
-            "https://countries-population.p.rapidapi.com/top-populated-countries",
-            options
-        );
-        if (res.ok) {
-            const data = await res.json();
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    let num = parseInt(data[key].replace(",",""));
-                    dataGraph.push([key,num]);
-                }
+        const res = await fetch("/remoteAPI1?key=c3a33a6df14945009b29b1936f5dfd43", options)
+        if(res.ok){
+            const json = await res.json();
+            apiData = json.filters.years;
+            
+            for (let i=apiData.length - 1; i >= 0; i--) {
+                dataGraph.push({y:`${apiData[i].from}-${apiData[i].to}`,a:apiData[i].count})
             }
-            console.log(data);
-            console.log(dataGraph);
-            await delay(1000);
+
+            console.log(apiData);
+            await delay(500);
             loadGraph();
         }
+    }
 
-        function loadGraph() {
-            Highcharts.chart("container", {
-                chart: {
-                    type: "column",
-                },
-                title: {
-                    text: "World's largest cities per 2017",
-                },
-                subtitle: {
-                    text: 'Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>',
-                },
-                xAxis: {
-                    type: "category",
-                    labels: {
-                        rotation: -45,
-                        style: {
-                            fontSize: "13px",
-                            fontFamily: "Verdana, sans-serif",
-                        },
-                    },
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: "Population (millions)",
-                    },
-                },
-                legend: {
-                    enabled: false,
-                },
-                tooltip: {
-                    pointFormat:
-                        "Population in 2017: <b>{point.y:.1f} millions</b>",
-                },
-                series: [
-                    {
-                        name: "Population",
-                        data: dataGraph,
-                        dataLabels: {
-                            //enabled: true,
-                            rotation: -90,
-                            color: "#FFFFFF",
-                            align: "right",
-                            y: 10, // 10 pixels down from the top
-                            style: {
-                                fontSize: "13px",
-                                fontFamily: "Verdana, sans-serif",
-                            },
-                        },
-                    },
-                ],
-            });
-        }
+    function loadGraph(){
+        new Morris.Bar({
+            element: "container",
+            data: dataGraph,
+            xkey: 'y',
+            ykeys: ['a'],
+            labels: ["Total de videojuegos desarrollados"],
+            fillOpacity: 0.6,
+            hideHover: 'auto'
+        });
     }
 </script>
 
@@ -96,11 +52,20 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 </svelte:head>
 
 <main>
-    <h1>hola</h1>
     <figure class="highcharts-figure">
+        <Row>
+            <h5 class="text-center">
+                Número de videojuegos desarrollados cada década
+            </h5>
+        </Row>
         <div id="container" />
         <br />
     </figure>
