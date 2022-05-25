@@ -5,6 +5,7 @@
     import HomeV2 from "./HomeV2.svelte";
     import Charts from "./Charts.svelte";
     import Integrations from "./Integrations.svelte";
+    import About from "./About.svelte";
 
     import CommonGraph from "./CommonGraph.svelte";
 
@@ -53,6 +54,7 @@
         "/home": HomeV2,
         "/charts": Charts,
         "/integrations": Integrations,
+        "/about": About
 
     }
 

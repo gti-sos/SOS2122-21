@@ -26,6 +26,8 @@
                             <Button color="primary">Integraciones</Button></a>
                         <a href="/#/charts">
                             <Button color="primary">Gráficas individuales</Button></a>
+                        <a href="/#/about">
+                            <Button color="primary">Vídeos</Button></a>
                     </CardText>
                     <br>
                 </Card>

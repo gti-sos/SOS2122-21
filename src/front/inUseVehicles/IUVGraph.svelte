@@ -1,8 +1,7 @@
 <script>
     import { onMount } from "svelte";
-    import {Col, Container, Row} from "sveltestrap";
-    import App from "../App.svelte";
-    import Home from "../Home.svelte";
+    import {Col, Container, Row, Button, Icon} from "sveltestrap";
+    import { pop } from "svelte-spa-router";
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let apiData = [];
@@ -149,6 +148,9 @@
     async function loadGraph() {
 
         Highcharts.chart("container", {
+            chart: {
+                type: "bar",
+            },
             title: {
                 text: `Vehículos comerciales en uso, ${minY}-${maxY}`,
             },
@@ -294,4 +296,5 @@
         <div id="container3" />
         <br />
     </figure>
+    <Button color="info" on:click="{pop}"> <Icon name="arrow-return-left"/> Volver atrás</Button>
 </main>
