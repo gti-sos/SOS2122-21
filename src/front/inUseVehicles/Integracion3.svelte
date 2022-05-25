@@ -1,5 +1,7 @@
 <script>
     import { onMount } from "svelte";
+    import { pop } from "svelte-spa-router";
+    import {Button, Icon} from "sveltestrap";
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let apiData = [];
@@ -92,4 +94,5 @@
         <div id="container" />
         <br />
     </figure>
+    <Button color="info" on:click="{pop}"> <Icon name="arrow-return-left"/> Volver atrás</Button>
 </main>

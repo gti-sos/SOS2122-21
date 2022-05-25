@@ -16,6 +16,7 @@
     import I1 from "./inUseVehicles/Integracion1.svelte";
     import I2 from "./inUseVehicles/Integracion2.svelte";
     import I3 from "./inUseVehicles/Integracion3.svelte";
+    import I4 from "./inUseVehicles/Integracion4.svelte";
 
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
@@ -48,6 +49,7 @@
         "/in-use-vehicles/integracion1": I1,
         "/in-use-vehicles/integracion2": I2,
         "/in-use-vehicles/integracion3": I3,
+        "/in-use-vehicles/integracion4": I4,
         "/home": HomeV2,
         "/charts": Charts,
         "/integrations": Integrations,

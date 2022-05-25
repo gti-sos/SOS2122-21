@@ -10,9 +10,12 @@ var apiHost2 = 'https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats
 var urlAPI3 = "/remoteAPI3";
 var apiHost3 = 'https://sos2122-20.herokuapp.com/api/v1/agriculturalproduction-stats'
 
+var urlAPI4 = "/remoteAPI4";
+var apiHost4 = 'https://f1-live-motorsport-data.p.rapidapi.com/constructors/standings'
+
 module.exports = (app, BASE_API_URL, bodyParser, db) => {
 
-    //INTEGRACIONES
+    //#####################INTEGRACIONES###############################
     app.use(urlAPI1, function(req, res) {
         var aux = req.url;
         var url = apiHost1 + aux.slice(1);
@@ -32,6 +35,15 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         console.log('piped: ' + req.baseUrl + req.url);
         req.pipe(request(url)).pipe(res);
     });
+
+
+    app.use(urlAPI4, function(req, res) {
+        var url = apiHost4 + req.url;
+        console.log('piped: ' + req.baseUrl + req.url);
+        req.pipe(request(url)).pipe(res);
+    });
+
+    //###################################################################
 
     app.use(bodyParser.json());
     var inUseVehicles = [];

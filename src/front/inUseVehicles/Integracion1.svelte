@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
-    import {Col, Container, Row} from "sveltestrap";
+    import {Col, Container, Row, Button, Icon} from "sveltestrap";
+    import { pop } from "svelte-spa-router";
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     onMount(getData);
@@ -65,8 +66,10 @@
             <h5 class="text-center">
                 Número de videojuegos desarrollados cada década
             </h5>
+            <h6 class="text-center">Biblioteca: Morris.js</h6>
         </Row>
         <div id="container" />
         <br />
     </figure>
+    <Button color="info" on:click="{pop}"> <Icon name="arrow-return-left"/> Volver atrás</Button>
 </main>
