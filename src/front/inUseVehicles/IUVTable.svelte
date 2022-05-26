@@ -92,6 +92,7 @@
 				visibilidad = true;
 				color="danger";
 				estado="No se puede realizar la búsqueda entre dichos años";
+				await getIuv();
 			}
 			if(res.status == "405"){
 				visibilidad = true;
@@ -102,11 +103,13 @@
 				visibilidad = true;
 				color="danger";
 				estado="Elemento no encontrado";
+				getIuv();
 			}
 			if(res.status == "500"){
 				visibilidad = true;
 				color="success";
 				estado="Error interno del servidor";
+				getIuv();
 			}
 		}
 	}
