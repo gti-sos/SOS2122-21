@@ -30,6 +30,7 @@
     import RVnewData from './registrationsVehicles/RVnewData.svelte';
     import RvTable from './registrationsVehicles/RvTable.svelte';
     import RVGraph from './registrationsVehicles/RVGraph.svelte';
+    import RVGraphCanvaJs from './registrationsVehicles/RVGraphCanvaJS.svelte';
 
     const routes = {
         "/": Home,
@@ -46,6 +47,7 @@
         "/registrations-vehicles/data":RvTable,
         "/registrations-vehicles/:country/:year": RVnewData,
         "/registrations-vehicles/graph": RVGraph,
+        "//registrations-vehicles/graphCanvasJS": RVGraphCanvaJs,
         "/analytics": CommonGraph,
         "/in-use-vehicles/integracion1": I1,
         "/in-use-vehicles/integracion2": I2,
