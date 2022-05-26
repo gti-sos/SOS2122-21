@@ -41,7 +41,7 @@
                             <Row cols={1}>
                                 <Col>
                                     <a href="https://www.youtube.com/watch?v=SHjOYPP30Js">
-                                    <Button color="dark">In use vehicles</Button></a>
+                                    <Button color="dark">Click aquí para el vídeo</Button></a>
                                 </Col>
                             </Row>
                         </CardText>
