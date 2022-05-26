@@ -43,8 +43,8 @@
 	}
 	
 	async function getIuv(parametros="",busqueda=false) {
+		await getPags();
 		
-		getPags();
 		console.log("Fetching data....");
 		let res;
 		let resBusqueda;
@@ -55,7 +55,7 @@
 		else{
 			res = await fetch("https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles"+parametros+`?offset=${defaultOffset}&limit=${limitPag}`);
 		}
-		
+	
 		console.log(res.ok);
 
 		if (res.ok && busqueda) {
