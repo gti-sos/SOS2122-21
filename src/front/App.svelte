@@ -47,7 +47,7 @@
         "/registrations-vehicles/data":RvTable,
         "/registrations-vehicles/:country/:year": RVnewData,
         "/registrations-vehicles/graph": RVGraph,
-        "//registrations-vehicles/graphCanvasJS": RVGraphCanvaJs,
+        "/registrations-vehicles/graphCanvasJS": RVGraphCanvaJs,
         "/analytics": CommonGraph,
         "/in-use-vehicles/integracion1": I1,
         "/in-use-vehicles/integracion2": I2,
