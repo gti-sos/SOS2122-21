@@ -9,16 +9,16 @@
     let variación = [];
     async function loadGraph(){
         console.log("Cargando grafica")
-        const res = await fetch("/api/v1/registrations-vehicles");
+        const res = await fetch("https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats");
         if(res.ok){
             datos = await res.json();
             console.log(datos);
             console.log(JSON.stringify(datos, null, 2))
             datos.forEach(data => {
                 fechas.push(data["country"] + "-" + data.year);
-                ventaAnualVehículos.push(data.veh_sale);
-                ventaAnualVehículosPor1000.push(data.veh_per_1000);
-                variación.push(data.variation * 10000)
+                ventaAnualVehículos.push(data.public_expenditure);
+                ventaAnualVehículosPor1000.push(data.pe_to_gdp);
+                variación.push(data.pe_on_defence * 10000)
             });
         }else{
             window.alert("No hay datos para este pais");
