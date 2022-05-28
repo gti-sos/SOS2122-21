@@ -19,11 +19,21 @@
     import I3 from "./inUseVehicles/Integracion3.svelte";
     import I4 from "./inUseVehicles/Integracion4.svelte";
 
+
     //MARIA
     import PV from './productionsVehicles/PV.svelte';
     import PVnewData from './productionsVehicles/PVnewData.svelte';
     import PVTable from './productionsVehicles/PvTable.svelte';
     import PVGraph from './productionsVehicles/PVGraph.svelte';
+    import PvGraphTauCharts from './productionsVehicles/PVGraphTauCharts.svelte';
+    import Integracion1PV from './productionsVehicles/Integracion1PV.svelte';
+    import Integracion2PV from './productionsVehicles/Integracion2PV.svelte';
+    import Uso1 from './productionsVehicles/Uso1.svelte';
+    import Uso2 from './productionsVehicles/Uso2.svelte';
+    import Uso3 from './productionsVehicles/Uso3.svelte';
+    import Uso4 from './productionsVehicles/Uso4.svelte';
+
+
 
     //JAVI
     import RV from './registrationsVehicles/RV.svelte';
@@ -44,6 +54,13 @@
         "/productions-vehicles/data":PVTable,
         "/productions-vehicles/:country/:year": PVnewData,
         "/productions-vehicles/graph": PVGraph,
+        "/productions-vehicles/graph2" :PvGraphTauCharts,
+        "/productions-vehicles/graph3":Integracion1PV,
+        "/productions-vehicles/graph4":Integracion2PV,
+        "/productions-vehicles/graph5":Uso1,
+        "/productions-vehicles/graph6":Uso2,
+        "/productions-vehicles/graph7":Uso3,
+        "/productions-vehicles/graph8":Uso4,
         "/registrations-vehicles": RV,
         "/registrations-vehicles/data":RvTable,
         "/registrations-vehicles/:country/:year": RVnewData,
