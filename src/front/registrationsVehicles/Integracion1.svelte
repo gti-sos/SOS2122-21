@@ -9,7 +9,7 @@
     let variación = [];
     async function loadGraph(){
         console.log("Cargando grafica")
-        const res = await fetch("https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats");
+        const res = await fetch("/remoteAPIRV1");
         if(res.ok){
             datos = await res.json();
             console.log(datos);
