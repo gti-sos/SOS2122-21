@@ -1,32 +1,23 @@
- //--------------------------------------------Javier Rodríguez Morales-------------------------------------
- 
+// ############################# Antonio #############################
+const request = require("request");
 
- const request = require("request");
+var urlAPIRV1='/remoteAPIRV1';
+var apiHost1 = 'https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats';
 
- var urlAPI1PV='/remoteAPI1RV';
- var apiHost1 = 'https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats';
- 
- var urlAPI2PV = '/remoteAPI2PV';
- var apiHost2 = 'https://sos2122-10.herokuapp.com/api/v2/energy-consumptions'
- 
-  //#####################INTEGRACIONES###############################
- 
- 
-  module.exports = (app,BASE_API_URL,bodyParser, db) => {
- 
-     app.use(urlAPI1PV, function(req, res) {
-         var aux = req.url;
-         var url = apiHost1 + aux.slice(1);
-         console.log('piped: ' + req.baseUrl + aux);
-         req.pipe(request(url)).pipe(res);
-     });
-     
-     app.use(urlAPI2PV, function(req, res) {
-         var url = apiHost2 + req.url;
-         console.log('piped: ' + req.baseUrl + req.url);
-         req.pipe(request(url)).pipe(res);
-     });
-    
+
+module.exports = (app, BASE_API_URL, bodyParser, db) => {
+
+    //#####################INTEGRACIONES###############################
+    app.use(urlAPIRV1, function(req, res) {
+        var aux = req.url;
+        var url = apiHost1 + aux.slice(1);
+        console.log('piped: ' + req.baseUrl + aux);
+        req.pipe(request(url)).pipe(res);
+    });
+
+
+//###################################################################
+
     app.use(bodyParser.json());
     var registrationsVehicles = [];
     const API_DOC = "https://documenter.getpostman.com/view/20092351/UVyn2z4A";
