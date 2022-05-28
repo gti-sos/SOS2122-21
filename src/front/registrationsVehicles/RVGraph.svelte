@@ -196,7 +196,7 @@
                 type: "column",
             },
             title: {
-                text: `Vehículos de pasajeros en uso, ${minY}-${maxY}`,
+                text: `Registros de vehículos, ${minY}-${maxY}`,
             },
             subtitle: {
                 text: "Fuente: datosmacro.com",
@@ -274,7 +274,7 @@
 
     <figure class="highcharts-figure">
         <Row>
-            <h5 class="text-center">Vehículos en uso por cada 1000 personas (Gráfico Morris.js)</h5>
+            <h5 class="text-center">Registro de vehículos por cada 1000 personas (Gráfico CanvasJS)</h5>
         </Row>
         <div id="container3" />
         <br />
