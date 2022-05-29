@@ -1,116 +1,136 @@
 <script>
+	import {pop} from "svelte-spa-router";
     import Button from "sveltestrap/src/Button.svelte";
-    import Highcharts from "highcharts";
-    import { pop } from "svelte-spa-router";
-    let datos = [];
-    let fechas = [];
-    let llegadas = [];
-    let salidas = [];
-    let gastos = [];
-    async function loadGraph(){
-        console.log("Cargando grafica")
-        const res = await fetch("https://sos2021-03.herokuapp.com/api/integration/international-tourisms");
-        if(res.ok){
-            datos = await res.json();
-            console.log(datos);
-            console.log(JSON.stringify(datos, null, 2))
-            datos.forEach(data => {
-                fechas.push(data["country"] + "-" + data.year);
-                llegadas.push(data.numberofarrivals*10);
-                salidas.push(data.numberofdepartures*1000);
-                gastos.push(data.expendituresbillion*1000)
-            });
-        }else{
-            window.alert("No hay datos para este pais");
-            console.log("INTERNAL FATAL ERROR");
-            window.location.href = `/#/registrations-vehicles`;
+	async function loadGraph(){
+        let MyData = [];
+        let OtherData = [];
+        const url = "https://jsonplaceholder.typicode.com/users";
+        const resData = await fetch("/api/v1/registrations-vehicles");
+        MyData = await resData.json();
+        console.log("Fetching url...");	
+		const res = await fetch(url); 
+		if (res.ok) {
+			console.log("Ok");
+            OtherData = await res.json();
+		} else {
+			console.log("Error al cargar API externa");
         }
-
-        Highcharts.chart('container', {
-    chart: {
-        type: 'column',
-        options3d: {
-            enabled: true,
-            alpha: 15,
-            beta: 15,
-            viewDistance: 25,
-            depth: 40
-        }
-    },
-
-    title: {
-        text: 'International tourisms'
-    },
-
-    xAxis: {
-        labels: {
-            skew3d: true,
-            style: {
-                fontSize: '16px'
+        /*
+        let MyDataGraph = MyData.map((x) => {
+			let res = {name: x.country + " " + x.year, value: x["registrations-vehicles"]};
+			return res;
+		});
+		*/
+		let utilData = OtherData;
+        let OtherDataGraph = utilData.map((x) => {
+				let res = {name: x.name, value: parseInt(x.id)};
+			return res;
+		});
+		
+		let datosJuntos = 
+        [
+            {
+                name: "Usuario",
+                data: OtherDataGraph
             }
-        }
-    },
-
-    yAxis: {
-        allowDecimals: false,
-        min: 0,
-        title: {
-            text: 'Number of fruits',
-            skew3d: true
-        }
-    },
-
-    tooltip: {
-        headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} / {point.stackTotal}'
-    },
-
-    plotOptions: {
-        column: {
-            stacking: 'normal',
-            depth: 40
-        }
-    },
-
-    series: [{
-        name: 'Llegadas',
-        data: llegadas,
-    }, {
-        name: 'Salidas',
-        data: salidas,
-    }, {
-        name: 'Gastos',
-        data: gastos,
-    }]
-});
-}
+        ];
+        
+        Highcharts.chart('container', {
+			chart: {
+				type: 'packedbubble',
+				height: '100%'
+			},
+			title: {
+				text: 'Gráfica que representa el ID de los usuarios.'
+			},
+			tooltip: {
+				useHTML: true,
+				pointFormat: '<b>{point.name}:</b> {point.value}'
+			},
+			plotOptions: {
+				packedbubble: {
+					minSize: '50%',
+					maxSize: '50%',
+					zMin: 0,
+					zMax: 1000,
+					layoutAlgorithm: {
+						splitSeries: true,
+						gravitationalConstant: 0.02
+					},
+					dataLabels: {
+						enabled: true,
+						format: '{point.name}',
+						filter: {
+							property: 'y',
+							operator: '>',
+							value: 250
+						},
+						style: {
+							color: 'black',
+							textOutline: 'none',
+							fontWeight: 'normal'
+						}
+					}
+				}
+			},
+			series: datosJuntos
+		});
+    }
 </script>
 
 <svelte:head>
-    <script src="https://code.highcharts.com/highcharts.js" on:load="{loadGraph}"></script>
+    <script src="https://code.highcharts.com/highcharts.js" on:load={loadGraph}></script>>
+    <script src="https://code.highcharts.com/highcharts-more.js" on:load={loadGraph}></script>>
+    <script src="https://code.highcharts.com/modules/exporting.js" on:load={loadGraph}></script>>
+    <script src="https://code.highcharts.com/modules/accessibility.js" on:load={loadGraph}></script>
+    
 </svelte:head>
+<main>
+	<figure class="highcharts-figure">
+		<div id="container"></div>
+	</figure>
+	
+	<h4><a >Fuente</a></h4>
+	<p></p>
+	<Button outline color="secondary" on:click="{pop}"> Volver</Button>
+	<p></p>
 
-<main>        
+</main>
 
-    <Button id="back" outline color="secondary" on:click="{pop}"> Atrás</Button>
-        <div style="margin:auto;"> 
-        <figure class="highcharts-figure">
-            <div id="container"></div>
-            <p class="highcharts-description">
-               Gráfico de barras sobre el porcentaje de matriculado en todos los niveles escolares.
-            </p>
-        </figure>  
-    </main>
-    
-    
-    <style>
-        .highcharts-figure {
-          min-width: 100%;
-          max-width:100%;
-          margin: 1em auto;
-        }
-        #container {
-          height: 600px;
-        }
-        
-    </style>
+<style>
+	main {
+		text-align: center;
+	}
+    .highcharts-figure, .highcharts-data-table table {
+  min-width: 320px; 
+  max-width: 800px;
+  margin: 1em auto;
+}
+.highcharts-data-table table {
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+.highcharts-data-table caption {
+  padding: 1em 0;
+  font-size: 1.2em;
+  color: #555;
+}
+.highcharts-data-table th {
+	font-weight: 600;
+  padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+  padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+  background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+  background: #f1f7ff;
+}
+</style>

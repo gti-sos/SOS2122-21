@@ -44,6 +44,7 @@
     import Javrodmor1 from './registrationsVehicles/javrodmor1.svelte';
     import Integracion2 from './registrationsVehicles/Integracion2.svelte';
     import Integracion3 from './registrationsVehicles/Integracion3.svelte';
+    import Integracion4 from './registrationsVehicles/Integracion4.svelte';
 
     const routes = {
         "/": Home,
@@ -70,6 +71,7 @@
         "/registrations-vehicles/javrodmor1" : Javrodmor1,
         "/registrations-vehicles/integracion2" : Integracion2,
         "/registrations-vehicles/integracion3" : Integracion3,
+        "/registrations-vehicles/integracion4" : Integracion4,
         "/analytics": CommonGraph,
         "/in-use-vehicles/integracion1": I1,
         "/in-use-vehicles/integracion2": I2,
