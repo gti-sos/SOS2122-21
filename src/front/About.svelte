@@ -17,7 +17,12 @@
 
                     <CardBody>
                         <CardText>
-                            
+                            <Row cols={1}>
+                                <Col>
+                                    <a href="https://www.youtube.com/watch?v=iCqibdNZhvk">
+                                    <Button color="dark">Click aquí para el vídeo</Button></a>
+                                </Col>
+                            </Row>
                         </CardText>
                     </CardBody>
 
