@@ -42,6 +42,8 @@
     import RVGraphCanvaJs from './registrationsVehicles/RVGraphCanvaJS.svelte';
     import Integracion1 from './registrationsVehicles/Integracion1.svelte';
     import Javrodmor1 from './registrationsVehicles/javrodmor1.svelte';
+    import Integracion2 from './registrationsVehicles/Integracion2.svelte';
+    import Integracion3 from './registrationsVehicles/Integracion3.svelte';
 
     const routes = {
         "/": Home,
@@ -66,6 +68,8 @@
         "/registrations-vehicles/graphCanvasJS": RVGraphCanvaJs,
         "/registrations-vehicles/integracion1" : Integracion1,
         "/registrations-vehicles/javrodmor1" : Javrodmor1,
+        "/registrations-vehicles/integracion2" : Integracion2,
+        "/registrations-vehicles/integracion3" : Integracion3,
         "/analytics": CommonGraph,
         "/in-use-vehicles/integracion1": I1,
         "/in-use-vehicles/integracion2": I2,

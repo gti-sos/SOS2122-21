@@ -72,8 +72,19 @@
 
                     <CardBody>
                         <CardText>
-                            <a href="/#/registrations-vehicles/graph">
-                            <Button color="primary">Highcharts</Button></a>
+                            <Row cols={1}>
+                                <Col>
+                                    <a href="/#/registrations-vehicles/graph">
+                                    <Button color="primary">Highcharts</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>
+                                    <a href="/#/registrations-vehicles/graphCanvasJS">
+                                        <Button color="primary">Biblioteca CanvasJS</Button></a>
+                                </Col>
+                                <br>
+                            </Row>
                         </CardText>
                     </CardBody>
 
