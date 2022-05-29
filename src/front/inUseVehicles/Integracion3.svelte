@@ -5,11 +5,13 @@
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let apiData = [];
+    let apiData2 = [];
 
     onMount(getData);
 
     let etiquetas = [];
     let estadisticas = [];
+    let estadisticas2 = [];
 
 
     async function getData() {
@@ -23,13 +25,24 @@
                 etiquetas.push(e.country+"-"+e.year);
                 estadisticas.push(e["production"]);
             });
-
-            await delay(1000);
-            loadGraph();
         } else {
             console.log("Error in request");
         }
 
+        const res2 = await fetch("https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles");
+        if(res.ok){
+            const json = await res2.json();
+            apiData2 = json;
+
+            apiData2.forEach((e) => {
+                etiquetas.push(e.country+"-"+e.year);
+                estadisticas2.push(e["veh_use_per_1000"]);
+            })
+        }
+
+        
+        await delay(500);
+        loadGraph();
     }
 
     function loadGraph() {
@@ -38,7 +51,7 @@
                 type: 'bar'
             },
             title: {
-                text: 'Estadísticas sobre la producción de cereal'
+                text: 'Estadísticas sobre la producción de cereal y vehiculos en uso por 1000 habitantes'
             },
             yAxis: {
                 title: {
@@ -59,8 +72,14 @@
             
             series: [
                 {
-                name: 'Producción',
-                data: estadisticas
+                name: 'Producción de cereal',
+                data: estadisticas,
+                color: '#ff7700'
+                },
+                {
+                name: 'Vehículos en uso por cada 1000 habitantes',
+                data: estadisticas2,
+                color: '#0008ff'
                 },
             ],
             responsive: {

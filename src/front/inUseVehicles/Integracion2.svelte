@@ -5,11 +5,15 @@
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let apiData = [];
+    let apiData2 = [];
 
     onMount(getData);
 
     let etiquetas = [];
     let estadisticas = [];
+    
+    let etiquetas2 = [];
+    let estadisticas2 = [];
 
 
     async function getData() {
@@ -32,6 +36,21 @@
                 console.log("Error in request");
             }
         }
+        const res = await fetch("https://sos2122-21.herokuapp.com/api/v1/in-use-vehicles");
+        if (res.ok) {
+                const json = await res.json();
+                apiData2 = json;
+
+                apiData2.forEach((e) => {
+                    etiquetas.push(e.country+"-"+e.year);
+                    estadisticas2.push(e["veh_use_comm"]);
+                });
+
+                await delay(500);
+                loadGraph();
+            } else {
+                console.log("Error in request");
+            }
     }
 
     function loadGraph() {
@@ -40,7 +59,7 @@
                 type: 'bar'
             },
             title: {
-                text: 'Public expenditure stats by country and year'
+                text: 'Public expenditure stats by country and year y vehiculos comerciales en uso'
             },
             subtitle: {
                 text: 'Source: https://datosmacro.expansion.com/estado/gasto'
@@ -65,7 +84,13 @@
             series: [
                 {
                 name: 'Public expenditure',
-                data: estadisticas
+                data: estadisticas,
+                color: '#34a5eb'
+                },
+                {
+                name: 'Vehiculos comerciales en uso',
+                data: estadisticas2,
+                color: '#eb4034',
                 },
             ],
             responsive: {
