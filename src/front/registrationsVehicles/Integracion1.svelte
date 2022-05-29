@@ -7,6 +7,9 @@
     let dat1 = [];
     let dat2 = [];
     let dat3 = [];
+    let ventaAnualVehículos = [];
+    let ventaAnualVehículosPor1000 = [];
+    let variación = [];
     async function loadGraph(){
         console.log("Cargando grafica")
         const res = await fetch("/remoteAPIRV1");
@@ -16,14 +19,31 @@
             console.log(JSON.stringify(datos, null, 2))
             datos.forEach(data => {
                 fechas.push(data["country"] + "-" + data.year);
-                dat1.push(data.public_expenditure);
-                dat2.push(data.pe_to_gdp * 10000);
-                dat3.push(data.pe_on_defence * 100000)
+                dat1.push(data.public_expenditure*10);
+                dat2.push(data.pe_to_gdp *10 );
+                dat3.push(data.pe_on_defence*10)
             });
         }else{
             window.alert("No hay datos para este pais");
             console.log("INTERNAL FATAL ERROR");
             window.location.href = `/#/registrations-vehicles/`;
+        }
+
+        const res2 = await fetch("/api/v1/registrations-vehicles");
+        if(res2.ok){
+            datos = await res2.json();
+            console.log(datos);
+            console.log(JSON.stringify(datos, null, 2))
+            datos.forEach(data => {
+                fechas.push(data["country"] + "-" + data.year);
+                ventaAnualVehículos.push(data.veh_sale);
+                ventaAnualVehículosPor1000.push(data.veh_per_1000);
+                variación.push(data.variation * 10000)
+            });
+        }else{
+            window.alert("No hay datos para este pais");
+            console.log("INTERNAL FATAL ERROR");
+            window.location.href = `/#/registrations-vehicles`;
         }
 
         Highcharts.chart('container', {
@@ -32,12 +52,9 @@
     },
     title: {
         align: 'left',
-        text: 'Browser market shares. January, 2018'
+        text: 'Integración de mi API con integración de Roque Fernández'
     },
-    subtitle: {
-        align: 'left',
-        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
-    },
+   
     accessibility: {
         announceNewData: {
             enabled: true
@@ -79,6 +96,21 @@
             name: "VAriacion (x10.000)",
             colorByPoint: true,
             data: dat3
+        },
+        {
+            name: "hola anuelaes",
+            colorByPoint: true,
+            data: ventaAnualVehículos
+        },
+        {
+            name: "cara por 1000",
+            colorByPoint: true,
+            data: ventaAnualVehículosPor1000
+        },
+        {
+            name: "cola (x10.000)",
+            colorByPoint: true,
+            data: variación
         }
     ]
 });
@@ -96,9 +128,6 @@
         <div style="margin:auto;"> 
         <figure class="highcharts-figure">
             <div id="container"></div>
-            <p class="highcharts-description">
-               Gráfico de barras sobre el porcentaje de matriculado en todos los niveles escolares.
-            </p>
         </figure>  
     </main>
     
