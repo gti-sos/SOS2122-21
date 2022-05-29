@@ -18,7 +18,7 @@
                 fechas.push(data["country"] + "-" + data.year);
                 ventaAnualVehículos.push(data.veh_sale);
                 ventaAnualVehículosPor1000.push(data.veh_per_1000);
-                variación.push(data.variation)
+                variación.push(data.variation*1000)
             });
         }else{
             window.alert("No hay datos para este pais");
@@ -29,7 +29,7 @@
             animationEnabled: true,
             theme: "light2", // "light1", "light2", "dark1", "dark2"
             title: {
-                text: "Porcentaje de matriculados en distintos niveles escolares"
+                text: "Porcentaje de vehículos nuevos matriculados"
             },
             subtitles: [{
                 text: "",
@@ -46,7 +46,7 @@
             },
             data: [{
                 type: "column",
-                 yValueFormatString: "Porcentaje de matriculados: #,##0.00",
+                 yValueFormatString: "Porcentaje de vehículos nuevos: #,##0.00",
                 
                 dataPoints: [                
                     { label: fechas[0], y: variación[0]},

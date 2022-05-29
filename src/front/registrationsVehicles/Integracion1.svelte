@@ -4,26 +4,26 @@
     import { pop } from "svelte-spa-router";
     let datos = [];
     let fechas = [];
-    let ventaAnualVehículos = [];
-    let ventaAnualVehículosPor1000 = [];
-    let variación = [];
+    let dat1 = [];
+    let dat2 = [];
+    let dat3 = [];
     async function loadGraph(){
         console.log("Cargando grafica")
-        const res = await fetch("/api/v1/registrations-vehicles");
+        const res = await fetch("/remoteAPIRV1");
         if(res.ok){
             datos = await res.json();
             console.log(datos);
             console.log(JSON.stringify(datos, null, 2))
             datos.forEach(data => {
                 fechas.push(data["country"] + "-" + data.year);
-                ventaAnualVehículos.push(data.veh_sale);
-                ventaAnualVehículosPor1000.push(data.veh_per_1000);
-                variación.push(data.variation * 10000)
+                dat1.push(data.public_expenditure);
+                dat2.push(data.pe_to_gdp * 10000);
+                dat3.push(data.pe_on_defence * 100000)
             });
         }else{
             window.alert("No hay datos para este pais");
             console.log("INTERNAL FATAL ERROR");
-            window.location.href = `/#/registrations-vehicles`;
+            window.location.href = `/#/registrations-vehicles/`;
         }
 
         Highcharts.chart('container', {
@@ -68,17 +68,17 @@
         {
             name: "VEhivulos anuelaes",
             colorByPoint: true,
-            data: ventaAnualVehículos
+            data: dat1
         },
         {
             name: "VEhivulos por 1000",
             colorByPoint: true,
-            data: ventaAnualVehículosPor1000
+            data: dat2
         },
         {
             name: "VAriacion (x10.000)",
             colorByPoint: true,
-            data: variación
+            data: dat3
         }
     ]
 });
@@ -91,7 +91,6 @@
 
 <main>        
     <br>
-    <iframe width="420" height="315" src="https://www.youtube.com/embed/U8xzshpnxPk"></iframe>
     <br>
     <Button id="back" outline color="secondary" on:click="{pop}"> Atrás</Button>
         <div style="margin:auto;"> 

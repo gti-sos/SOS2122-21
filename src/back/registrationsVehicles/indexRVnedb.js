@@ -1,5 +1,23 @@
 // ############################# Antonio #############################
+const request = require("request");
+
+var urlAPIRV1='/remoteAPIRV1';
+var apiHost1 = 'https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats';
+
+
 module.exports = (app, BASE_API_URL, bodyParser, db) => {
+
+    //#####################INTEGRACIONES###############################
+    app.use(urlAPIRV1, function(req, res) {
+        var aux = req.url;
+        var url = apiHost1 + aux.slice(1);
+        console.log('piped: ' + req.baseUrl + aux);
+        req.pipe(request(url)).pipe(res);
+    });
+
+
+//###################################################################
+
     app.use(bodyParser.json());
     var registrationsVehicles = [];
     const API_DOC = "https://documenter.getpostman.com/view/20092351/UVyn2z4A";
@@ -731,5 +749,5 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
             res.sendStatus(200, "OK")
             return;
         });
-    })
+    });
 }

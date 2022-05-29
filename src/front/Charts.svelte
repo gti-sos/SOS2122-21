@@ -72,7 +72,7 @@
 
                     <CardBody>
                         <CardText>
-                            <a href="/#/registrations-vehicles">
+                            <a href="/#/registrations-vehicles/graph">
                             <Button color="primary">Highcharts</Button></a>
                         </CardText>
                     </CardBody>
