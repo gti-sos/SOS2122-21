@@ -102,7 +102,7 @@
                 for(let i = 0 ; i < datos.length ; i++){
                     let pais = datos[i][0];
                     let dato = datos[i][1];
-                    json[pais] = dato;
+                    json[pais] = dato; //PARA AÑADIR DATO añadir al json pais: dato
                 
                     if(!yK.includes(pais)){
                         yK.push(pais);
@@ -147,6 +147,7 @@
 
     async function loadGraph() {
 
+        console.log("Data highcharts: "+JSON.stringify(dataComm));
         Highcharts.chart("container", {
             chart: {
                 type: "bar",
@@ -241,6 +242,7 @@
             series: dataPass,
         });
 
+        console.log("Data morris: "+JSON.stringify(dataPer1000));
         new Morris.Bar({
             element: "container3",
             data: dataPer1000,
