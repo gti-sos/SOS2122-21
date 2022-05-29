@@ -18,7 +18,7 @@
             headers: {
                 "X-RapidAPI-Host": "f1-live-motorsport-data.p.rapidapi.com",
                 "X-RapidAPI-Key":
-                    "90e8831e21msh6e05c3f0ed22914p1a282djsn9e71a533665e",
+                    "1b9eef2147msh15fc53872c0ef34p15e548jsn3227368a1063",
             },
         };
 
