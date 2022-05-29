@@ -1,14 +1,16 @@
 <script>
 	import {pop} from "svelte-spa-router";
     import Button from "sveltestrap/src/Button.svelte";
+	
 	async function loadGraph(){
 	let MyData = [];
 	let API_23 = [];
-		
+	
+	//MI DATOS
 	const resData = await fetch("/api/v1/productions-vehicles");
 	MyData = await resData.json();
-    
-    const resData2 = await fetch("/remoteAPI1/loadInitialData");
+    //DATOS API G23
+    const resData2 = await fetch("https://sos2122-23.herokuapp.com/api/v2/premier-league/loadinitialdata");
 		if (resData2.ok) {
 			console.log("Ok, api 23 loaded");
 			const json = await resData2.json();
@@ -17,19 +19,22 @@
 		} else {
 			console.log("ERROR!");
         }
+	//para coger los valores de las 2 APIs
 		let aux = []
 		let valores = []
+		//mi api
 		MyData.forEach((x) => {
         	if(x.country=="Spain"||x.country=="Germany"){	
 				aux={
 					name: x.country +" " +x.year,
-					data: [x.veh_comm,x.veh_pass]
+					data: [0,0,parseInt(x.veh_comm)/1000,parseInt(x.veh_pass)/1000]
 				}
 				valores.push(aux)
 			}
         });
+		//api grupo 23
 		API_23.forEach((x) => {
-            if((x.country=="Spain")){	
+            if((x.country=="Belgium")){	
 				aux={
 					name: x.country +" " + x.year,
 					data: [parseInt(x.appearences),parseInt(x.goals),0,0] 
@@ -38,7 +43,7 @@
 			}  
 		
 		});
-		
+		//gráfico
 		Highcharts.chart('container', {
 			chart: {
 				type: 'column'
@@ -47,7 +52,7 @@
 				text: 'Vehículos y jugadores de la Premier League'
 			},
 			xAxis: {
-				categories: ["Vehículos comerciales", "Vehículos pasejeros", "Apariciones", "Goles"]
+				categories: [ "Apariciones", "Goles","Vehículos comerciales", "Vehículos pasajeros"]
 			},
 			yAxis: {
 				min: 0,

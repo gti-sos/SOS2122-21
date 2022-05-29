@@ -4,8 +4,9 @@
 	async function loadGraph(){
 	    let MisDatos = [];
 	    let G10 = [];
-    
+        //mis datos
 	    const VehDatos = await fetch("/api/v1/productions-vehicles");
+        //datos del G10 con PROXY
 	    MisDatos = await VehDatos.json();
         const DatosExternos = await fetch("/remoteAPI2PV");
 		if (DatosExternos.ok) {
@@ -19,11 +20,12 @@
 		let aux = []
         let valores = []
         
+        //leer los datos de las 2 APIs
         MisDatos.forEach((x) => {
         	if(x.country=="Spain"||x.country=="Germany"){	
 				aux={
-					name: x.country,
-					data: [x.veh_comm,x.veh_pass]
+					name: x.country +" " +x.year,
+					data: [0,0,parseInt(x.veh_comm)/1000,parseInt(x.veh_pass)/1000]
 				}
 				valores.push(aux)
 			}
@@ -31,19 +33,20 @@
 		G10.forEach((x) => {
             if((x.country=="spain"||x.country=="italy")){	
 				aux={
-					name: x.country,
+					name: x.country +" " +x.year,
 					data: [x["non_renewable_energy_consumptions"],x["renewable_energy_consumptions"],0,0]
 				}
 				valores.push(aux)
 			}  	
 		
         });
+    //gráfico
     Highcharts.chart('container', {
         chart: {
             type: 'areaspline'
         },
         title: {
-            text: 'G21 - G10'
+            text: 'Vehículos y consumo de energía'
         },
         legend: {
             layout: 'vertical',
@@ -58,10 +61,10 @@
         },
         xAxis: {
             categories: [
-                'veh_com',
-                'veh_pass',
                 'non_renewable_energy_consumptions',
-                'renewable_energy_consumptions'
+                'renewable_energy_consumptions',
+                'veh_com',
+                'veh_pass'
             ],
             plotBands: [{ 
                 from: 4.5,
@@ -102,7 +105,7 @@
     <figure class="highcharts-figure">
         <div id="container"></div>
         <p class="highcharts-description">
-            Relación entre vehículos y energías
+           En esta gráfica se ve la integración de mi API con la del grupo 10
         </p>
         <Button outline color="secondary" on:click="{pop}"> <i class="fas fa-arrow-circle-left"></i> Atrás </Button>
     </figure>

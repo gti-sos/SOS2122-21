@@ -17,7 +17,30 @@
 
                     <CardBody>
                         <CardText>
-                            
+                            <Row cols={1}>
+                                <Col>
+                                    <a href="/#/productions-vehicles/graph5">
+                                    <Button color="info">API externa 1</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>
+                                    <a href="/#/productions-vehicles/graph6">
+                                        <Button color="info">API externa 2</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>  
+                                    <a href="/#/productions-vehicles/graph3">
+                                        <Button color="warning">API de SOS, Grupo 23</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>  
+                                    <a href="/#/productions-vehicles/graph4">
+                                        <Button color="warning">API de SOS, Grupo 10</Button></a>
+                                </Col>
+                            </Row>
                         </CardText>
                     </CardBody>
 

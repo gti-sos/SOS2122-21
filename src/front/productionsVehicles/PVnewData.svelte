@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     export let params = {};
-    import { Table,Button } from "sveltestrap";
+    import { Table,Button,Alert,Container,Row,Col} from "sveltestrap";
     import { pop } from "svelte-spa-router"
     import { Icon } from 'sveltestrap';
 
@@ -10,6 +10,12 @@
     onMount(getPv);
 
     let productionsVehicles = {};
+
+    let estado = "";
+    let visibilidad = false;
+    let color = "danger";
+    let cargarTabla = true;
+
  
     //1.datos para que se actualicen los registros
     //datos que ponemos para actualizar el registro
@@ -51,8 +57,11 @@
         }
         else{
             if(res.status=="404"){
-                window.alert(`No existe un registro con el pais '${params.country}' y el año '${params.year}'`);
-                pop();
+                cargarTabla = false;
+                visibilidad = true;
+			    color="danger";
+			    estado=`No existe ningun recurso con el país "${params.country}" y el año "${params.year}"`;
+                //pop();
             }
         }
     }
@@ -79,21 +88,30 @@
 		}).then(function (res) {
             if (res.ok){
 			getPv();
-            window.alert("Registro modificado correctamente");
-            pop();
+            visibilidad = true;
+            color="success";
+            estado=`Registro editado correctamente`;
         }
         else{
             if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+                visibilidad = true;
+                color="danger";
+                estado=`Ningún campo debe estar vacio`;
 			}
-			if(res.status == "405"){
-				window.alert("Método no permitido");
+            if(res.status == "405"){
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
 			}
 			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
 			}
 			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
 			}
         }
 		});
@@ -106,7 +124,18 @@
     {#await productionsVehicles}
     loading
         {:then productionsVehicles}
-        
+        <Container>
+			<Row>
+				<Col xs="6" sm="4"></Col>
+    			<Col xs="6" sm="4">
+                    <Alert color={color} isOpen={visibilidad} toggle={() => (visibilidad = false)}>
+                        {estado}
+                    </Alert>
+				</Col>
+			</Row>
+		</Container>
+
+        {#if cargarTabla}
     
         <Table bordered>
             <thead>
@@ -131,6 +160,7 @@
                 </tr>
             </tbody>
         </Table>
+        {/if}
     {/await}
 
     <Button color="info" on:click="{pop}"> <Icon name="arrow-return-left"/> </Button>

@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/gti-sos/SOS2122-21#readme",
   "dependencies": {
+    "@amcharts/amcharts4": "^4.10.25",
+    "@amcharts/amcharts4-fonts": "^4.0.1",
+    "@amcharts/amcharts4-geodata": "^4.1.23",
+    "@amcharts/amcharts5": "^5.2.6",
+    "@amcharts/amcharts5-geodata": "^5.0.3",
     "bootstrap-icons": "^1.8.1",
     "cool-ascii-faces": "^1.3.4",
     "cors": "^2.8.5",

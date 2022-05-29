@@ -2,7 +2,7 @@
 <script>
 
 import {onMount} from 'svelte';
-import {Pagination, PaginationItem, PaginationLink, Table, Button, Alert } from "sveltestrap";
+import {Pagination, PaginationItem, PaginationLink, Table, Button, Alert,Container ,Row,Col} from "sveltestrap";
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -10,6 +10,10 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 //1.variable PV
 
 let productionsVehicles=[];
+
+let estado = "";
+let visibilidad = false;
+let color = "danger";
    
 //2.nuevo production-vehicle,para insertar nuevos datos (POST)
 
@@ -46,8 +50,9 @@ let productionsVehicles=[];
 			const data = await res.json();
 			productionsVehicles = data;
 			//getPaginacionPV();
-			await delay(50);
-			window.alert("Búsqueda realizada");
+			visibilidad = true;
+			color="success";
+			estado="Búsqueda realizada correctamente";
 			for(let i=0; i<productionsVehicles.length ; i++){
 				let y = productionsVehicles[i].year;
 				if(y < yFrom){
@@ -72,16 +77,24 @@ let productionsVehicles=[];
 		else{
 			//mostrar error en la búsqueda
 			if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+				visibilidad = true;
+				color="danger";
+				estado="No se puede realizar la búsqueda entre dichos años";
 			}
 			if(res.status == "405"){
-				window.alert("Método no permitido");
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
 			}
 			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
 			}
 			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
 			}
 		}
 	}
@@ -90,6 +103,17 @@ let productionsVehicles=[];
 
    async function insertPv() {
 		console.log("Inserting data...." + JSON.stringify(newPV));
+		if (newPV.country == "" || 
+			newPV.year == "" ||
+            newPV.veh_comm == "" || 
+			newPV.veh_pass == "" || 
+			newPV.veh_annprod == "" ){
+			visibilidad = true;
+			color="warning";
+			estado=`Ningún campo debe estar vacio`;
+		}
+
+		else{
 		const res = await fetch("/api/v1/productions-vehicles", {
 			method: "POST",
 			body: JSON.stringify(newPV),
@@ -106,29 +130,44 @@ let productionsVehicles=[];
 				newPV.veh_annprod="";
 				getPv(); //para que cuando se añadan los registros no haga falta recargar,si no que directamente aparezca la actualización con los añadidos
 				getPaginacionPV();
-				await delay(50);
-				window.alert("Registro añadido correctamente");
+				visibilidad = true;
+				color="success";
+				estado="Registro añadido correctamente";
 			}
          //no se puede añadir porque ya existe
 			else{
 				if(res.status == "409"){
-					window.alert("No se puede añadir este registro porque ya existe");
+				visibilidad = true;
+				color="danger";
+				estado="No se puede añadir este registro porque ya existe";
+				
 				}
 				if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+				visibilidad = true;
+				color="danger";
+				estado="La petición no está correctamente formulada";
+			
 			    }
 			    if(res.status == "405"){
-				window.alert("Método no permitido");
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
 			    }
 			   if(res.status == "404"){
-			   window.alert("Elemento no encontrado");
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
+			 
 			   }
 			  if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
 			 }
 			}
 		});
 		console.log("DONE");
+	}
 	}
 
    //4.3-LoadInitialData,función donde se cargan los datos para el botón de listar todos los recursos
@@ -138,24 +177,35 @@ let productionsVehicles=[];
 		await fetch("/api/v1/productions-vehicles/loadInitialData").then(async function (res) {
 			if (res.ok){
 			getPv();
-			await delay(50);
-			window.alert("Registros añadidos correctamente");
+			visibilidad = true;
+			color="success";
+			estado="Registros añadidos correctamente";
 		   }
-        else{
-			if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+		   else{
+		
+				if(res.status == "400"){
+				visibilidad = true;
+				color="danger";
+				estado="La petición no está correctamente formulada";
+			
+			    }
+			    if(res.status == "405"){
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
+			    }
+			   if(res.status == "404"){
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
+			 
+			   }
+			  if(res.status == "500"){
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
+			 }
 			}
-			if(res.status == "405"){
-				window.alert("Método no permitido");
-			}
-			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
-			}
-			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
-			}
-
-		}
 
 		});
 	}
@@ -169,25 +219,35 @@ let productionsVehicles=[];
 		}).then(async function (res) {
 			if(res.ok){
 			getPv();
-			await delay(50);
-         //mensaje de eliminado el recurso en concreto
-			window.alert("Registro eliminado correctamente");
+			visibilidad = true;
+			color="success";
+			estado="Registro eliminado correctamente";
 		}
 		else{
-			if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+			
+				if(res.status == "400"){
+				visibilidad = true;
+				color="danger";
+				estado="La petición no está correctamente formulada";
+			
+			    }
+			    if(res.status == "405"){
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
+			    }
+			   if(res.status == "404"){
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
+			 
+			   }
+			  if(res.status == "500"){
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
+			 }
 			}
-			if(res.status == "405"){
-				window.alert("Método no permitido");
-			}
-			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
-			}
-			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
-			}
-
-		}
 		});
 	}
 
@@ -200,24 +260,35 @@ let productionsVehicles=[];
 		}).then(async function (res) {
 			if(res.ok){
 			getPv();
-			await delay(50);
-         //mensaje de elminado todos los registros
-			window.alert("Registros eliminados correctamente");
+			visibilidad = true;
+			color="success";
+			estado="Registros eliminados correctamente";
+        
 		}
 		else{
-			if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+				if(res.status == "400"){
+				visibilidad = true;
+				color="danger";
+				estado="La petición no está correctamente formulada";
+			
+			    }
+			    if(res.status == "405"){
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
+			    }
+			   if(res.status == "404"){
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
+			 
+			   }
+			  if(res.status == "500"){
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
+			 }
 			}
-			if(res.status == "405"){
-				window.alert("Método no permitido");
-			}
-			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
-			}
-			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
-			}
-		}
 		});
 	}
 
@@ -244,19 +315,29 @@ let productionsVehicles=[];
 			console.log("Registros recibidos: "+productionsVehicles.length);
 			update();
 		}else{
-			if(res.status == "400"){
-				window.alert("La petición no está correctamente formulada");
+				if(res.status == "400"){
+				visibilidad = true;
+				color="danger";
+				estado="La petición no está correctamente formulada";
+			
+			    }
+			    if(res.status == "405"){
+				visibilidad = true;
+				color="danger";
+				estado="Método no permitido";
+			    }
+			   if(res.status == "404"){
+				visibilidad = true;
+				color="danger";
+				estado="Elemento no encontrado";
+			 
+			   }
+			  if(res.status == "500"){
+				visibilidad = true;
+				color="success";
+				estado="Error interno del servidor";
+			 }
 			}
-			if(res.status == "405"){
-				window.alert("Método no permitido");
-			}
-			if(res.status == "404"){
-				window.alert("Elemento no encontrado");
-			}
-			if(res.status == "500"){
-				window.alert("INTERNAL SERVER ERROR");
-			}
-		}
   	}
 
 //funciones
@@ -307,6 +388,17 @@ let productionsVehicles=[];
     {#await productionsVehicles}
      loading
     {:then productionsVehicles}
+	   <Container>
+		  <Row>
+			<Col xs="6" sm="4"></Col>
+			<Col xs="6" sm="4">
+				<Alert color={color} isOpen={visibilidad} toggle={() => (visibilidad = false)}>
+					{estado}
+				</Alert>
+			</Col>
+		</Row>
+	  </Container>
+
          <Table bordered>
             <thead>
                  <tr>
@@ -340,6 +432,7 @@ let productionsVehicles=[];
                   <td><Button outline color="primary" on:click={insertPv}>Añadir recurso</Button></td>
                </tr>
             </tbody>
+
          </Table>
          <Button color="danger" on:click={deleteAllPv}>Borrar TODOS los recursos</Button>
          <Button outline color="primary" on:click={loadInitialData}>Cargar todos los recursos</Button>

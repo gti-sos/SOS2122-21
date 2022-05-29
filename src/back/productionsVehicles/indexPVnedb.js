@@ -3,33 +3,25 @@
 
 const request = require("request");
 
-var urlAPI1PV='/remoteAPI1PV';
-var apiHost1 = 'https://sos2122-23.herokuapp.com/api/v2/premier-league';
-
 var urlAPI2PV = '/remoteAPI2PV';
 var apiHost2 = 'https://sos2122-10.herokuapp.com/api/v2/energy-consumptions'
 
- //#####################INTEGRACIONES###############################
+ //#####################INTEGRACION###############################
 
 
  module.exports = (app,BASE_API_URL,bodyParser, db) => {
 
 
+//PROXY PARA LA INTEGRACIÓN CON G10 
 
-    app.use(urlAPI1PV, function(req, res) {
+    app.use(urlAPI2PV, function(req, res) {
         var aux = req.url;
-        var url = apiHost1 + aux.slice(1);
+        var url = apiHost2 + aux.slice(1);
         console.log('piped: ' + req.baseUrl + aux);
         req.pipe(request(url)).pipe(res);
     });
     
-    app.use(urlAPI2PV, function(req, res) {
-        var url = apiHost2 + req.url;
-        console.log('piped: ' + req.baseUrl + req.url);
-        req.pipe(request(url)).pipe(res);
-    });
-    app.use(bodyParser.json());
-    var ProductionsVehicles = []; 
+
 
 //POSTMAN
     const API_PV_DOC = "https://documenter.getpostman.com/view/20099214/UVyn2yuQ";

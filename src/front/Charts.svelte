@@ -17,8 +17,19 @@
 
                     <CardBody>
                         <CardText>
-                            <a href="/#/productions-vehicles/graph">
-                            <Button color="primary">Highcharts</Button></a>
+                            <Row cols={1}>
+                                <Col>
+                                    <a href="/#/productions-vehicles/graph">
+                                    <Button color="primary">Highcharts</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>
+                                    <a href="/#/productions-vehicles/graph2">
+                                        <Button color="primary">Biblioteca amcharts</Button></a>
+                                </Col>
+                                <br>
+                            </Row>
                         </CardText>
                     </CardBody>
 

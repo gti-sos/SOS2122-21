@@ -1,6 +1,8 @@
 
 <script>
     import {onMount} from "svelte";
+    import {pop} from "svelte-spa-router";
+    import Button from "sveltestrap/src/Button.svelte";
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     let PVData = [];
     let countries = []
@@ -116,5 +118,8 @@
 <main>
     <figure class="highcharts-figure">
         <div id="container"></div>
+    <p>
+    <Button outline color="secondary" on:click="{pop}"> <i class="fas fa-arrow-circle-left"></i> Atrás </Button>
+</p>
     </figure>  
 </main>
