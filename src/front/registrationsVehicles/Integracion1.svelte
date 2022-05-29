@@ -20,8 +20,8 @@
             datos.forEach(data => {
                 fechas.push(data["country"] + "-" + data.year);
                 dat1.push(data.public_expenditure*10);
-                dat2.push(data.pe_to_gdp *10 );
-                dat3.push(data.pe_on_defence*10)
+                dat2.push(data.pe_to_gdp *100000);
+                dat3.push(data.pe_on_defence*1000000)
             });
         }else{
             window.alert("No hay datos para este pais");
@@ -52,7 +52,7 @@
     },
     title: {
         align: 'left',
-        text: 'Integración de mi API con integración de Roque Fernández'
+        text: 'Integración de mi API con API de Roque Fernández'
     },
    
     accessibility: {
@@ -83,32 +83,32 @@
     },
     series: [
         {
-            name: "VEhivulos anuelaes",
+            name: "dat1API",
             colorByPoint: true,
             data: dat1
         },
         {
-            name: "VEhivulos por 1000",
+            name: "dat2API",
             colorByPoint: true,
             data: dat2
         },
         {
-            name: "VAriacion (x10.000)",
+            name: "dat3API",
             colorByPoint: true,
             data: dat3
         },
         {
-            name: "hola anuelaes",
+            name: "ventaAnualVehículos",
             colorByPoint: true,
             data: ventaAnualVehículos
         },
         {
-            name: "cara por 1000",
+            name: "ventaAnualVehículosPor1000",
             colorByPoint: true,
             data: ventaAnualVehículosPor1000
         },
         {
-            name: "cola (x10.000)",
+            name: "variación",
             colorByPoint: true,
             data: variación
         }
