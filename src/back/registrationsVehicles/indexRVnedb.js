@@ -6,7 +6,7 @@ var apiHost1 = 'https://sos2122-27.herokuapp.com/api/v2/public-expenditure-stats
 
 
 module.exports = (app, BASE_API_URL, bodyParser, db) => {
-
+    console.log("E");
     //#####################INTEGRACIONES###############################
     app.use(urlAPIRV1, function(req, res) {
         var aux = req.url;
@@ -26,10 +26,10 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
         res.redirect(API_DOC);
     })
 
-
+    console.log("F");
     // CREACION DE DATOS AUTOMÁTICA
     db.find({}).sort({year:1}).exec(function(err,data){
-        if(data.length == 0){
+        console.log("G"); if(data.length == 0){
             db.insert([
                 {
                     country: "spain",
@@ -74,20 +74,20 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
                     variation: 622.25
                 }
             ]);
-            console.log("Datos iniciales añadidos automaticamente");
+            console.log("H");  console.log("Datos iniciales añadidos automaticamente");
         }
         else{
             console.log("Base de datos cargarda con "+data.length+" registros");
         }
     });
-
+console.log("I");
 
 
     // CREACION DE DATOS MANUAL
     app.get(BASE_API_URL+"/registrations-vehicles/loadInitialData", (req,res) => {
-        //búsqueda
+        console.log("J");
         db.find({},function(err, docs){
-
+console.log("K");
            if(err){
                res.sendStatus(500, "ERROR IN CLIENT");
                return;
@@ -149,9 +149,9 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
        });
        res.sendStatus(200,"OK");
    }
-  });
-})
-
+   console.log("L");});//L
+   console.log("M");})//M
+   console.log("N");
     // FUNCION COMPROBAR QUERYS
     function compruebaQuery(e) {
         if(e.length == 0){
@@ -750,4 +750,5 @@ module.exports = (app, BASE_API_URL, bodyParser, db) => {
             return;
         });
     });
-}
+    console.log("Ñ");}
+    console.log("O");

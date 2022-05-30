@@ -28,7 +28,7 @@
             console.log("INTERNAL FATAL ERROR");
             window.location.href = `/#/registrations-vehicles/`;
         }
-/*
+
         const res2 = await fetch("/api/v1/registrations-vehicles");
         if(res2.ok){
             datos = await res2.json();
@@ -45,7 +45,7 @@
             console.log("INTERNAL FATAL ERROR");
             window.location.href = `/#/registrations-vehicles`;
         }
-*/
+
         Highcharts.chart('container', {
     chart: {
         type: 'column'

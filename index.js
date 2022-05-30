@@ -20,11 +20,11 @@ iuvBackend(app, BASE_API_URL, bodyParser, db_in_use_vehicles);
 
 const pvBackend = require("./src/back/productionsVehicles/indexPVnedb.js");
 pvBackend(app, BASE_API_URL, bodyParser,db_productions_vehicles);
-
+console.log("A");
 const rvBackend = require("./src/back/registrationsVehicles/indexRVnedb.js");
 rvBackend(app, BASE_API_URL, bodyParser, db_registrations_vehicles);
 // #######################################################################################
-
+console.log("B");
 
 
 app.use(bodyParser.json());
@@ -42,5 +42,6 @@ app.use("/",express.static("./public"));
 })*/
 
 app.listen(port, () => {
-    console.log(`Server ready at port ${port}`)
+    console.log("C"); console.log(`Server ready at port ${port}`)
 });
+console.log("D");
