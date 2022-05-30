@@ -90,7 +90,23 @@
             name: "positiveTestsViral",
             colorByPoint: true,
             data: dat3
+        },
+        {
+            name: "ventaAnualVehículos",
+            colorByPoint: true,
+            data: ventaAnualVehículos
+        },
+        {
+            name: "ventaAnualVehículosPor1000",
+            colorByPoint: true,
+            data: ventaAnualVehículosPor1000
+        },
+        {
+            name: "variación",
+            colorByPoint: true,
+            data: variación
         }
+
     ]
 });
 }
