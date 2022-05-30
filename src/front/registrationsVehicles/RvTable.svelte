@@ -204,7 +204,7 @@
 </script>
 
 <main>
-	<h1>Listado de vehículos en uso</h1>
+	<h1>Listado de registros de vehículos</h1>
 	{#await iuv}
 		loading
 	{:then iuv}
@@ -224,9 +224,9 @@
 				<tr align="center">
 					<th> País </th>
 					<th> Año </th>
-					<th> Vehículos comerciales en uso </th>
-					<th> Vehículos de pasajeros en uso </th>
-					<th> Vehículos en uso por 1000 habitantes </th>
+					<th> Venta anual de vehículos </th>
+					<th> Venta anual de vehículos por cada 1000 </th>
+					<th> Variacion </th>
 				</tr>
 			</thead>
 			<tbody>
