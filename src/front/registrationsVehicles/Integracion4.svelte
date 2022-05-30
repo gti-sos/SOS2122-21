@@ -36,8 +36,8 @@
             console.log(JSON.stringify(datos, null, 2))
             datos.forEach(data => {
                 fechas.push(data["country"] + "-" + data.year);
-                ventaAnualVehículos.push(data.veh_sale);
-                ventaAnualVehículosPor1000.push(data.veh_per_1000);
+                ventaAnualVehículos.push(data.veh_sale*10);
+                ventaAnualVehículosPor1000.push(data.veh_per_1000*10);
                 variación.push(data.variation * 10000)
             });
         }else{
