@@ -71,7 +71,7 @@
                         <CardText>
                             <Row cols={1}>
                                 <Col>
-                                    <a href="https://www.youtube.com/watch?v=SHjOYPP30Js">
+                                    <a href="https://youtu.be/kLxVcTe5Hlo">
                                     <Button color="dark">Click aquí para el vídeo</Button></a>
                                 </Col>
                             </Row>
