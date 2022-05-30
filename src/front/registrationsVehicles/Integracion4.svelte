@@ -1,129 +1,124 @@
 <script>
-	import {pop} from "svelte-spa-router";
     import Button from "sveltestrap/src/Button.svelte";
-
-	let MyData = [];
-	let API_externa = [];
-	
-	async function loadGraph(){
-		
-		const resData = await fetch("/api/v1/registrations-vehicles");
-		MyData = await resData.json();
-		
-		const resData2 = await fetch("https://disease.sh/v2/gov/Germany");
-		
-		if (resData2.ok) {
-			console.log("Ok, api externa 2 loaded");
-			const json = await resData2.json();
-            API_externa = json;
-			console.log(API_externa)
-		} else {
-			console.log("ERROR!");
+    import Highcharts from "highcharts";
+    import { pop } from "svelte-spa-router";
+    let datos = [];
+    let fechas = [];
+    let dat1 = [];
+    let dat2 = [];
+    let dat3 = [];
+    let ventaAnualVehículos = [];
+    let ventaAnualVehículosPor1000 = [];
+    let variación = [];
+    async function loadGraph(){
+        console.log("Cargando grafica")
+        const res = await fetch("https://api.covidtracking.com/v1/states/current.json");
+        if(res.ok){
+            datos = await res.json();
+            console.log(datos);
+            console.log(JSON.stringify(datos, null, 2))
+            datos.forEach(data => {
+                fechas.push(data["country"] + "-" + data.state);
+                dat1.push(data.death*10000);
+                dat2.push(data.hospitalized*10000);
+                dat3.push(data.positiveTestsViral*100)
+            });
+        }else{
+            window.alert("No hay datos para este pais");
+            console.log("INTERNAL FATAL ERROR");
+            window.location.href = `/#/registrations-vehicles/`;
         }
-		let aux = []
-		let valores = []
-
-		API_externa.forEach((x) => {
-			if(x.province=="Bayern"||x.province=="Berlin"||x.province=="Hamburg"){
-				aux={
-					name: x.province,
-					data: [x.casesPerHundredThousand,0]
-				}
-				valores.push(aux);
-			}
-		});
-		
-				
-		Highcharts.chart('container', {
-			chart: {
-				type: 'bar'
-			},
-			title: {
-				text: 'Enfermos en Alemania'
-			},
-			xAxis: {
-				categories: ['Enfermos por cada cien mil'],
-				title: {
-					text: null
-				}
-			},
-			yAxis: {
-				min: 0,
-				labels: {
-					overflow: 'justify'
-				}
-			},
-			plotOptions: {
-				bar: {
-					dataLabels: {
-						enabled: true
-					}
-				}
-			},
-			credits: {
-				enabled: false
-			},
-			series: valores
-		});
-	}
+/*
+        const res2 = await fetch("/api/v1/registrations-vehicles");
+        if(res2.ok){
+            datos = await res2.json();
+            console.log(datos);
+            console.log(JSON.stringify(datos, null, 2))
+            datos.forEach(data => {
+                fechas.push(data["country"] + "-" + data.year);
+                ventaAnualVehículos.push(data.veh_sale);
+                ventaAnualVehículosPor1000.push(data.veh_per_1000);
+                variación.push(data.variation * 10000)
+            });
+        }else{
+            window.alert("No hay datos para este pais");
+            console.log("INTERNAL FATAL ERROR");
+            window.location.href = `/#/registrations-vehicles`;
+        }
+*/
+        Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Datos Covid en diferentes estados'
+    },
+    subtitle: {
+        text: 'Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Population (millions)'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [
+        {
+            name: "death",
+            colorByPoint: true,
+            data: dat1
+        },
+        {
+            name: "hospitalized",
+            colorByPoint: true,
+            data: dat2
+        },
+        {
+            name: "positiveTestsViral",
+            colorByPoint: true,
+            data: dat3
+        }
+    ]
+});
+}
 </script>
 
 <svelte:head>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>
-	<script src="https://code.highcharts.com/modules/accessibility.js" on:load="{loadGraph}"></script>
+    <script src="https://code.highcharts.com/highcharts.js" on:load="{loadGraph}"></script>
 </svelte:head>
 
-<main>
-	<h3 style="text-align: center;"> Integración con una API externa</h3>
-	<Button outline color="secondary" on:click="{pop}">Volver</Button>
-	<figure class="highcharts-figure">
-		<div id="container"></div>
-		<p style="text-align:center;" class="highcharts-description">
-			Comparativa entre el número de enfermos en tres provincias alemanas y viajeros en algunas provincias andaluzas.
-		</p>
-	</figure>
-
-</main>
-
-<style>
-	.highcharts-figure, .highcharts-data-table table {
-		min-width: 310px; 
-		max-width: 800px;
-		margin: 1em auto;
-	}
-
-	#container {
-		height: 400px;
-	}
-
-	.highcharts-data-table table {
-		font-family: Verdana, sans-serif;
-		border-collapse: collapse;
-		border: 1px solid #EBEBEB;
-		margin: 10px auto;
-		text-align: center;
-		width: 100%;
-		max-width: 500px;
-	}
-	.highcharts-data-table caption {
-		padding: 1em 0;
-		font-size: 1.2em;
-		color: #555;
-	}
-	.highcharts-data-table th {
-		font-weight: 600;
-		padding: 0.5em;
-	}
-	.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-		padding: 0.5em;
-	}
-	.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-		background: #f8f8f8;
-	}
-	.highcharts-data-table tr:hover {
-		background: #f1f7ff;
-	}
-
-</style>
+<main>        
+    <br>
+    <br>
+    <Button id="back" outline color="secondary" on:click="{pop}"> Atrás</Button>
+        <div style="margin:auto;"> 
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+        </figure>  
+    </main>
+    
+    
+    <style>
+        .highcharts-figure {
+          min-width: 100%;
+          max-width:100%;
+          margin: 1em auto;
+        }
+        #container {
+          height: 600px;
+        }
+        
+    </style>
