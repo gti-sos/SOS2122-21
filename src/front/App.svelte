@@ -68,7 +68,6 @@
         "/registrations-vehicles/graph": RVGraph,
         "/registrations-vehicles/graphCanvasJS": RVGraphCanvaJs,
         "/registrations-vehicles/integracion1" : Integracion1,
-        "/registrations-vehicles/javrodmor1" : Javrodmor1,
         "/registrations-vehicles/integracion2" : Integracion2,
         "/registrations-vehicles/integracion3" : Integracion3,
         "/registrations-vehicles/integracion4" : Integracion4,
