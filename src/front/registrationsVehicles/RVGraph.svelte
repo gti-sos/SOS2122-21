@@ -90,10 +90,7 @@
 </svelte:head>
 
 <main>        
-    <br>
-    
-    <iframe width="420" height="315" src="https://www.youtube.com/embed/U8xzshpnxPk"></iframe>
-    <br>
+
     <Button id="back" outline color="secondary" on:click="{pop}"> Atrás</Button>
         <div style="margin:auto;"> 
         <figure class="highcharts-figure">

@@ -105,7 +105,30 @@
 
                     <CardBody>
                         <CardText>
-
+                            <Row cols={1}>
+                                <Col>
+                                    <a href="/#/registrations-vehicles/integracion1">
+                                    <Button color="info">API de SOS, grupo 27</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>
+                                    <a href="/#/registrations-vehicles/integracion2">
+                                        <Button color="warning">API EXTERNA 1</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>  
+                                    <a href="/#/registrations-vehicles/integracion3">
+                                        <Button color="info">API de SOS, grupo 30</Button></a>
+                                </Col>
+                                <br>
+                                <br>
+                                <Col>  
+                                    <a href="/#/registrations-vehicles/integracion4">
+                                        <Button color="warning">API EXTERNA 2</Button></a>
+                                </Col>
+                            </Row>
                         </CardText>
                     </CardBody>
 
