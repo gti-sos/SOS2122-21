@@ -41,7 +41,6 @@
     import RVGraph from './registrationsVehicles/RVGraph.svelte';
     import RVGraphCanvaJs from './registrationsVehicles/RVGraphCanvaJS.svelte';
     import Integracion1 from './registrationsVehicles/Integracion1.svelte';
-    import Javrodmor1 from './registrationsVehicles/javrodmor1.svelte';
     import Integracion2 from './registrationsVehicles/Integracion2.svelte';
     import Integracion3 from './registrationsVehicles/Integracion3.svelte';
     import Integracion4 from './registrationsVehicles/Integracion4.svelte';
